@@ -10,7 +10,6 @@ import Header from './layout/Header';
 const App = (props) => {
   return (
     <>
-      Root page
       <Header></Header>
       <Outlet></Outlet>
       <Footer></Footer>
