@@ -1,38 +1,43 @@
-import React from 'react';
-import './styles/index.scss';
-import App from './App';
-import ReactDOM from 'react-dom/client';
-import reportWebVitals from './reportWebVitals';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import HomePage from './pages/HomePage';
-import Contact from './pages/Contact';
-import Introduce from './pages/Introduce';
-import Service from './pages/Service';
+import React from "react";
+import "./styles/index.scss";
+import App from "./App";
+import ReactDOM from "react-dom/client";
+import reportWebVitals from "./reportWebVitals";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import Contact from "./pages/Contact";
+import Introduce from "./pages/Introduce";
+import Service from "./pages/Service";
+import Booking from "pages/Booking";
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App></App>,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <HomePage></HomePage>,
       },
       {
-        path: 'contact',
+        path: "contact",
         element: <Contact></Contact>,
       },
       {
-        path: 'introduce',
+        path: "introduce",
         element: <Introduce></Introduce>,
       },
       {
-        path: 'service',
+        path: "service",
         element: <Service></Service>,
+      },
+      {
+        path: "booking",
+        element: <Booking></Booking>,
       },
     ],
   },
 ]);
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <RouterProvider router={router}></RouterProvider>

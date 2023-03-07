@@ -5,29 +5,54 @@ import { colors } from "../variables";
 import { NavLink } from "react-router-dom";
 
 const HeaderStyles = styled.div`
+  position: fixed;
+  width: 100%;
+  z-index: 999;
+  height: 54px;
   font-size: 15px;
-  background-color: ${colors.brown_1};
+  background-color: ${colors.gold_1};
   user-select: none;
   .navbar__list {
-    padding: 8px 0px 8px 0px;
+    height: 100%;
     display: flex;
     justify-content: center;
     color: white;
     .link__container {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      width: 120px;
       .navlink {
+        line-height: 54px;
+        width: 100%;
+        height: 100%;
         font-weight: 300;
-        padding: 8px 24px 8px 24px;
-        display: inline-block;
-        color: ${colors.gray_1};
+        display: flex;
+        justify-content: center;
+        color: white;
         text-transform: uppercase;
         text-decoration: none;
+        &.image__container {
+          height: 100%;
+        }
         &:hover {
           color: white;
         }
+        .logo__image {
+          height: 100%;
+        }
       }
-      .link__external {
-        .external__link {
-          color: ${colors.gray_1};
+      &.external__links {
+        column-gap: 8px;
+        justify-content: center;
+        .link__external {
+          .external__link {
+            color: white;
+            font-size: 18px;
+            :hover {
+              color: white;
+            }
+          }
         }
       }
     }
@@ -54,26 +79,31 @@ const Header = (props) => {
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/Introdution"}>
+          <NavLink className="navlink" to={"/introdution"}>
             Introduction
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/Contact"}>
+          <NavLink className="navlink image__container" to={"/"}>
+            <img className="logo__image" srcSet="images/logo.png" alt="logo" />
+          </NavLink>
+        </div>
+        <div className="link__container">
+          <NavLink className="navlink" to={"/contact"}>
             Contact
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/Blog"}>
+          <NavLink className="navlink" to={"/blog"}>
             Blog
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/About"}>
+          <NavLink className="navlink" to={"/about"}>
             About
           </NavLink>
         </div>
-        <div className="link__container">
+        <div className="link__container external__links">
           <span className="link__external">
             <a className="external__link" href="/">
               <i class="fa-brands fa-square-youtube"></i>
