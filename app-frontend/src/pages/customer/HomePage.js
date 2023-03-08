@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Link } from "react-router-dom";
-import { colors } from "variables";
+import { colors } from "../../variables";
 
 const HomePageStyles = styled.div`
   padding-top: 54px;
@@ -27,6 +27,7 @@ const HomePageStyles = styled.div`
         .service__item {
           width: 50%;
           .service__link {
+            height: 100%;
             .service__title {
               position: absolute;
               left: 0;
@@ -43,6 +44,7 @@ const HomePageStyles = styled.div`
             text-decoration: none;
             .service__image {
               width: 100%;
+              height: 100%;
             }
             .service__frame {
               z-index: 2;
@@ -107,7 +109,7 @@ const HomePage = (props) => {
       <div className="slider">
         <div className="slide">
           <img
-            src="https://luxurypalace.vn/wp-content/uploads/2022/01/banner-dang-cap.png"
+            src={require("../../assets/images/hompage_banner_1.jpg")}
             alt="slide"
           ></img>
         </div>
@@ -119,22 +121,22 @@ const HomePage = (props) => {
               <Link className="service__link" to={"/service/conference"}>
                 <img
                   className="service__image"
-                  src="https://luxurypalace.vn/wp-content/uploads/2019/10/service-1-398x176.png"
+                  src={require("../../assets/images/home_1.jpg")}
                   alt=""
                 />
                 <div className="service__frame"></div>
-                <div className="service__title">Conference</div>
+                <div className="service__title">Hẹn Hò</div>
               </Link>
             </div>
             <div className="service__item">
               <Link className="service__link" to={"/service/conference"}>
                 <img
                   className="service__image"
-                  src="https://luxurypalace.vn/wp-content/uploads/2019/12/tiec-cuoi-398x176.jpg"
+                  src={require("../../assets/images/home_2.jpg")}
                   alt=""
                 />
                 <div className="service__frame"></div>
-                <div className="service__title">Wedding</div>
+                <div className="service__title">Lễ Chúc Mừng</div>
               </Link>
             </div>
           </div>
@@ -143,22 +145,22 @@ const HomePage = (props) => {
               <Link className="service__link" to={"/service/conference"}>
                 <img
                   className="service__image"
-                  src="https://luxurypalace.vn/wp-content/uploads/2019/12/outsize-398x176.jpg"
+                  src={require("../../assets/images/home_3.jpg")}
                   alt=""
                 />
                 <div className="service__frame"></div>
-                <div className="service__title">Outside</div>
+                <div className="service__title">Gặp Gỡ</div>
               </Link>
             </div>
             <div className="service__item">
               <Link className="service__link" to={"/service/conference"}>
                 <img
                   className="service__image"
-                  src="https://luxurypalace.vn/wp-content/uploads/2019/12/event-398x176.jpg"
+                  src={require("../../assets/images/home_4.jpg")}
                   alt=""
                 />
                 <div className="service__frame"></div>
-                <div className="service__title">Event</div>
+                <div className="service__title">Tiệc Thân Mật</div>
               </Link>
             </div>
           </div>

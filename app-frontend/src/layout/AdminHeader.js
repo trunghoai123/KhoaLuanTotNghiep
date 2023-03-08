@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { colors } from "../variables";
 import { NavLink } from "react-router-dom";
 
-const HeaderStyles = styled.div`
+const AdminHeaderStyles = styled.div`
   position: fixed;
   width: 100%;
   z-index: 999;
@@ -59,32 +59,32 @@ const HeaderStyles = styled.div`
   }
 `;
 
-const Header = (props) => {
+const AdminHeader = (props) => {
   return (
-    <HeaderStyles>
+    <AdminHeaderStyles>
       <div className="navbar__list">
         <div className="link__container">
-          <NavLink className="navlink" to={"/"}>
+          <NavLink className="navlink" to={"/admin"}>
             Trang Chủ
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/booking"}>
-            Đặt Bàn
+          <NavLink className="navlink" to={"/admin/booking"}>
+            Khu vực
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/dishes"}>
-            Món Ăn
+          <NavLink className="navlink" to={"/admin/dishes"}>
+            Phòng
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/introdution"}>
-            Giới Thiệu
+          <NavLink className="navlink" to={"/admin/introdution"}>
+            Bàn
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink image__container" to={"/"}>
+          <NavLink className="navlink image__container" to={"/admin/"}>
             <img
               className="logo__image"
               srcSet={require("../assets/images/logo.png")}
@@ -93,42 +93,42 @@ const Header = (props) => {
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/contact"}>
-            Bài Viết
+          <NavLink className="navlink" to={"/admin/contact"}>
+            Bài viết
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/blog"}>
-            Liên Hệ
+          <NavLink className="navlink" to={"/admin/blog"}>
+            Tài khoản
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/about"}>
+          <NavLink className="navlink" to={"/admin/about"}>
             Chính Sách
           </NavLink>
         </div>
         <div className="link__container external__links">
           <span className="link__external">
-            <a className="external__link" href="/">
+            <a className="external__link" href="/admin/">
               <i className="fa-brands fa-square-youtube"></i>
             </a>
           </span>
           <span className="link__external">
-            <a className="external__link" href="/">
+            <a className="external__link" href="/admin/">
               <i className="fa-brands fa-square-facebook"></i>
             </a>
           </span>
           <span className="link__external">
-            <a className="external__link" href="/">
+            <a className="external__link" href="/admin/">
               <i className="fa-brands fa-twitter"></i>
             </a>
           </span>
         </div>
       </div>
-    </HeaderStyles>
+    </AdminHeaderStyles>
   );
 };
 
-Header.propTypes = {};
+AdminHeader.propTypes = {};
 
-export default Header;
+export default AdminHeader;

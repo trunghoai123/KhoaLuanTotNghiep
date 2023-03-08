@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { colors } from "variables";
+import { colors } from "../../variables";
 
 const BookingStyles = styled.div`
   padding: 54px 0px 0px 0px;
@@ -80,34 +80,48 @@ const BookingStyles = styled.div`
     .button__container {
       display: flex;
       justify-content: center;
-      .btn__lobby {
+      .btn__room {
+        padding: 8px 80px;
+        cursor: pointer;
+        background-color: white;
+        border: 2px solid ${colors.gold_1};
+        :hover {
+          transition: all ease 150ms;
+          background-color: ${colors.gold_1};
+          color: white;
+        }
       }
     }
   }
 `;
 const Booking = (props) => {
+  const [selection, setSelection] = useState(true);
   return (
     <BookingStyles>
       <div className="main__image">
         <div className="overlay"></div>
-        <div className="heading__title">BOOKING</div>
+        <div className="heading__title">ĐẶT BÀN</div>
       </div>
       <div className="main__section">
         <div className="lobbies">
           <div className="lobby__selection">
-            <div className="lobby__option">PLATINUM LOBBY</div>
-            <div className="lobby__option">DIAMOND LOBBY</div>
-            <div className="lobby__option">MERCURY LOBBY</div>
-            <div className="lobby__option">VENUS LOBBY</div>
-            <div className="lobby__option">GOLDEN LOBBY</div>
-            <div className="lobby__option">RUBY LOBBY</div>
+            <div className="lobby__option" onClick={() => setSelection(true)}>
+              Phòng VIP
+            </div>
+            <div className="lobby__option" onClick={() => setSelection(false)}>
+              Phòng Chung
+            </div>
           </div>
           <div className="lobby__slides">
             <div className="lobby__item">
               <div className="lobby__image">
                 <img
                   className="lobby__img"
-                  src="https://grandpalace.com.vn/multidata/lnom1633.jpg"
+                  src={
+                    selection
+                      ? require("../../assets/images/VIP_room.jpg")
+                      : require("../../assets/images/normal_room.jpg")
+                  }
                   alt=""
                 />
               </div>
@@ -115,14 +129,19 @@ const Booking = (props) => {
           </div>
         </div>
         <div className="lobby__details">
-          <div className="lobby__name">PLATINUM LOBBY</div>
-          Platinum is the most large lobby in my restaurant, this lobby has
-          capacity up to 1500 persons. The banquet hall will bring you the most
-          epic party, whether it's a wedding, conference or other event, we will
-          give you an unprecedented feeling.
+          <div className="lobby__name">PHÒNG VIP</div>
+          Phòng VIP được trang bị đầy đủ các tiện nghi, giúp khách hàng có những
+          trải nghiệm sang trọng và riêng tư nhất mà không phải lo người xung
+          quanh, phòng được bày trí cực kỳ sang trọng theo phong cách châu âu,
+          có thể tùy chỉnh từng chi tiết theo yêu cầu của khách hàng. có các
+          phòng kích thước từ nhỏ đến lớn cho khách hàng lựa chọn.
         </div>
         <div className="button__container">
-          <button className="btn__lobby">Choose This Lobby</button>
+          {selection ? (
+            <button className="btn__room">ĐẶT PHÒNG VIP</button>
+          ) : (
+            <button className="btn__room">ĐẶT BÀN</button>
+          )}
         </div>
       </div>
     </BookingStyles>

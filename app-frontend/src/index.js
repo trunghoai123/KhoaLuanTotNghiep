@@ -4,11 +4,13 @@ import App from "./App";
 import ReactDOM from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import Contact from "./pages/Contact";
-import Introduce from "./pages/Introduce";
-import Service from "./pages/Service";
-import Booking from "pages/Booking";
+import HomePage from "./pages/customer/HomePage";
+import Contact from "./pages/customer/Contact";
+import Introduce from "./pages/customer/Introduce";
+import Service from "./pages/customer/Service";
+import Booking from "./pages/customer/Booking";
+import Dishes from "./pages/customer/Dishes";
+import AppAdmin from "./pages/admin/AppAdmin";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -19,20 +21,34 @@ const router = createBrowserRouter([
         element: <HomePage></HomePage>,
       },
       {
-        path: "contact",
+        path: "/contact",
         element: <Contact></Contact>,
       },
       {
-        path: "introduce",
+        path: "/introduce",
         element: <Introduce></Introduce>,
       },
       {
-        path: "service",
+        path: "/service",
         element: <Service></Service>,
       },
       {
-        path: "booking",
+        path: "/booking",
         element: <Booking></Booking>,
+      },
+      {
+        path: "/dishes",
+        element: <Dishes></Dishes>,
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <AppAdmin></AppAdmin>,
+    children: [
+      {
+        path: "/admin",
+        element: <HomePage></HomePage>,
       },
     ],
   },
