@@ -21,6 +21,7 @@ const menuSchema = new Schema({
     },
     MaLoai:{
         type: Schema.Types.ObjectId,
+        ref: 'LoaiThucDon'
     }
 },{
     timestamps: true,

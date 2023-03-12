@@ -1,17 +1,19 @@
-const menuModel = require("../models/menu.model")
+const roomModel = require("../models/room.model")
 
-class MenuService {
+class RoomService {
 
-    static addMenu = async ({TenMon , GiaMon , MoTa , HinhAnh , MaLoai})=>{
+
+
+    static addRoom = async ({TenPhong , TrangThai , SoChoNgoiToiDa , GiaPhong , HinhAnh, MaLoai , MaKhuVuc})=>{
         try{
-            const newMenu = await menuModel.create({
-                TenMon , GiaMon , MoTa , HinhAnh , MaLoai
+            const newRoom = await roomModel.create({
+                TenPhong , TrangThai , SoChoNgoiToiDa , GiaPhong , HinhAnh, MaLoai , MaKhuVuc
             })
-            if(newMenu){
+            if(newRoom){
                 return {
                     code: 201,
                     metadata:{
-                        data: newMenu,
+                        data: newRoom,
                     }
                 }
             }
@@ -21,21 +23,19 @@ class MenuService {
                 code: 500,
                 metadata:{
                     message: err.message,
-                    status: 'add menu error',
+                    status: 'add room error',
                 }
             }
         }
     }
 
-
-    static getAllMenu = async () =>{
+    static getAllRoom = async () =>{
         try{
-            const menus = await menuModel.find();
-
+            const rooms = await roomModel.find();
             return {
                 code: 200,
                 metadata: {
-                    data: menus
+                    data: rooms
                 }
             }
         }
@@ -44,11 +44,11 @@ class MenuService {
                 code: 500,
                 metadata:{
                     message: err.message,
-                    status: 'get all menu error',
+                    status: 'get all room error',
                 }
             }
         }
     }
 }
 
-module.exports = MenuService
+module.exports = RoomService

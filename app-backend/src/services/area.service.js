@@ -1,17 +1,17 @@
-const menuModel = require("../models/menu.model")
+const areaModel = require("../models/area.model")
 
-class MenuService {
+class AreaService {
 
-    static addMenu = async ({TenMon , GiaMon , MoTa , HinhAnh , MaLoai})=>{
+    static addArea = async ({TenKhuVuc , HinhAnh , MoTa , ViTriCuThe})=>{
         try{
-            const newMenu = await menuModel.create({
-                TenMon , GiaMon , MoTa , HinhAnh , MaLoai
+            const newArea = await areaModel.create({
+                TenKhuVuc , HinhAnh , MoTa , ViTriCuThe
             })
-            if(newMenu){
+            if(newArea){
                 return {
                     code: 201,
                     metadata:{
-                        data: newMenu,
+                        data: newArea,
                     }
                 }
             }
@@ -21,21 +21,19 @@ class MenuService {
                 code: 500,
                 metadata:{
                     message: err.message,
-                    status: 'add menu error',
+                    status: 'add area error',
                 }
             }
         }
     }
 
-
-    static getAllMenu = async () =>{
+    static getAllArea = async () =>{
         try{
-            const menus = await menuModel.find();
-
+            const areas = await areaModel.find();
             return {
                 code: 200,
                 metadata: {
-                    data: menus
+                    data: areas
                 }
             }
         }
@@ -44,11 +42,12 @@ class MenuService {
                 code: 500,
                 metadata:{
                     message: err.message,
-                    status: 'get all menu error',
+                    status: 'get all area error',
                 }
+                
             }
         }
     }
 }
 
-module.exports = MenuService
+module.exports = AreaService
