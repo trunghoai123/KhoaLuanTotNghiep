@@ -118,9 +118,7 @@ const Booking = (props) => {
                 <img
                   className="lobby__img"
                   src={
-                    selection
-                      ? require("../../assets/images/VIP_room.jpg")
-                      : require("../../assets/images/normal_room.jpg")
+                    selection ? "images/VIP_room.jpg" : "images/normal_room.jpg"
                   }
                   alt=""
                 />

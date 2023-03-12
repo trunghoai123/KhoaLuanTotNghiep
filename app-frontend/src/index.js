@@ -1,4 +1,6 @@
 import React from "react";
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/index.scss";
 import App from "./App";
 import ReactDOM from "react-dom/client";
@@ -11,6 +13,11 @@ import Service from "./pages/customer/Service";
 import Booking from "./pages/customer/Booking";
 import Dishes from "./pages/customer/Dishes";
 import AppAdmin from "./pages/admin/AppAdmin";
+import AreaAdmin from "pages/admin/AreaAdmin";
+import RoomAdmin from "pages/admin/RoomAdmin";
+import TableAdmin from "pages/admin/TableAdmin";
+import AreaEditAdmin from "pages/admin/AreaEditAdmin";
+import RoomEditAdmin from "pages/admin/RoomEditAdmin";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -21,23 +28,23 @@ const router = createBrowserRouter([
         element: <HomePage></HomePage>,
       },
       {
-        path: "/contact",
+        path: "contact",
         element: <Contact></Contact>,
       },
       {
-        path: "/introduce",
+        path: "introduce",
         element: <Introduce></Introduce>,
       },
       {
-        path: "/service",
+        path: "service",
         element: <Service></Service>,
       },
       {
-        path: "/booking",
+        path: "booking",
         element: <Booking></Booking>,
       },
       {
-        path: "/dishes",
+        path: "dishes",
         element: <Dishes></Dishes>,
       },
     ],
@@ -47,8 +54,28 @@ const router = createBrowserRouter([
     element: <AppAdmin></AppAdmin>,
     children: [
       {
-        path: "/admin",
+        path: "",
         element: <HomePage></HomePage>,
+      },
+      {
+        path: "area",
+        element: <AreaAdmin></AreaAdmin>,
+      },
+      {
+        path: "area/:areaId",
+        element: <AreaEditAdmin></AreaEditAdmin>,
+      },
+      {
+        path: "room",
+        element: <RoomAdmin></RoomAdmin>,
+      },
+      {
+        path: "room/:roomId",
+        element: <RoomEditAdmin></RoomEditAdmin>,
+      },
+      {
+        path: "/admin/table",
+        element: <TableAdmin></TableAdmin>,
       },
     ],
   },

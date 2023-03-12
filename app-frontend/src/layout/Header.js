@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 const HeaderStyles = styled.div`
   position: fixed;
   width: 100%;
-  z-index: 999;
+  z-index: 99999;
   height: 54px;
   font-size: 15px;
   background-color: ${colors.gold_1};
@@ -85,11 +85,7 @@ const Header = (props) => {
         </div>
         <div className="link__container">
           <NavLink className="navlink image__container" to={"/"}>
-            <img
-              className="logo__image"
-              srcSet={require("../assets/images/logo.png")}
-              alt="logo"
-            />
+            <img className="logo__image" srcSet={"images/logo.png"} alt="logo" />
           </NavLink>
         </div>
         <div className="link__container">

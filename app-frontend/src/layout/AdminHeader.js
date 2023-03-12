@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 const AdminHeaderStyles = styled.div`
   position: fixed;
   width: 100%;
-  z-index: 999;
+  z-index: 99999;
   height: 54px;
   font-size: 15px;
   background-color: ${colors.gold_1};
@@ -69,27 +69,23 @@ const AdminHeader = (props) => {
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/admin/booking"}>
+          <NavLink className="navlink" to={"/admin/area"}>
             Khu vực
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/admin/dishes"}>
+          <NavLink className="navlink" to={"/admin/room"}>
             Phòng
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/admin/introdution"}>
+          <NavLink className="navlink" to={"/admin/table"}>
             Bàn
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink image__container" to={"/admin/"}>
-            <img
-              className="logo__image"
-              srcSet={require("../assets/images/logo.png")}
-              alt="logo"
-            />
+          <NavLink className="navlink image__container" to={"/admin"}>
+            <img className="logo__image" src={"/images/logo.png"} alt="logo" />
           </NavLink>
         </div>
         <div className="link__container">

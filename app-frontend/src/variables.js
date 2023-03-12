@@ -4,6 +4,12 @@ export const colors = {
   gray_1: "#d1d2d4",
   light_gray_1: "#f5f5fa",
   brown_shadow: "#2b2319",
+  green_1: "#36e846",
+  green_1_hover: "#25dc35",
+  orange_1: "#f7b240",
+  orange_1_hover: "#f9ab29",
+  red_1: "#ff6161",
+  red_1_hover: "#ef4444",
 };
 
 export const dishes = [
@@ -43,8 +49,7 @@ export const dishes = [
   {
     id: 4,
     name: "Cơm chiên dương châu",
-    imageUrl:
-      "https://vuoncau.com/wp-content/uploads/2021/03/com-chien-duong-chau_1505696963.jpg",
+    imageUrl: "https://vuoncau.com/wp-content/uploads/2021/03/com-chien-duong-chau_1505696963.jpg",
     details: "",
     kind: {
       id: 4,
@@ -66,8 +71,7 @@ export const kinds = [
     name: "Súp",
   },
   {
-    imageUrl:
-      "https://vuoncau.com/wp-content/uploads/2021/03/com-chien-duong-chau_1505696963.jpg",
+    imageUrl: "https://vuoncau.com/wp-content/uploads/2021/03/com-chien-duong-chau_1505696963.jpg",
     id: 3,
     name: "Cơm",
   },

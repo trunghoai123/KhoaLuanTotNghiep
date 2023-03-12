@@ -26,6 +26,7 @@ const HomePageStyles = styled.div`
         display: flex;
         .service__item {
           width: 50%;
+          max-height: 400px;
           .service__link {
             height: 100%;
             .service__title {
@@ -108,10 +109,7 @@ const HomePage = (props) => {
     <HomePageStyles>
       <div className="slider">
         <div className="slide">
-          <img
-            src={require("../../assets/images/hompage_banner_1.jpg")}
-            alt="slide"
-          ></img>
+          <img src={"images/home_banner.jpg"} alt="slide"></img>
         </div>
       </div>
       <div className="section__all">
@@ -119,22 +117,14 @@ const HomePage = (props) => {
           <div className="service__row">
             <div className="service__item">
               <Link className="service__link" to={"/service/conference"}>
-                <img
-                  className="service__image"
-                  src={require("../../assets/images/home_1.jpg")}
-                  alt=""
-                />
+                <img className="service__image" src={"images/home_1.jpg"} alt="" />
                 <div className="service__frame"></div>
                 <div className="service__title">Hẹn Hò</div>
               </Link>
             </div>
             <div className="service__item">
               <Link className="service__link" to={"/service/conference"}>
-                <img
-                  className="service__image"
-                  src={require("../../assets/images/home_2.jpg")}
-                  alt=""
-                />
+                <img className="service__image" src={"images/home_2.jpeg"} alt="" />
                 <div className="service__frame"></div>
                 <div className="service__title">Lễ Chúc Mừng</div>
               </Link>
@@ -143,22 +133,14 @@ const HomePage = (props) => {
           <div className="service__row">
             <div className="service__item">
               <Link className="service__link" to={"/service/conference"}>
-                <img
-                  className="service__image"
-                  src={require("../../assets/images/home_3.jpg")}
-                  alt=""
-                />
+                <img className="service__image" src={"images/home_3.jpg"} alt="" />
                 <div className="service__frame"></div>
                 <div className="service__title">Gặp Gỡ</div>
               </Link>
             </div>
             <div className="service__item">
               <Link className="service__link" to={"/service/conference"}>
-                <img
-                  className="service__image"
-                  src={require("../../assets/images/home_4.jpg")}
-                  alt=""
-                />
+                <img className="service__image" src={"images/home_4.jpeg"} alt="" />
                 <div className="service__frame"></div>
                 <div className="service__title">Tiệc Thân Mật</div>
               </Link>
@@ -174,17 +156,15 @@ const HomePage = (props) => {
           <div className="service__main">
             <div className="main__left">
               <div className="left__intro">
-                Khám phá ngay những sảnh tiệc sang trọng và lịch lãm tại GOLDEN
-                BARN
+                Khám phá ngay những sảnh tiệc sang trọng và lịch lãm tại GOLDEN BARN
               </div>
               <button className="left__button">Discover now</button>
             </div>
             <div className="main__right">
-              GOLDEN BARN mang trên mình một lối kiến trúc hoàng gia sang trọng,
-              mỗi góc tại cung điện mang vẻ đẹp khác nhau dành cho quan khách.
-              Mỗi sảnh tiệc là một sự đầu tư bậc nhất về trang thiết bị, hệ
-              thống âm thanh ánh sáng hiện đại và đội ngũ phục vụ chuyên nghiệp
-              luôn đáp ứng trọn vẹn nhất các loại hình tiệc đẳng cấp khác nhau.
+              GOLDEN BARN mang trên mình một lối kiến trúc hoàng gia sang trọng, mỗi góc tại cung
+              điện mang vẻ đẹp khác nhau dành cho quan khách. Mỗi sảnh tiệc là một sự đầu tư bậc
+              nhất về trang thiết bị, hệ thống âm thanh ánh sáng hiện đại và đội ngũ phục vụ chuyên
+              nghiệp luôn đáp ứng trọn vẹn nhất các loại hình tiệc đẳng cấp khác nhau.
             </div>
           </div>
         </div>
