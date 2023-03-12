@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { colors, dishes, kinds } from "../../variables";
+import { colors, dishes as dfDishes, kinds } from "variables";
 import { Link } from "react-router-dom";
+import axiosClient from "utils/api";
 
 const DishesStyles = styled.div`
   .main__container {
@@ -112,16 +113,18 @@ const DishesStyles = styled.div`
               .img {
                 object-fit: cover;
                 height: 180px;
+                width: 100%;
               }
               .overlay {
                 position: absolute;
                 bottom: 0;
                 width: 100%;
                 height: 0px;
-                box-shadow: 0px 0px 70px 20px black;
+                box-shadow: 0px 0px 60px 35px black;
               }
             }
             .dish__name {
+              width: 100%;
               padding: 2px;
               color: white;
               position: absolute;
@@ -137,6 +140,22 @@ const DishesStyles = styled.div`
 `;
 
 const Dishes = (props) => {
+  const [dishes, setDishes] = useState();
+  useEffect(() => {
+    const fetchDishes = async () => {
+      try {
+        const result = await axiosClient.get("menu/getAllMenu", {});
+        if (result?.data?.data) {
+          console.log(result);
+          setDishes(result.data.data);
+        }
+      } catch (error) {
+        console.log(error);
+        return;
+      }
+    };
+    fetchDishes();
+  }, []);
   return (
     <DishesStyles>
       <div className="main__container">
@@ -157,19 +176,15 @@ const Dishes = (props) => {
         </div>
         <div className="right__container">
           <div className="dishes__container">
-            {dishes.map((dish) => {
+            {dishes?.map((dish) => {
               return (
-                <Link to={`/dish/${dish?.id}`} key={dish?.id} className="dish">
+                <Link to={`/dish/${dish?._id}`} key={dish?._id} className="dish">
                   <div className="dish__container">
                     <div className="img__container">
-                      <img
-                        src={dish?.imageUrl}
-                        className="img"
-                        alt={dish?.name}
-                      />
+                      <img src={dish?.HinhAnh} className="img" alt={dish?.name} />
                       <div className="overlay"></div>
                     </div>
-                    <div className="dish__name">{dish?.name}</div>
+                    <div className="dish__name">{dish?.TenMon}</div>
                   </div>
                 </Link>
               );

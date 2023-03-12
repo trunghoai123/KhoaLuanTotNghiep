@@ -13,11 +13,11 @@ import Service from "./pages/customer/Service";
 import Booking from "./pages/customer/Booking";
 import Dishes from "./pages/customer/Dishes";
 import AppAdmin from "./pages/admin/AppAdmin";
-import AreaAdmin from "pages/admin/AreaAdmin";
-import RoomAdmin from "pages/admin/RoomAdmin";
-import TableAdmin from "pages/admin/TableAdmin";
-import AreaEditAdmin from "pages/admin/AreaEditAdmin";
-import RoomEditAdmin from "pages/admin/RoomEditAdmin";
+import AreaAdmin from "pages/admin/Area/AreaAdmin";
+import RoomAdmin from "pages/admin/Room/RoomAdmin";
+import TableAdmin from "pages/admin/Table/TableAdmin";
+import AreaEditAdmin from "pages/admin/Area/AreaEditAdmin";
+import RoomEditAdmin from "pages/admin/Room/RoomEditAdmin";
 const router = createBrowserRouter([
   {
     path: "/",

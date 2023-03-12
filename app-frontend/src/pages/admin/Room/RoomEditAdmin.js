@@ -78,6 +78,10 @@ const RoomEditAdminStyles = styled.div`
           overflow-wrap: break-word;
           &.item__id {
             width: 100px;
+            max-width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           &.data__image {
             width: 200px;
@@ -164,7 +168,7 @@ const RoomEditAdmin = (props) => {
             bgHover={colors.orange_1_hover}
             bgColor={colors.orange_1}
           >
-            Cập Nhật
+            <div>Cập Nhật</div>
           </Button>
         </div>
       </div>
@@ -190,7 +194,7 @@ const RoomEditAdmin = (props) => {
             .fill(0)
             .map((item, index) => {
               return (
-                <tr className="table__row">
+                <tr className="table__row" key={index}>
                   <td className="table__data item__id">{"B" + index}</td>
                   <td className="table__data">{index + 1}</td>
                   <td className="table__data">{(Math.floor(Math.random() * 10) + 1) * 2}</td>
@@ -204,16 +208,20 @@ const RoomEditAdmin = (props) => {
                       bgHover={colors.orange_1_hover}
                       bgColor={colors.orange_1}
                     >
-                      <span className="text">Cập Nhật</span>
-                      <i className="icon__item fa-solid fa-pen-to-square"></i>
+                      <div>
+                        <span className="text">Cập Nhật</span>
+                        <i className="icon__item fa-solid fa-pen-to-square"></i>
+                      </div>
                     </Button>
                     <Button
                       className="button button__remove"
                       bgHover={colors.red_1_hover}
                       bgColor={colors.red_1}
                     >
-                      <span className="text">Xóa</span>
-                      <i className="icon__item fa-solid fa-trash-can"></i>
+                      <div>
+                        <span className="text">Xóa</span>
+                        <i className="icon__item fa-solid fa-trash-can"></i>
+                      </div>
                     </Button>
                   </td>
                 </tr>

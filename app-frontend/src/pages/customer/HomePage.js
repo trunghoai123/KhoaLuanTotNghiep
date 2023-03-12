@@ -10,11 +10,26 @@ const HomePageStyles = styled.div`
   padding-top: 54px;
   // ----- slider -----
   .slider {
+    display: relative;
     .slide {
       img {
         height: calc(100vh - 53px);
         width: 100%;
         object-fit: cover;
+      }
+    }
+    .logo__container {
+      padding: calc(54px + 20px) 20px 20px 20px;
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      .img__overlay {
+        background-color: rgba(152, 152, 152, 0.4);
+        border-radius: 50%;
+        border: 2px solid white;
+        .logo__img {
+          width: 80px;
+        }
       }
     }
   }
@@ -109,21 +124,26 @@ const HomePage = (props) => {
     <HomePageStyles>
       <div className="slider">
         <div className="slide">
-          <img src={"images/home_banner.jpg"} alt="slide"></img>
+          <img src="images/home_banner.jpg" alt="slide"></img>
+        </div>
+        <div className="logo__container">
+          <div className="img__overlay">
+            <img className="logo__img" src="images/logo_transparent.png" alt="" />
+          </div>
         </div>
       </div>
       <div className="section__all">
         <div className="all__main">
           <div className="service__row">
             <div className="service__item">
-              <Link className="service__link" to={"/service/conference"}>
+              <Link className="service__link" to={"/booking"}>
                 <img className="service__image" src={"images/home_1.jpg"} alt="" />
                 <div className="service__frame"></div>
                 <div className="service__title">Hẹn Hò</div>
               </Link>
             </div>
             <div className="service__item">
-              <Link className="service__link" to={"/service/conference"}>
+              <Link className="service__link" to={"/booking"}>
                 <img className="service__image" src={"images/home_2.jpeg"} alt="" />
                 <div className="service__frame"></div>
                 <div className="service__title">Lễ Chúc Mừng</div>
@@ -132,14 +152,14 @@ const HomePage = (props) => {
           </div>
           <div className="service__row">
             <div className="service__item">
-              <Link className="service__link" to={"/service/conference"}>
+              <Link className="service__link" to={"/booking"}>
                 <img className="service__image" src={"images/home_3.jpg"} alt="" />
                 <div className="service__frame"></div>
                 <div className="service__title">Gặp Gỡ</div>
               </Link>
             </div>
             <div className="service__item">
-              <Link className="service__link" to={"/service/conference"}>
+              <Link className="service__link" to={"/booking"}>
                 <img className="service__image" src={"images/home_4.jpeg"} alt="" />
                 <div className="service__frame"></div>
                 <div className="service__title">Tiệc Thân Mật</div>

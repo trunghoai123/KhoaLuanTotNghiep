@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Search from "components/Search";
 import DropdownManage from "components/Dopdown";
 import { colors } from "variables";
 import Button from "components/Button";
+import axiosClient from "utils/api";
 
 const TableAdminStyles = styled.div`
   padding-top: 54px;
@@ -28,6 +29,10 @@ const TableAdminStyles = styled.div`
           overflow-wrap: break-word;
           &.item__id {
             width: 100px;
+            max-width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           &.data__image {
             width: 200px;
@@ -60,6 +65,22 @@ const TableAdminStyles = styled.div`
 `;
 
 const TableAdmin = (props) => {
+  const [tables, setTables] = useState();
+  useEffect(() => {
+    const fetchDishes = async () => {
+      try {
+        const result = await axiosClient.get("table/getAllTable", {});
+        if (result?.data?.data) {
+          console.log(result.data.data);
+          setTables(result.data.data);
+        }
+      } catch (error) {
+        console.log(error);
+        return;
+      }
+    };
+    fetchDishes();
+  }, []);
   return (
     <TableAdminStyles>
       <div className="top__actions">
@@ -90,38 +111,38 @@ const TableAdmin = (props) => {
           </tr>
         </thead>
         <tbody className="table__body">
-          {Array(10)
-            .fill(0)
-            .map((item, index) => {
-              return (
-                <tr className="table__row">
-                  <td className="table__data item__id">{"B" + index}</td>
-                  <td className="table__data">{index + 1}</td>
-                  <td className="table__data">{(Math.floor(Math.random() * 10) + 1) * 2}</td>
-                  <td className="table__data">
-                    {Math.floor(Math.random() * 100) % 2 === 0 ? "Đang Trống" : "Đang Dùng"}
-                  </td>
-                  <td className="table__data">
-                    <Button
-                      className="button button__update"
-                      bgHover={colors.orange_1_hover}
-                      bgColor={colors.orange_1}
-                    >
+          {tables?.map((table, index) => {
+            return (
+              <tr className="table__row" key={table?._id}>
+                <td className="table__data item__id">{table?._id}</td>
+                <td className="table__data">{table?.SoThuThuBan}</td>
+                <td className="table__data">{table?.SoChoNgoi}</td>
+                <td className="table__data">{table?.TrangThai ? "Đang Dùng" : "Đang Trống"}</td>
+                <td className="table__data">
+                  <Button
+                    className="button button__update"
+                    bgHover={colors.orange_1_hover}
+                    bgColor={colors.orange_1}
+                  >
+                    <div>
                       <span className="text">Cập Nhật</span>
                       <i className="icon__item fa-solid fa-pen-to-square"></i>
-                    </Button>
-                    <Button
-                      className="button button__remove"
-                      bgHover={colors.red_1_hover}
-                      bgColor={colors.red_1}
-                    >
+                    </div>
+                  </Button>
+                  <Button
+                    className="button button__remove"
+                    bgHover={colors.red_1_hover}
+                    bgColor={colors.red_1}
+                  >
+                    <div>
                       <span className="text">Xóa</span>
                       <i className="icon__item fa-solid fa-trash-can"></i>
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
+                    </div>
+                  </Button>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </TableAdminStyles>

@@ -60,6 +60,10 @@ const AreaEditAdminStyles = styled.div`
           overflow-wrap: break-word;
           &.item__id {
             width: 100px;
+            max-width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           &.data__image {
             width: 200px;
@@ -189,16 +193,20 @@ const AreaEditAdmin = (props) => {
                       bgHover={colors.orange_1_hover}
                       bgColor={colors.orange_1}
                     >
-                      <span className="text">Cập Nhật</span>
-                      <i className="icon__item fa-solid fa-pen-to-square"></i>
+                      <div>
+                        <span className="text">Cập Nhật</span>
+                        <i className="icon__item fa-solid fa-pen-to-square"></i>
+                      </div>
                     </Button>
                     <Button
                       className="button button__remove"
                       bgHover={colors.red_1_hover}
                       bgColor={colors.red_1}
                     >
-                      <span className="text">Xóa</span>
-                      <i className="icon__item fa-solid fa-trash-can"></i>
+                      <div>
+                        <span className="text">Xóa</span>
+                        <i className="icon__item fa-solid fa-trash-can"></i>
+                      </div>
                     </Button>
                   </td>
                 </tr>

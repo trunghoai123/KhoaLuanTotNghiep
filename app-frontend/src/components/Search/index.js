@@ -38,7 +38,7 @@ const Search = ({ placeHolder, ...rest }) => {
           type="search"
           id="example-search-input"
         />
-        <span class="input-group-append tail__container">
+        <span className="input-group-append tail__container">
           <button
             className="btn btn-outline-secondary bg-white border-start-0 border ms-n5"
             type="button"
