@@ -85,7 +85,6 @@ const RoomAdmin = (props) => {
       <div className="top__actions">
         <Search placeHolder="Tìm Kiếm"></Search>
       </div>
-
       <table className="main__table table table-striped">
         <thead className="table__head--container">
           <tr className="table__row">
