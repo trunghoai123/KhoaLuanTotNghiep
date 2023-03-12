@@ -3,7 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const compression = require('compression');
 const { default : helmet} = require('helmet');
-var cors = require('cors');
+const cors = require('cors');
 const app = express();
 
 
