@@ -5,7 +5,7 @@ const COLLECTION_NAME = 'Ban';
 const DOCUMENT_NAME = 'Ban';
 
 const tableSchema = new Schema({
-    SoThuThuBan:{
+    SoThuTuBan:{
         type:Number,
         required:true,
     },

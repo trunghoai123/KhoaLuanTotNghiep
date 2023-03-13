@@ -2,10 +2,10 @@ const modelTable = require('../models/table.model')
 
 class TableService{
 
-    static addTable = async ({SoThuThuBan , TrangThai  , SoChoNgoi , MaPhong})=>{
+    static addTable = async ({SoThuTuBan , TrangThai  , SoChoNgoi , MaPhong})=>{
         try{
             const newTable = await modelTable.create({
-                SoThuThuBan , TrangThai  , SoChoNgoi , MaPhong
+                SoThuTuBan , TrangThai  , SoChoNgoi , MaPhong
             })
             if(newTable){
                 return {
