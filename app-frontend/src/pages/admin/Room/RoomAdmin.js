@@ -84,6 +84,13 @@ const RoomAdmin = (props) => {
     <RooomAdminStyles>
       <div className="top__actions">
         <Search placeHolder="Tìm Kiếm"></Search>
+        <DropdownManage>
+          <li>
+            <div className="dropdown-item dropdown__item" href="/">
+              Thêm Phòng
+            </div>
+          </li>
+        </DropdownManage>
       </div>
       <table className="main__table table table-striped">
         <thead className="table__head--container">
