@@ -3,6 +3,7 @@ const express = require("express");
 const morgan = require("morgan");
 const compression = require("compression");
 const { default: helmet } = require("helmet");
+const cors = require("cors");
 const app = express();
 const cors = require("cors");
 
@@ -17,6 +18,7 @@ app.use(
   })
 );
 app.use(cors());
+
 //init db
 require("./dbs/init.mongodb");
 // const { checkOverload } = require("./helpers/check.connect")

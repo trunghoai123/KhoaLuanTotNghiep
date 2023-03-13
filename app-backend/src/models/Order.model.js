@@ -1,0 +1,47 @@
+const { model , Schema} = require('mongoose'); // Erase if already required
+
+// Declare the Schema of the Mongo model
+const COLLECTION_NAME = 'DonDat';
+const DOCUMENT_NAME = 'DonDat';
+
+const orderSchema = new Schema({
+    LoaiDonDat:{
+        type: Number,
+        required: true,
+    },
+    TrangThai:{
+        type: Number,
+        required: true,
+
+    },
+    SoLuongNguoi:{
+        type: Number,
+        required: true,
+
+    },
+    ThoiGianBatDau: {
+        type: Date,
+    },
+    ThoiGianKetThuc: {
+        type: Date,
+    },
+    MaNhanVien:{
+        type: Schema.Types.ObjectId,
+        ref:'NhanVien'
+    },
+    MaPhong:{
+        type: Schema.Types.ObjectId,
+        ref:'Phong'
+    },
+    MaKhachHang:{
+        type: Schema.Types.ObjectId,
+        ref:'KhachHang'
+    },
+
+},{
+    timestamps: true,
+    collection: COLLECTION_NAME,
+});
+
+//Export the model
+module.exports = model(DOCUMENT_NAME, orderSchema);
