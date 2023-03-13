@@ -141,7 +141,7 @@ const AreaEditAdmin = (props) => {
             bgHover={colors.orange_1_hover}
             bgColor={colors.orange_1}
           >
-            Cập Nhật
+            <div>Cập Nhật</div>
           </Button>
         </div>
       </div>
@@ -170,7 +170,7 @@ const AreaEditAdmin = (props) => {
             .fill(0)
             .map((item, index) => {
               return (
-                <tr className="table__row">
+                <tr className="table__row" key={index}>
                   <td className="table__data item__id">{"R" + index}</td>
                   <td className="table__data">{"C" + (index + 1)}</td>
                   <td className="table__data">{(Math.floor(Math.random() * 100) + 25) * 2}</td>
