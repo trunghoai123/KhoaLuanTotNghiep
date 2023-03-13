@@ -5,7 +5,6 @@ const compression = require("compression");
 const { default: helmet } = require("helmet");
 const cors = require("cors");
 const app = express();
-const cors = require("cors");
 
 //init middleware
 app.use(morgan("dev"));
