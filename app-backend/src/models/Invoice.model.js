@@ -5,14 +5,21 @@ const COLLECTION_NAME = 'HoaDon';
 const DOCUMENT_NAME = 'HoaDon';
 
 const invoiceSchema = new Schema({
-    MaDonDat:{
+    MaPhieuDat:{
         type: Schema.Types.ObjectId,
-        ref:'DonDat'
+        ref:'PhieuDat'
     },
-    MaPhong:{
+    MaNhanVien:{
         type: Schema.Types.ObjectId,
-        ref:'Phong'
+        ref:'NhanVien'
     },
+    MaKhachHang:{
+        type: Schema.Types.ObjectId,
+        ref:'KhachHang'
+    },
+    TrangThai:{
+        type: Number
+    }
 
 },{
     timestamps: true,

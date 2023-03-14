@@ -15,11 +15,11 @@ const roomSchema = new Schema({
     SoChoNgoiToiDa:{
         type:Number,
     },
-    GiaPhong:{
-        type:Number,
-    },
     HinhAnh:{
         type:String,
+    },
+    ThoiGianDaDat:{
+        type: Array
     },
     MaLoai:{
         type: Schema.Types.ObjectId,

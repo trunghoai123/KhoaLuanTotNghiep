@@ -13,9 +13,25 @@ const accountSchema = new Schema({
         type:String,
         required:true,
     },
+    /**
+     * 0 KhachHang
+     * 1 NhanVien
+     * 2 QuanLy
+     */
     LoaiTaiKhoan:{
         type:Number,
-        required:true,
+        enum: [0,1,2],
+        default: 0,
+    },
+    HinhAnh:{
+        type: String
+    },
+    TrangThai:{
+        type: Number
+    },
+    XacThuc:{
+        type: Schema.Types.Boolean,
+        default: false
     }
    
 },{
