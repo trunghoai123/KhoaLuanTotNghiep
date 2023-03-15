@@ -21,6 +21,10 @@ const employeeSchema = new Schema({
     GioiTinh: {
         type: String,
     },
+    Email:{
+        type: String ,
+        required: true
+    },
     MaTaiKhoan:{
         type: Schema.Types.ObjectId,
         ref:'TaiKhoan',

@@ -1,8 +1,8 @@
 const { model , Schema} = require('mongoose'); // Erase if already required
 
 // Declare the Schema of the Mongo model
-const COLLECTION_NAME = 'ChiTietDonDat';
-const DOCUMENT_NAME = 'ChiTietDonDat';
+const COLLECTION_NAME = 'ChiTietPhieuDat';
+const DOCUMENT_NAME = 'ChiTietPhieuDat';
 
 const orderDetailSchema = new Schema({
     SoLuong:{
@@ -11,13 +11,24 @@ const orderDetailSchema = new Schema({
     DonGia:{
         type: Number,
     },
-    MaDonDat:{
+    DonViTinh:{
+        type: String,
+    },
+    MaPhieuDat:{
         type: Schema.Types.ObjectId,
-        ref:'DonDat'
+        ref:'PhieuDat'
     },
     MaThucDon:{
         type: Schema.Types.ObjectId,
         ref:'ThucDon'
+    },
+    MaPhong:{
+        type: Schema.Types.ObjectId,
+        ref:'Phong'
+    },
+    MaBan:{
+        type: Schema.Types.ObjectId,
+        ref:'Ban'
     },
 
 },{

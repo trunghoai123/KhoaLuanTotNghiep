@@ -8,6 +8,9 @@ const invoiceDetailSchema = new Schema({
     DonGia:{
         type: Number,
     },
+    DonViTinh:{
+        type: String,
+    },
     SoLuong:{
         type: Number,
     },
@@ -19,6 +22,18 @@ const invoiceDetailSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref:'ThucDon'
     },
+    MaPhong:{
+        type: Schema.Types.ObjectId,
+        ref:'Phong'
+    },
+    MaBan:{
+        type: Schema.Types.ObjectId,
+        ref:'Ban'
+    },
+    MaChiTietPhieuDat:{
+        type: Schema.Types.ObjectId,
+        ref:'ChiTietPhieuDat'
+    }
 
 },{
     timestamps: true,

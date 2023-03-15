@@ -9,6 +9,13 @@ const typeOfRoomSchema = new Schema({
         type:String,
         required:true,
     },
+    DonGia:{
+        type: Number,
+        required: true,
+    },
+    DonViTinh:{
+        type: String,
+    }
 },{
     timestamps: true,
     collection: COLLECTION_NAME,

@@ -16,9 +16,12 @@ const tableSchema = new Schema(
     SoChoNgoi: {
       type: Number,
     },
-    MaPhong: {
+    ThoiGianDaDat: {
+      type: Array,
+    },
+    MaKhuVuc: {
       type: Schema.Types.ObjectId,
-      ref: "Phong",
+      ref: "KhuVuc",
     },
   },
   {
