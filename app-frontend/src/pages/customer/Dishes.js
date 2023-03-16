@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { colors, dishes as dfDishes, kinds } from "variables";
 import { Link } from "react-router-dom";
 import axiosClient from "utils/api";
+import { Cart, CartPlus } from "react-bootstrap-icons";
 
 const DishesStyles = styled.div`
   .main__container {
@@ -107,6 +108,10 @@ const DishesStyles = styled.div`
           .dish__container {
             position: relative;
             padding: 10px;
+            :hover{
+              transform: translateY(-6px);
+              transition: all ease 150ms;
+            }
             .img__container {
               overflow: hidden;
               position: relative;
@@ -121,6 +126,20 @@ const DishesStyles = styled.div`
                 width: 100%;
                 height: 0px;
                 box-shadow: 0px 0px 60px 35px black;
+              }
+              .add__container{
+                padding: 6px;
+                background-color: ${colors.orange_2};
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                transition: all ease 150ms;
+                :hover{
+                  background-color: ${colors.orange_2_hover};
+                }
+                .icon__add{
+                  color: white;
+                }
               }
             }
             .dish__name {
@@ -183,6 +202,9 @@ const Dishes = (props) => {
                     <div className="img__container">
                       <img src={dish?.HinhAnh} className="img" alt={dish?.name} />
                       <div className="overlay"></div>
+                      <div className="add__container">
+                        <CartPlus className="icon__add"></CartPlus>
+                      </div> 
                     </div>
                     <div className="dish__name">{dish?.TenMon}</div>
                   </div>

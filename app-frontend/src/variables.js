@@ -7,6 +7,8 @@ export const colors = {
   green_1: "#36e846",
   green_1_hover: "#25dc35",
   orange_1: "#f7b240",
+  orange_2: "#ff8720",
+  orange_2_hover: "#f47100",
   orange_1_hover: "#f9ab29",
   red_1: "#ff6161",
   red_1_hover: "#ef4444",
