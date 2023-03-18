@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { colors, dishes as dfDishes, kinds } from "variables";
+import { colors, kinds } from "variables";
 import axiosClient from "utils/api";
 import ReactPaginate from "react-paginate";
 import { CaretLeft, CaretRight, CartPlus } from "react-bootstrap-icons";

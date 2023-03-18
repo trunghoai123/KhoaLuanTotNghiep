@@ -12,6 +12,16 @@ class AccountController{
         }
     }
 
+    signIn = async (req, res, next) => {
+        try {
+            const result = await AccountService.signIn(req.body);
+            return res.status(result.code).json(result.metadata)
+        }
+        catch (err){
+            next(err);
+        }
+    }
+
    
 }
 
