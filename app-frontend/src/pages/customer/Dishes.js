@@ -5,23 +5,8 @@ import styled from "styled-components";
 import { colors, dishes as dfDishes, kinds } from "variables";
 import axiosClient from "utils/api";
 import ReactPaginate from "react-paginate";
-import {
-  ArrowLeft,
-  BoxArrowInLeft,
-  BoxArrowLeft,
-  CaretLeft,
-  CaretRight,
-  CartFill,
-  CartPlus,
-  NodeMinus,
-  PatchMinus,
-  ShieldMinus,
-  Subtract,
-} from "react-bootstrap-icons";
-import Button from "components/Button/Button";
-import Input from "components/Input/Input";
+import { CaretLeft, CaretRight, CartPlus } from "react-bootstrap-icons";
 import Search from "components/Search";
-import TextArea from "components/TextArea/TextArea";
 import BookingModal from "components/Modal/BookingModal";
 import Cart from "components/Cart/Cart";
 
