@@ -4,10 +4,10 @@ const orderDetailModel = require("../models/orderDetail.model")
 
 class OrderService {
 
-    static addOrder = async ({LoaiPhieuDat , TrangThai , SoLuongNguoi , ThoiGianBatDau , MaKhachHang ,ListThucDon , ListPhong , ListBan })=>{
+    static addOrder = async ({LoaiPhieuDat , TrangThai , SoLuongNguoi , ThoiGianBatDau, ThoiGianKetThuc , MaKhachHang ,ListThucDon , ListPhong , ListBan })=>{
         try{
             const newOrder = await orderModel.create({
-                LoaiPhieuDat , TrangThai , SoLuongNguoi , ThoiGianBatDau , MaKhachHang
+                LoaiPhieuDat , TrangThai , SoLuongNguoi , ThoiGianBatDau , ThoiGianKetThuc , MaKhachHang
             })
             if(newOrder){
 
@@ -77,6 +77,28 @@ class OrderService {
                     success: false,
                     message: err.message,
                     status: 'get order by user error',
+                }
+            }
+        }
+    }
+    static getOrderDetailByOrder = async ({ MaPhieuDat}) =>{
+        try{
+            const orderDetail = await orderDetailModel.find({MaPhieuDat});
+            return {
+                code: 200,
+                metadata: {
+                    success: true,
+                    data: orderDetail
+                }
+            }
+        }
+        catch(err){
+            return {
+                code: 500,
+                metadata:{
+                    success: false,
+                    message: err.message,
+                    status: 'get order detail by order error',
                 }
             }
         }

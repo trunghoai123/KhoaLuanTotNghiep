@@ -21,6 +21,17 @@ class RoomController{
             next(err);
         }
     } 
+
+
+    getRoomMatchTimeAndSeat = async (req, res, next) => {
+        try {
+            const result = await RoomService.getRoomMatchTimeAndSeat(req.body);
+            return res.status(result.code).json(result.metadata)
+        }
+        catch (err){
+            next(err);
+        }
+    } 
 }
 
 module.exports = new RoomController()
