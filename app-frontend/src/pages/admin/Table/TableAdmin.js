@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Search from "components/Search";
-import DropdownManage from "components/Dopdown";
+import DropdownManage from "components/Dopdown/ButtonDropDown";
 import { colors } from "variables";
-import Button from "components/Button";
+import Button from "components/Button/Button";
 import axiosClient from "utils/api";
 
 const TableAdminStyles = styled.div`

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import Button from "components/Button";
+import Button from "components/Button/Button";
 import { colors } from "variables";
-import DropdownManage from "components/Dopdown";
+import DropdownManage from "components/Dopdown/ButtonDropDown";
 import Search from "components/Search";
 import axiosClient from "utils/api";
 

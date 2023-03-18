@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import Search from "components/Search";
-import DropdownManage from "components/Dopdown";
-import Button from "components/Button";
+import DropdownManage from "components/Dopdown/ButtonDropDown";
+import Button from "components/Button/Button";
 import { colors } from "variables";
 
 const RoomEditAdminStyles = styled.div`

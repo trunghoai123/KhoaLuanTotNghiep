@@ -11,7 +11,6 @@ import {
   BoxArrowLeft,
   CaretLeft,
   CaretRight,
-  Cart,
   CartFill,
   CartPlus,
   NodeMinus,
@@ -19,158 +18,27 @@ import {
   ShieldMinus,
   Subtract,
 } from "react-bootstrap-icons";
-import Button from "components/Button";
+import Button from "components/Button/Button";
+import Input from "components/Input/Input";
+import Search from "components/Search";
+import TextArea from "components/TextArea/TextArea";
+import BookingModal from "components/Modal/BookingModal";
+import Cart from "components/Cart/Cart";
 
 const DishesStyles = styled.div`
+  .top__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: ${colors.light_gray_1};
+    padding: 0px 40px 0px 30px;
+  }
   .main__container {
-    padding: calc(54px + 40px) 40px;
+    padding: 0px 40px;
     display: flex;
     column-gap: 14px;
     background-color: ${colors.light_gray_1};
-    .cart__container {
-      position: relative;
-      z-index: 10;
-      top: calc(54px + 30px);
-      position: fixed;
-      right: 0px;
-      color: white;
-      width: 46px;
-      height: 46px;
-      svg {
-        font-size: 30px;
-      }
-      .cart__list__container {
-        position: absolute;
-        top: 100%;
-        right: 0;
-        width: 260px;
-        height: 430px;
-        padding: 6px;
-        background-color: ${colors.gold_1};
-        transition: all ease 200ms;
-        transform: translateX(260px);
 
-        .cart__title {
-          padding-bottom: 6px;
-          text-align: center;
-          border-bottom: 1px solid white;
-        }
-        .cart__list {
-          padding: 12px 0px;
-          overflow-y: auto;
-          height: 80%;
-          ::-webkit-scrollbar {
-            width: 3px;
-          }
-          ::-webkit-scrollbar-track {
-            background: lightgrey;
-            border-radius: 10px;
-          }
-          ::-webkit-scrollbar-thumb {
-            border-radius: 10px;
-            background: #888;
-          }
-          ::-webkit-scrollbar-thumb:hover {
-            background: #555;
-          }
-          .cart__item {
-            position: relative;
-            margin-bottom: 12px;
-            width: 100%;
-            height: 50px;
-            display: flex;
-            .remove {
-              top: 0px;
-              right: 2px;
-              position: absolute;
-              :hover {
-                color: red;
-                cursor: pointer;
-              }
-            }
-            .img__container {
-              height: 100%;
-              .img__dish {
-                width: 60px;
-                height: 100%;
-                /* height: 40px; */
-                object-fit: cover;
-              }
-            }
-            .infor__container {
-              display: flex;
-              justify-content: space-between;
-              .name__container {
-                padding: 4px 4px 4px 6px;
-                font-size: 15px;
-                width: 130px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                display: -webkit-box;
-                -webkit-line-clamp: 2; /* number of lines to show */
-                line-clamp: 2;
-                -webkit-box-orient: vertical;
-              }
-              .quant__container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                height: 100%;
-                margin-left: auto;
-                .mark__container {
-                  border: 1px solid ${colors.light_gray_1};
-                  .update__quant {
-                    cursor: pointer;
-                    padding: 0 4px;
-                    display: inline-block;
-                    /* display: flex;
-                    justify-content: center; */
-                    /* align-items: center; */
-                    :nth-child(2) {
-                      border-left: 1px solid ${colors.light_gray_1};
-                    }
-                    i {
-                      font-size: 11px;
-                    }
-                  }
-                }
-                .quantity {
-                  font-size: 13px;
-                  width: 35px;
-                  outline: none;
-                }
-              }
-            }
-          }
-        }
-        .btn__container {
-          margin-top: 10px;
-          display: flex;
-          justify-content: center;
-          .btn_booking {
-          }
-        }
-      }
-      :hover {
-        .cart__list__container {
-          box-shadow: -3px 8px 8px rgba(0, 0, 0, 0.3);
-          transform: translateX(0px);
-        }
-      }
-      .cart__logo__container {
-        background-color: ${colors.orange_2};
-        color: white;
-        width: 46px;
-        height: 46px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        transition: all ease 150ms;
-        margin-left: auto;
-        transition: all ease 150ms;
-      }
-    }
     .left__container {
       width: 300px;
       background-color: white;
@@ -316,8 +184,8 @@ const DishesStyles = styled.div`
         .pagination__list {
           background-color: ${colors.orange_1};
           padding: 8px;
-          /* margin-right: auto;
-          margin-left: auto; */
+          margin-left: 10px;
+          margin-right: 10px;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -351,13 +219,15 @@ const DishesStyles = styled.div`
 `;
 
 const Dishes = (props) => {
+  const [show, setShow] = useState(false);
+  const handleCloseForm = () => setShow(false);
+  const handleShowModal = () => setShow(true);
   const [dishes, setDishes] = useState();
   useEffect(() => {
     const fetchDishes = async () => {
       try {
         const result = await axiosClient.get("menu/getAllMenu", {});
         if (result?.data?.data) {
-          console.log(result);
           setDishes(result.data.data);
         }
       } catch (error) {
@@ -369,59 +239,12 @@ const Dishes = (props) => {
   }, []);
   return (
     <DishesStyles>
+      {show && <BookingModal handleCloseForm={handleCloseForm}></BookingModal>}
+      <div className="top__actions">
+        <Search placeholder="Tìm Kiếm"></Search>
+      </div>
       <div className="main__container">
-        <div className="cart__container">
-          <div className="cart__logo__container">
-            <CartFill></CartFill>
-          </div>
-          <div className="cart__list__container">
-            <div className="cart__title">Giỏ Hàng</div>
-            <div className="cart__list">
-              {new Array(7).fill(0).map(() => {
-                return (
-                  <div className="cart__item">
-                    <span className="remove">
-                      <i class="fa-solid fa-xmark"></i>
-                    </span>
-                    <div className="img__container">
-                      <img
-                        className="img__dish"
-                        src="https://product.hstatic.net/1000093072/product/lau_vit_nau_chao_1_a0e8c1af4378441f80fe8ffa7b03994b_large_08a9b3be87fb4a18aabd5701fb0ca8f4_master.jpg"
-                        alt=""
-                      />
-                    </div>
-                    <div className="infor__container">
-                      <div className="name__container">
-                        Lẩu vịt nấu chao Lẩu vịt nấu chao Lẩu vịt nấu chao Lẩu vịt nấu chao Lẩu vịt
-                        nấu chao
-                      </div>
-                      <div className="quant__container">
-                        <div className="mark__container">
-                          <span className="update__quant">
-                            <i class="fa-solid fa-minus"></i>
-                          </span>
-                          <span className="update__quant">
-                            <i class="fa-solid fa-plus"></i>
-                          </span>
-                        </div>
-                        <input className="quantity" type="text" />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="btn__container">
-              <Button
-                bgColor={colors.orange_2}
-                bgHover={colors.orange_2_hover}
-                className="btn_booking"
-              >
-                Đặt Bàn
-              </Button>
-            </div>
-          </div>
-        </div>
+        <Cart handleShowModal={handleShowModal}></Cart>
         <div className="left__container">
           <div className="filter__kind">
             {kinds.map((kind) => {

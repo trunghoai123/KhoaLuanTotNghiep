@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import Button from "components/Button";
+import Button from "components/Button/Button";
 import { colors } from "variables";
 import Search from "components/Search";
-import DropdownManage from "components/Dopdown";
+import DropdownManage from "components/Dopdown/ButtonDropDown";
 import axiosClient from "utils/api";
 
 const AreaAdminStyles = styled.div`
