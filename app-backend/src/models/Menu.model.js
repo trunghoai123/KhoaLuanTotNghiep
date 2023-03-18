@@ -12,12 +12,14 @@ const menuSchema = new Schema({
     GiaMon:{
         type:Number,
     },
+    DonViTinh:{
+        type: String,
+    },
     MoTa:{
         type:String,
     },
     HinhAnh:{
         type:String,
-
     },
     MaLoai:{
         type: Schema.Types.ObjectId,

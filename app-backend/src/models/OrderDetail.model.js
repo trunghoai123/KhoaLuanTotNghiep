@@ -5,31 +5,35 @@ const COLLECTION_NAME = 'ChiTietPhieuDat';
 const DOCUMENT_NAME = 'ChiTietPhieuDat';
 
 const orderDetailSchema = new Schema({
-    SoLuong:{
-        type: Number,
-    },
-    DonGia:{
-        type: Number,
-    },
-    DonViTinh:{
-        type: String,
-    },
+   
     MaPhieuDat:{
         type: Schema.Types.ObjectId,
         ref:'PhieuDat'
     },
-    MaThucDon:{
-        type: Schema.Types.ObjectId,
-        ref:'ThucDon'
-    },
-    MaPhong:{
-        type: Schema.Types.ObjectId,
-        ref:'Phong'
-    },
-    MaBan:{
-        type: Schema.Types.ObjectId,
-        ref:'Ban'
-    },
+    ListThucDon:[{
+        _id: false,
+        MaThucDon: {
+          type: Schema.Types.ObjectId,
+          ref:'Phong'
+        },
+        SoLuong:{
+            type: Number,
+        },
+      }],
+    ListPhong:[
+        {
+            type: Schema.Types.ObjectId,
+            ref:'Phong'
+        }
+      ]
+    ,
+    ListBan:[
+         {
+            type: Schema.Types.ObjectId,
+            ref:'Ban'
+        },
+      ]
+    ,
 
 },{
     timestamps: true,

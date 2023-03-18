@@ -18,9 +18,11 @@ const roomSchema = new Schema({
     HinhAnh:{
         type:String,
     },
-    ThoiGianDaDat:{
-        type: Array
-    },
+    ThoiGianDaDat:[
+        {
+            type:Date,
+        }
+    ],
     MaLoai:{
         type: Schema.Types.ObjectId,
         ref:'LoaiPhong'

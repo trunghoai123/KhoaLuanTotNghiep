@@ -7,7 +7,6 @@ const DOCUMENT_NAME = 'KhachHang';
 const customerSchema = new Schema({
     TenKhachHang:{
         type: String,
-        required: true,
     },
     SoDienThoai:{
         type: String,
@@ -20,6 +19,10 @@ const customerSchema = new Schema({
     },
     GioiTinh: {
         type: String,
+    },
+    Email: {
+        type: String,
+        required: true
     },
     MaTaiKhoan:{
         type: Schema.Types.ObjectId,
