@@ -9,8 +9,8 @@ import { CaretLeft, CaretRight, CartPlus } from "react-bootstrap-icons";
 import Search from "components/Search";
 import BookingModal from "components/Modal/BookingModal";
 import Cart from "components/Cart/Cart";
-import { useDispatch } from "react-redux";
-import { addToCart, fetchCartById } from "store/cart/cartSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCartById } from "store/cart/cartSlice";
 const DishesStyles = styled.div`
   .top__actions {
     display: flex;
@@ -210,7 +210,9 @@ const Dishes = (props) => {
   const handleShowModal = () => setShow(true);
   const [dishes, setDishes] = useState();
   const dispatch = useDispatch();
-
+  const { cartItems } = useSelector((state) => state.cart);
+  useEffect(() => {}, [useDispatch]);
+  console.log(cartItems);
   useEffect(() => {
     const fetchDishes = async () => {
       try {
@@ -227,10 +229,10 @@ const Dishes = (props) => {
   }, []);
   const handleAddToCart = (e, id) => {
     e.preventDefault();
-    dispatch(addToCart({ id }));
-    dispatch(fetchCartById(id)).then((dish) => {
+    dispatch(addToCartById(id)).then((dish) => {
       console.log(dish);
     });
+    // dispatch(addToCart({ id }));
   };
   return (
     <DishesStyles>
@@ -239,7 +241,7 @@ const Dishes = (props) => {
         <Search placeholder="Tìm Kiếm"></Search>
       </div>
       <div className="main__container">
-        <Cart handleShowModal={handleShowModal}></Cart>
+        <Cart cartList={cartItems} handleShowModal={handleShowModal}></Cart>
         <div className="left__container">
           <div className="filter__kind">
             {kinds.map((kind) => {
@@ -262,7 +264,15 @@ const Dishes = (props) => {
                 <Link to={`/dish/${dish?._id}`} key={dish?._id} className="dish">
                   <div className="dish__container">
                     <div className="img__container">
-                      <img src={dish?.HinhAnh} className="img" alt={dish?.name} />
+                      <img
+                        title={new Intl.NumberFormat("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        }).format(dish?.GiaMon)}
+                        src={dish?.HinhAnh}
+                        className="img"
+                        alt={dish?.name}
+                      />
                       <div className="overlay"></div>
                       <div
                         className="add__container"

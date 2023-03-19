@@ -1,6 +1,6 @@
 import axiosClient from "utils/api";
-
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
+
 // const fetchDishes = async () => {
 //   try {
 //     const result = await axiosClient.get("menu/getAllMenu", {});
@@ -12,7 +12,7 @@ const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 //     return;
 //   }
 // };
-export const fetchCartById = createAsyncThunk("cart/getCartById", async (dishId, thunkAPI) => {
+export const addToCartById = createAsyncThunk("cart/getCartById", async (dishId, thunkAPI) => {
   const response = await axiosClient.get(`menu/getOneMenu/${dishId}`, {});
   return response.data;
 });
@@ -20,25 +20,54 @@ export const fetchCartById = createAsyncThunk("cart/getCartById", async (dishId,
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    dishes: [],
+    cartItems: JSON.parse(localStorage.getItem("Restaurant-Cart")) || [],
   },
   reducers: {
     createCart(state, action) {
-      console.log(action.payload);
       return state;
     },
     addToCart(state, action) {
-      console.log(action.payload);
       return state;
     },
     updateCart(state, action) {},
     deleteCart(state, action) {},
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchCartById.fulfilled, (state, action) => {
-      console.log(action.payload);
-      state.dishes.push({ id: action.payload.id });
-    });
+    builder
+      .addCase(addToCartById.pending, (state, action) => {})
+      .addCase(addToCartById.fulfilled, (state, action) => {
+        if (action?.payload?.data) {
+          const data = { ...action.payload.data };
+          const jsonValues = localStorage.getItem("Restaurant-Cart");
+          let parsedJson = JSON.parse(jsonValues);
+          localStorage.removeItem("Restaurant-Cart");
+          let newValues = [];
+          if (Array.isArray(parsedJson) && parsedJson.length > 0) {
+            // values = [{...}]
+            newValues = [...parsedJson];
+            const index = newValues.findIndex((item) => item._id === data._id);
+            if (index !== -1) {
+              newValues[index].SoLuong = newValues[index].SoLuong + 1;
+            } else {
+              newValues.push({ ...data, SoLuong: 1 });
+            }
+            localStorage.setItem("Restaurant-Cart", JSON.stringify(newValues));
+          } else if (Array.isArray(parsedJson) && parsedJson.length === 0) {
+            // values = []
+            newValues.push({ ...data, SoLuong: 1 });
+            localStorage.setItem("Restaurant-Cart", JSON.stringify(newValues));
+          } else {
+            // values = null
+            newValues.push({ ...data, SoLuong: 1 });
+            localStorage.setItem("Restaurant-Cart", JSON.stringify(newValues));
+          }
+          state.cartItems = newValues;
+        }
+      })
+      .addCase(addToCartById.rejected, (state, action) => {
+        console.log(action.payload);
+        state.cartItems.push({ id: action.payload.id });
+      });
   },
 });
 // Extract the action creators object and the reducer

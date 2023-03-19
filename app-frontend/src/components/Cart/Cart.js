@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { CartFill } from "react-bootstrap-icons";
+import { CartFill, CheckLg } from "react-bootstrap-icons";
 import Button from "components/Button/Button";
 import { colors } from "variables";
 import styled from "styled-components";
 import { createCart } from "store/cart/cartSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 const CartStyles = styled.div`
   position: relative;
   z-index: 10;
@@ -117,6 +117,7 @@ const CartStyles = styled.div`
               font-size: 13px;
               width: 35px;
               outline: none;
+              text-align: center;
             }
           }
         }
@@ -137,6 +138,7 @@ const CartStyles = styled.div`
     }
   }
   .cart__logo__container {
+    position: relative;
     background-color: ${colors.orange_2};
     color: white;
     width: 46px;
@@ -148,53 +150,59 @@ const CartStyles = styled.div`
     transition: all ease 150ms;
     margin-left: auto;
     transition: all ease 150ms;
+    .ammount {
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      padding: 11px;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: red;
+      border-radius: 50%;
+    }
   }
 `;
 
-const Cart = ({ handleShowModal = () => {} }) => {
-  const dispatch = useDispatch();
-  dispatch(createCart({ id: "1" }));
+const Cart = ({ handleShowModal = () => {}, cartList = [] }) => {
   return (
     <CartStyles>
       <div className="cart__logo__container">
         <CartFill></CartFill>
+        <div className="ammount">{cartList.length}</div>
       </div>
       <div className="cart__list__container">
         <div className="cart__title">Giỏ Hàng</div>
         <div className="cart__list">
-          {new Array(7).fill(0).map((value, index) => {
-            return (
-              <div className="cart__item" key={index}>
-                <span className="remove">
-                  <i className="fa-solid fa-xmark"></i>
-                </span>
-                <div className="img__container">
-                  <img
-                    className="img__dish"
-                    src="https://product.hstatic.net/1000093072/product/lau_vit_nau_chao_1_a0e8c1af4378441f80fe8ffa7b03994b_large_08a9b3be87fb4a18aabd5701fb0ca8f4_master.jpg"
-                    alt=""
-                  />
-                </div>
-                <div className="infor__container">
-                  <div className="name__container">
-                    Lẩu vịt nấu chao Lẩu vịt nấu chao Lẩu vịt nấu chao Lẩu vịt nấu chao Lẩu vịt nấu
-                    chao
+          {cartList &&
+            cartList.map((item, index) => {
+              return (
+                <div className="cart__item" key={index}>
+                  <span className="remove">
+                    <i className="fa-solid fa-xmark"></i>
+                  </span>
+                  <div className="img__container">
+                    <img className="img__dish" src={item.HinhAnh} alt="" />
                   </div>
-                  <div className="quant__container">
-                    <div className="mark__container">
-                      <span className="update__quant">
-                        <i className="fa-solid fa-minus"></i>
-                      </span>
-                      <span className="update__quant">
-                        <i className="fa-solid fa-plus"></i>
-                      </span>
+                  <div className="infor__container">
+                    <div className="name__container">{item.TenMon}</div>
+                    <div className="quant__container">
+                      <div className="mark__container">
+                        <span className="update__quant">
+                          <i className="fa-solid fa-minus"></i>
+                        </span>
+                        <span className="update__quant">
+                          <i className="fa-solid fa-plus"></i>
+                        </span>
+                      </div>
+                      <input className="quantity" type="text" value={item.SoLuong} />
                     </div>
-                    <input className="quantity" type="text" />
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
         <div className="btn__container">
           <Button
