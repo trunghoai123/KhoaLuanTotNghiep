@@ -4,6 +4,8 @@ import { CartFill } from "react-bootstrap-icons";
 import Button from "components/Button/Button";
 import { colors } from "variables";
 import styled from "styled-components";
+import { createCart } from "store/cart/cartSlice";
+import { useDispatch } from "react-redux";
 const CartStyles = styled.div`
   position: relative;
   z-index: 10;
@@ -150,6 +152,8 @@ const CartStyles = styled.div`
 `;
 
 const Cart = ({ handleShowModal = () => {} }) => {
+  const dispatch = useDispatch();
+  dispatch(createCart({ id: "1" }));
   return (
     <CartStyles>
       <div className="cart__logo__container">

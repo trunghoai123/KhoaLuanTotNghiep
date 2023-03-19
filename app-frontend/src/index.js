@@ -18,6 +18,8 @@ import RoomAdmin from "pages/admin/Room/RoomAdmin";
 import TableAdmin from "pages/admin/Table/TableAdmin";
 import AreaEditAdmin from "pages/admin/Area/AreaEditAdmin";
 import RoomEditAdmin from "pages/admin/Room/RoomEditAdmin";
+import { Provider } from "react-redux";
+import store from "store/index";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -83,7 +85,9 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router}></RouterProvider>
+    <Provider store={store}>
+      <RouterProvider router={router}></RouterProvider>
+    </Provider>
     {/* <App /> */}
   </React.StrictMode>
 );

@@ -12,7 +12,16 @@ class MenuController {
 
   getAllMenu = async (req, res, next) => {
     try {
-      const result = await MenuService.getAllMenu();
+      const result = await MenuService.getAllMenu(req.params);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  getOneMenu = async (req, res, next) => {
+    try {
+      const result = await MenuService.getOneMenu(req.params.dishId);
       return res.status(result.code).json(result.metadata);
     } catch (err) {
       next(err);

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+import { Link, useNavigation } from "react-router-dom";
 import styled from "styled-components";
 import { colors, kinds } from "variables";
 import axiosClient from "utils/api";
@@ -9,7 +9,8 @@ import { CaretLeft, CaretRight, CartPlus } from "react-bootstrap-icons";
 import Search from "components/Search";
 import BookingModal from "components/Modal/BookingModal";
 import Cart from "components/Cart/Cart";
-
+import { useDispatch } from "react-redux";
+import { addToCart, fetchCartById } from "store/cart/cartSlice";
 const DishesStyles = styled.div`
   .top__actions {
     display: flex;
@@ -208,6 +209,8 @@ const Dishes = (props) => {
   const handleCloseForm = () => setShow(false);
   const handleShowModal = () => setShow(true);
   const [dishes, setDishes] = useState();
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchDishes = async () => {
       try {
@@ -222,6 +225,13 @@ const Dishes = (props) => {
     };
     fetchDishes();
   }, []);
+  const handleAddToCart = (e, id) => {
+    e.preventDefault();
+    dispatch(addToCart({ id }));
+    dispatch(fetchCartById(id)).then((dish) => {
+      console.log(dish);
+    });
+  };
   return (
     <DishesStyles>
       {show && <BookingModal handleCloseForm={handleCloseForm}></BookingModal>}
@@ -254,7 +264,10 @@ const Dishes = (props) => {
                     <div className="img__container">
                       <img src={dish?.HinhAnh} className="img" alt={dish?.name} />
                       <div className="overlay"></div>
-                      <div className="add__container">
+                      <div
+                        className="add__container"
+                        onClick={(e) => handleAddToCart(e, dish?._id)}
+                      >
                         <CartPlus className="icon__add"></CartPlus>
                       </div>
                     </div>
