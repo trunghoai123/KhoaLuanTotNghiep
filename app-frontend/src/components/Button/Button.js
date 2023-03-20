@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
 
 const ButtonStyles = styled.button`
@@ -8,13 +8,23 @@ const ButtonStyles = styled.button`
   display: inline-block;
   outline: none;
   border: none;
-  cursor: pointer;
+
   transition: background-color ease 150ms;
   background-color: ${(props) => props.bgColor};
   padding: ${(props) => (props.to ? "0px" : props.padding)};
   color: ${(props) => props.textColor};
+  ${(props) => {
+    return props.disabled
+      ? css`
+          opacity: 0.5;
+          cursor: progress;
+        `
+      : css`
+          cursor: pointer;
+        `;
+  }}
   :hover {
-    background-color: ${(props) => props.bgHover};
+    background-color: ${(props) => (props.disabled ? "" : props.bgHover)};
   }
   .link__button {
     display: "inline-block";
@@ -32,6 +42,7 @@ const Button = ({
   bgColor = "grey",
   bgHover = "black",
   children,
+  disabled = false,
   ...rest
 }) => {
   return (
@@ -41,6 +52,7 @@ const Button = ({
       padding={padding}
       textColor={textColor}
       className={className}
+      disabled={disabled}
       {...rest}
     >
       {to ? (

@@ -20,6 +20,8 @@ import AreaEditAdmin from "pages/admin/Area/AreaEditAdmin";
 import RoomEditAdmin from "pages/admin/Room/RoomEditAdmin";
 import { Provider } from "react-redux";
 import store from "store/index";
+import { SnackbarProvider } from "notistack";
+import Orders from "pages/customer/Orders";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -30,8 +32,16 @@ const router = createBrowserRouter([
         element: <HomePage></HomePage>,
       },
       {
-        path: "contact",
-        element: <Contact></Contact>,
+        path: "orders",
+        element: <Orders></Orders>,
+      },
+      {
+        path: "dishes",
+        element: <Dishes></Dishes>,
+      },
+      {
+        path: "booking",
+        element: <Booking></Booking>,
       },
       {
         path: "introduce",
@@ -40,14 +50,6 @@ const router = createBrowserRouter([
       {
         path: "service",
         element: <Service></Service>,
-      },
-      {
-        path: "booking",
-        element: <Booking></Booking>,
-      },
-      {
-        path: "dishes",
-        element: <Dishes></Dishes>,
       },
     ],
   },
@@ -86,6 +88,7 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+      <SnackbarProvider autoHideDuration={4000} />
       <RouterProvider router={router}></RouterProvider>
     </Provider>
     {/* <App /> */}

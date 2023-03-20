@@ -7,7 +7,7 @@ import { Link, NavLink } from "react-router-dom";
 const HeaderStyles = styled.div`
   position: fixed;
   width: 100%;
-  z-index: 99999;
+  z-index: 111;
   height: 54px;
   font-size: 15px;
   background-color: ${colors.gold_1};
@@ -132,8 +132,8 @@ const Header = (props) => {
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/contact"}>
-            Bài Viết
+          <NavLink className="navlink" to={"/orders"}>
+            Phiếu Đặt
           </NavLink>
         </div>
         <div className="link__container">

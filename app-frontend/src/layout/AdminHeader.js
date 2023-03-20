@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 const AdminHeaderStyles = styled.div`
   position: fixed;
   width: 100%;
-  z-index: 99999;
+  z-index: 111;
   height: 54px;
   font-size: 15px;
   background-color: ${colors.gold_1};

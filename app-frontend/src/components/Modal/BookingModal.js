@@ -12,10 +12,11 @@ import axiosClient from "utils/api";
 import { getDishById } from "store/dish/dishSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addOrder } from "store/order/orderSlice";
+import { enqueueSnackbar } from "notistack";
 const BookingModalStyles = styled.div`
   transition: all ease 200ms;
   position: fixed;
-  z-index: 99999;
+  z-index: 999;
   width: 100%;
   height: 100vh;
   .main__form {
@@ -77,11 +78,12 @@ const BookingModalStyles = styled.div`
         }
         .general__infor {
           .row__container {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
             column-gap: 20px;
             .value__container {
+              position: relative;
               width: 50%;
               .label__container {
                 padding-bottom: 6px;
@@ -107,6 +109,15 @@ const BookingModalStyles = styled.div`
                   }
                 }
                 .input__text {
+                }
+              }
+              .error__container {
+                position: absolute;
+                bottom: -20px;
+                left: 0px;
+                color: red;
+                font-size: 13px;
+                .error__message {
                 }
               }
             }
@@ -141,16 +152,16 @@ const BookingModalStyles = styled.div`
             }
           }
           .row__container {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             display: flex;
             align-items: center;
             column-gap: 20px;
             .value__container {
+              position: relative;
               place-self: flex-start;
               width: 50%;
               .label__container {
                 padding-bottom: 6px;
-
                 min-width: 20%;
                 .label {
                 }
@@ -190,6 +201,15 @@ const BookingModalStyles = styled.div`
                 .input__text {
                 }
               }
+              .error__container {
+                position: absolute;
+                bottom: -20px;
+                left: 0px;
+                color: red;
+                font-size: 13px;
+                .error__message {
+                }
+              }
             }
           }
         }
@@ -200,83 +220,100 @@ const BookingModalStyles = styled.div`
 
 const schema = yup
   .object({
-    size: yup.number().required().min(1).integer(),
-    time: yup.string().required(),
-    date: yup.string().required(),
-    kind: yup.string().required(),
-    duration: yup.number().min(1).max(6).required(),
+    size: yup.string("hãy xem lại số lượng").required("hãy nhập số lượng"),
+    time: yup.string("hãy xem lại thời gian").required("hãy nhập thời gian"),
+    date: yup.string("hãy xem lại ngày").required("hãy chọn ngày"),
+    kind: yup.string("hãy xem lại loại").required("hãy chọn loại"),
+    duration: yup.string("hãy xem lại thời gian").required("hãy nhập thời gian"),
     note: yup.string(),
   })
   .required();
 const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
   const dispatch = useDispatch();
   const [bookingType, setBookingType] = useState();
-  useEffect(() => {
-    const fetchDishes = async () => {
-      try {
-        const result = await axiosClient.get("order/getAllOrder", {});
-        // console.log(new Date(result.data.data[0].createdAt));
-      } catch (error) {
-        console.log(error);
-        return;
-      }
-    };
-    fetchDishes();
-  }, []);
-
+  const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     watch,
     getValues,
-    formState: { errors, isValid },
+
+    formState: { errors, isValid, isLoading, isSubmitting },
   } = useForm({
     defaultValues: {
-      size: 2,
+      size: "2",
       time: "07:43",
       date: "2023-03-15",
-      kind: "normal",
-      duration: 1,
-      note: "hello guys",
+      kind: "0",
+      duration: "1",
+      note: "Không có gì",
     },
     resolver: yupResolver(schema),
   });
-  getValues();
-  // const { cartItems } = useSelector((state) => state.cart);
+
   const onSubmit = (data) => {
     if (isValid) {
       const { size, duration, date, time, kind, note } = data;
-      const startAt = createDateValue(data);
-      const endAt = createDateValue(data, duration);
-      // dispatch(getDishById("640d7988cdbba62a71d877e4")).then((data) => {});
-      const order = {
-        LoaiPhieuDat: 0,
-        TrangThai: 0,
-        SoLuongNguoi: size,
-        ThoiGianBatDau: startAt,
-        ThoiGianKetThuc: endAt,
-        MaKhachHang: "64157b0f4841a550c1562a0a",
-        ListThucDon: [cartItems],
-        ListPhong: null,
-        ListBan: null,
-      };
-      dispatch(addOrder(order));
+      let startAt = new Date(new Date(date + "T" + time));
+      let addedDate = new Date(
+        new Date(date + "T" + time).setHours(
+          new Date(date + "T" + time).getHours() + Number(duration)
+        )
+      );
+      let endAt = addedDate;
+      if (
+        endAt.getHours() >= 23 ||
+        endAt.getHours() <= 6 ||
+        startAt.getHours() <= 6 ||
+        startAt.getHours() >= 23
+      ) {
+        enqueueSnackbar("hãy xem lại thời gian (nhà hàng đóng của vào 11 giờ tối)", {
+          variant: "warning",
+          preventDuplicate: true,
+          autoHideDuration: 5000,
+        });
+      } else {
+        let clonedCartItems = [];
+        cartItems.forEach((item) => {
+          clonedCartItems.push({
+            MaThucDon: item._id,
+            SoLuong: item.SoLuong,
+          });
+        });
+        const order = {
+          LoaiPhieuDat: Number(kind),
+          TrangThai: Number(0),
+          SoLuongNguoi: Number(size),
+          ThoiGianBatDau: startAt,
+          ThoiGianKetThuc: endAt,
+          MaKhachHang: "64157b0f4841a550c1562a0a",
+          ListThucDon: clonedCartItems,
+          ListPhong: null,
+          ListBan: null,
+        };
+        setLoading(true);
+        dispatch(addOrder(order)).then((value) => {
+          console.log(value);
+          setLoading(false);
+        });
+      }
     }
   };
+  // const createDateValue = (data, plusHour = 0) => {
+  //   const { date, time } = data;
+  //   const separatedDate = date.split("-");
+  //   const separatedTime = time.split(":");
+  //   return new Date(
+  //     separatedDate[0],
+  //     separatedDate[1] < 10
+  //       ? "0" + Number(separatedDate[1]) + 1
+  //       : Number(separatedDate[1]) + 1 + "",
+  //     separatedDate[2],
+  //     separatedTime[0] + plusHour,
+  //     separatedTime[1]
+  //   );
+  // };
 
-  const createDateValue = (data, plusHour = 0) => {
-    const { date, time } = data;
-    const separatedDate = date.split("-");
-    const separatedTime = time.split(":");
-    separatedTime[0] = separatedTime[0] + plusHour;
-    return new Date(
-      separatedDate[0],
-      separatedDate[1],
-      separatedDate[2],
-      separatedTime[0],
-      separatedTime[1]
-    );
-  };
   const handleChangeType = (val) => {
     setBookingType(val);
   };
@@ -305,9 +342,16 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                       id="size"
                       placeholder="2"
                       type="number"
+                      min="1"
+                      max="6"
                       {...register("size")}
                     />
                   </div>
+                  {errors?.size && (
+                    <div className="error__container">
+                      <div className="error__message">{errors?.size?.message}</div>
+                    </div>
+                  )}
                 </div>
                 <div className="value__container">
                   <div className="label__container">
@@ -318,18 +362,28 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                   <div className="input__container">
                     <Input type="date" className="input" id="date" {...register("date")} />
                   </div>
+                  {errors?.date && (
+                    <div className="error__container">
+                      <div className="error__message">{errors?.date?.message}</div>
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="row__container">
                 <div className="value__container">
                   <div className="label__container">
                     <label className="label" htmlFor="time">
-                      Giờ
+                      Giờ Vào
                     </label>
                   </div>
                   <div className="input__container">
                     <Input type="time" className="input" id="time" {...register("time")} />
                   </div>
+                  {errors?.time && (
+                    <div className="error__container">
+                      <div className="error__message">{errors?.time?.message}</div>
+                    </div>
+                  )}
                 </div>
                 <div className="value__container"></div>
               </div>
@@ -381,7 +435,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                           <input
                             id="kind-normal"
                             className="input__radio"
-                            value="normal"
+                            value="0"
                             type="radio"
                             {...register("kind")}
                           />
@@ -393,12 +447,17 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                           <input
                             id="kind-vip"
                             className="input__radio"
-                            value="vip"
+                            value="1"
                             type="radio"
                             {...register("kind")}
                           />
                         </div>
                       </div>
+                      {errors?.kind && (
+                        <div className="error__container">
+                          <div className="error__message">{errors?.kind?.message}</div>
+                        </div>
+                      )}
                     </div>
                   )}
                   <div className="value__container">
@@ -409,6 +468,8 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                     </div>
                     <div className="input__container time__picker__container">
                       <Input
+                        min={1}
+                        max={6}
                         type="number"
                         className="input time__picker"
                         id="duration"
@@ -417,6 +478,11 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                       />
                       <div className="additonal__tail">Giờ</div>
                     </div>
+                    {errors?.duration && (
+                      <div className="error__container">
+                        <div className="error__message">{errors?.duration?.message} </div>
+                      </div>
+                    )}
                   </div>
                 </div>
                 {!bookingType && (
@@ -443,6 +509,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
           <div className="modal__footer">
             <div className="btn__container">
               <Button
+                disabled={loading}
                 type="submit"
                 bgColor={colors.orange_2}
                 bgHover={colors.orange_2_hover}
