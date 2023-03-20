@@ -197,7 +197,12 @@ const Cart = ({ handleShowModal = () => {}, cartList = [] }) => {
                           <i className="fa-solid fa-plus"></i>
                         </span>
                       </div>
-                      <input className="quantity" type="text" value={item.SoLuong} />
+                      <input
+                        onChange={() => {}}
+                        className="quantity"
+                        type="text"
+                        value={item.SoLuong}
+                      />
                     </div>
                   </div>
                 </div>

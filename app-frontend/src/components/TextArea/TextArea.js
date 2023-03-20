@@ -10,25 +10,21 @@ const TextAreaStyles = styled.textarea`
   resize: ${(props) => props.resize};
 `;
 
-const TextArea = ({
-  rows = "4",
-  resize = "auto",
-  placeholder = "",
-  name = "",
-  padding = "4px",
-  ...rest
-}) => {
-  return (
-    <TextAreaStyles
-      name={name}
-      placeholder={placeholder}
-      padding={padding}
-      resize={resize}
-      rows={rows}
-      {...rest}
-    ></TextAreaStyles>
-  );
-};
+const TextArea = React.forwardRef(
+  ({ rows = "4", resize = "auto", placeholder = "", name = "", padding = "4px", ...rest }, ref) => {
+    return (
+      <TextAreaStyles
+        name={name}
+        placeholder={placeholder}
+        padding={padding}
+        resize={resize}
+        rows={rows}
+        ref={ref}
+        {...rest}
+      ></TextAreaStyles>
+    );
+  }
+);
 
 TextArea.propTypes = {
   rows: PropTypes.string,

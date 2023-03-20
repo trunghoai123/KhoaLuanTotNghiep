@@ -9,17 +9,20 @@ const InputTextStyles = styled.input`
   padding: ${(props) => props.padding};
 `;
 
-const Input = ({ type = "text", placeholder = "", name = "", padding = "6px 12px", ...rest }) => {
-  return (
-    <InputTextStyles
-      type={type}
-      name={name}
-      placeholder={placeholder}
-      padding={padding}
-      {...rest}
-    />
-  );
-};
+const Input = React.forwardRef(
+  ({ type = "text", placeholder = "", name = "", padding = "6px 12px", ...rest }, ref) => {
+    return (
+      <InputTextStyles
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        padding={padding}
+        ref={ref}
+        {...rest}
+      />
+    );
+  }
+);
 
 Input.propTypes = {
   type: PropTypes.string,

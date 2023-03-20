@@ -211,8 +211,7 @@ const Dishes = (props) => {
   const [dishes, setDishes] = useState();
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.cart);
-  useEffect(() => {}, [useDispatch]);
-  console.log(cartItems);
+
   useEffect(() => {
     const fetchDishes = async () => {
       try {
@@ -229,14 +228,15 @@ const Dishes = (props) => {
   }, []);
   const handleAddToCart = (e, id) => {
     e.preventDefault();
-    dispatch(addToCartById(id)).then((dish) => {
-      console.log(dish);
+    dispatch(addToCartById(id)).then((data) => {
+      console.log(data);
     });
-    // dispatch(addToCart({ id }));
   };
   return (
     <DishesStyles>
-      {show && <BookingModal handleCloseForm={handleCloseForm}></BookingModal>}
+      {show && (
+        <BookingModal cartItems={cartItems} handleCloseForm={handleCloseForm}></BookingModal>
+      )}
       <div className="top__actions">
         <Search placeholder="Tìm Kiếm"></Search>
       </div>

@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-const ButtonStyles = styled.div`
+const ButtonStyles = styled.button`
   user-select: none;
   display: inline-block;
   outline: none;
