@@ -205,9 +205,9 @@ const DishesStyles = styled.div`
 `;
 
 const Dishes = (props) => {
-  const [show, setShow] = useState(false);
-  const handleCloseForm = () => setShow(false);
-  const handleShowModal = () => setShow(true);
+  const [showForm, setShowForm] = useState(false);
+  const handleCloseForm = () => setShowForm(false);
+  const handleShowModal = () => setShowForm(true);
   const [dishes, setDishes] = useState();
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.cart);
@@ -234,7 +234,7 @@ const Dishes = (props) => {
   };
   return (
     <DishesStyles>
-      {show && (
+      {showForm && (
         <BookingModal cartItems={cartItems} handleCloseForm={handleCloseForm}></BookingModal>
       )}
       <div className="top__actions">

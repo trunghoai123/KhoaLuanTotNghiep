@@ -17,7 +17,7 @@ const ButtonStyles = styled.button`
     return props.disabled
       ? css`
           opacity: 0.5;
-          cursor: progress;
+          cursor: auto;
         `
       : css`
           cursor: pointer;
