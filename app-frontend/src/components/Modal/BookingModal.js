@@ -9,10 +9,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axiosClient from "utils/api";
-import { getDishById } from "store/dish/dishSlice";
+import { getDishById, getLinkFromImageFile } from "store/dish/dishSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addOrder } from "store/order/orderSlice";
 import { enqueueSnackbar } from "notistack";
+import { redirect, useNavigate } from "react-router";
 const BookingModalStyles = styled.div`
   transition: all ease 200ms;
   position: fixed;
@@ -226,10 +227,12 @@ const schema = yup
     kind: yup.string("hãy xem lại loại").required("hãy chọn loại"),
     duration: yup.string("hãy xem lại thời gian").required("hãy nhập thời gian"),
     note: yup.string(),
+    // image: yup.string().required(),
   })
   .required();
 const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [bookingType, setBookingType] = useState();
   const [loading, setLoading] = useState(false);
   const {
@@ -247,13 +250,14 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
       kind: "0",
       duration: "1",
       note: "Không có gì",
+      image: "",
     },
     resolver: yupResolver(schema),
   });
 
   const onSubmit = (data) => {
     if (isValid) {
-      const { size, duration, date, time, kind, note } = data;
+      const { size, duration, date, time, kind, note, image } = data;
       let startAt = new Date(new Date(date + "T" + time));
       let addedDate = new Date(
         new Date(date + "T" + time).setHours(
@@ -291,11 +295,27 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
           ListPhong: null,
           ListBan: null,
         };
+        // dispatch(getLinkFromImageFile({ image: image[0], id: image[0].name }))
+        //   .then((value) => {
+        //     console.log(value);
+        //   })
+        //   .catch((err) => {
+        //     console.log(err);
+        //   });
+
         setLoading(true);
-        dispatch(addOrder(order)).then((value) => {
-          console.log(value);
-          setLoading(false);
-        });
+        dispatch(addOrder(order))
+          .then((value) => {
+            console.log(value);
+            setLoading(false);
+            enqueueSnackbar("đã đặt thành công, đang chờ xác nhận", {
+              variant: "success",
+            });
+            navigate("/orders");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   };
@@ -317,6 +337,16 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
   const handleChangeType = (val) => {
     setBookingType(val);
   };
+  const handleMouseOutFile = (e) => {
+    // console.log(e.target.files[0]);
+    // dispatch(getLinkFromImageFile({ image: e.target.files[0], id: e.target.files[0].name }))
+    //   .then((value) => {
+    //     console.log(value);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  };
   return (
     <BookingModalStyles>
       <form className="main__form" onSubmit={handleSubmit(onSubmit)}>
@@ -328,6 +358,21 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
             </div>
           </div>
           <div className="modal__body">
+            <div className="input__container">
+              <Input
+                onMouseOut={handleMouseOutFile}
+                className="input"
+                id="size"
+                placeholder="2"
+                type="file"
+                {...register("image")}
+              />
+            </div>
+            {errors?.file && (
+              <div className="error__container">
+                <div className="error__message">{errors?.file?.message}</div>
+              </div>
+            )}
             <div className="general__infor">
               <div className="row__container">
                 <div className="value__container">
@@ -336,7 +381,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                       Số lượng người
                     </label>
                   </div>
-                  <div className="input__container">
+                  {/* <div className="input__container">
                     <Input
                       className="input"
                       id="size"
@@ -351,7 +396,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                     <div className="error__container">
                       <div className="error__message">{errors?.size?.message}</div>
                     </div>
-                  )}
+                  )} */}
                 </div>
                 <div className="value__container">
                   <div className="label__container">

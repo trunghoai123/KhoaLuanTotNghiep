@@ -4,6 +4,14 @@ export const getDishById = createAsyncThunk("dish/getDishById", async (dishId, t
   const response = await axiosClient.get(`menu/getOneMenu/${dishId}`, {});
   return response.data;
 });
+export const getLinkFromImageFile = createAsyncThunk(
+  "image/getLinkFromImageFile",
+  async ({ image, id }, thunkAPI) => {
+    console.log(image, id);
+    const response = await axiosClient.post(`/image/sendImageAndGetLink`, { image, id });
+    return response.data;
+  }
+);
 const dishSlice = createSlice({
   name: "dish",
   initialState: {
@@ -14,7 +22,12 @@ const dishSlice = createSlice({
     builder
       .addCase(getDishById.pending, (state, action) => {})
       .addCase(getDishById.fulfilled, (state, action) => {})
-      .addCase(getDishById.rejected, (state, action) => {});
+      .addCase(getDishById.rejected, (state, action) => {})
+      .addCase(getLinkFromImageFile.pending, (state, action) => {})
+      .addCase(getLinkFromImageFile.fulfilled, (state, action) => {
+        console.log(action.payload);
+      })
+      .addCase(getLinkFromImageFile.rejected, (state, action) => {});
   },
 });
 // Extract the action creators object and the reducer
