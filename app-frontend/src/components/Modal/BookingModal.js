@@ -358,7 +358,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
             </div>
           </div>
           <div className="modal__body">
-            <div className="input__container">
+            {/* <div className="input__container">
               <Input
                 onMouseOut={handleMouseOutFile}
                 className="input"
@@ -372,7 +372,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
               <div className="error__container">
                 <div className="error__message">{errors?.file?.message}</div>
               </div>
-            )}
+            )} */}
             <div className="general__infor">
               <div className="row__container">
                 <div className="value__container">
@@ -381,7 +381,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                       Số lượng người
                     </label>
                   </div>
-                  {/* <div className="input__container">
+                  <div className="input__container">
                     <Input
                       className="input"
                       id="size"
@@ -396,7 +396,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                     <div className="error__container">
                       <div className="error__message">{errors?.size?.message}</div>
                     </div>
-                  )} */}
+                  )}
                 </div>
                 <div className="value__container">
                   <div className="label__container">
