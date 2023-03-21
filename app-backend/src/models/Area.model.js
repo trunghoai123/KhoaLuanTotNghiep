@@ -9,6 +9,7 @@ const areaSchema = new Schema({
         type:String,
         required:true,
     },
+
     HinhAnh:{
         type:String,
     },
@@ -17,6 +18,9 @@ const areaSchema = new Schema({
     },
     ViTriCuThe:{
         type:String,
+    },
+    SoNguoiToiDa:{
+        type:Number,
     }
 },{
     timestamps: true,
