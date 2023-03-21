@@ -9,6 +9,7 @@ const areaSchema = new Schema({
         type:String,
         required:true,
     },
+
     HinhAnh:{
         type:String,
     },

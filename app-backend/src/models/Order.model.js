@@ -16,6 +16,10 @@ const orderSchema = new Schema({
     /**
      * 0 đang chờ duyệt
      * 1 đã duyệt
+     * 2
+     * 3
+     * 4
+     * 5
      */
     TrangThai:{
         type: Number,
@@ -30,6 +34,9 @@ const orderSchema = new Schema({
     },
     ThoiGianKetThuc: {
         type: Date,
+    },
+    GhiChu: {
+        type: String,
     },
     MaNhanVien:{
         type: Schema.Types.ObjectId,

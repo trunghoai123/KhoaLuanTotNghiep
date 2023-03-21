@@ -4,10 +4,10 @@ const orderDetailModel = require("../models/orderDetail.model")
 
 class OrderService {
 
-    static addOrder = async ({LoaiPhieuDat , TrangThai , SoLuongNguoi , ThoiGianBatDau, ThoiGianKetThuc , MaKhachHang ,ListThucDon , ListPhong , ListBan })=>{
+    static addOrder = async ({LoaiPhieuDat , TrangThai ,GhiChu, SoLuongNguoi , ThoiGianBatDau, ThoiGianKetThuc , MaKhachHang ,ListThucDon , ListPhong , ListBan })=>{
         try{
             const newOrder = await orderModel.create({
-                LoaiPhieuDat , TrangThai , SoLuongNguoi , ThoiGianBatDau , ThoiGianKetThuc , MaKhachHang
+                LoaiPhieuDat , TrangThai , SoLuongNguoi,GhiChu , ThoiGianBatDau , ThoiGianKetThuc , MaKhachHang
             })
             if(newOrder){
 
@@ -62,6 +62,7 @@ class OrderService {
     static getOrderByUser = async ({ MaKhachHang}) =>{
         try{
             const orders = await orderModel.find({MaKhachHang});
+            
             return {
                 code: 200,
                 metadata: {
