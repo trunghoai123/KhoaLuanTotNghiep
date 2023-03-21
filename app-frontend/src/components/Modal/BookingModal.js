@@ -102,7 +102,7 @@ const BookingModalStyles = styled.div`
                   .additonal__tail {
                     padding-left: 20px;
                     flex: 1;
-                    position: absolute;
+position: absolute;
                     top: 50%;
                     transform: translateY(-50%);
                     right: 20px;
@@ -199,7 +199,7 @@ const BookingModalStyles = styled.div`
                   }
                 }
                 .input__text {
-                }
+}
               }
               .error__container {
                 position: absolute;
@@ -303,7 +303,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
   //   const { date, time } = data;
   //   const separatedDate = date.split("-");
   //   const separatedTime = time.split(":");
-  //   return new Date(
+//   return new Date(
   //     separatedDate[0],
   //     separatedDate[1] < 10
   //       ? "0" + Number(separatedDate[1]) + 1
@@ -380,7 +380,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                     <Input type="time" className="input" id="time" {...register("time")} />
                   </div>
                   {errors?.time && (
-                    <div className="error__container">
+<div className="error__container">
                       <div className="error__message">{errors?.time?.message}</div>
                     </div>
                   )}
@@ -451,7 +451,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                             type="radio"
                             {...register("kind")}
                           />
-                        </div>
+</div>
                       </div>
                       {errors?.kind && (
                         <div className="error__container">
