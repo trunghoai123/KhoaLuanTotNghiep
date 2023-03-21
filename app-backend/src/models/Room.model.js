@@ -5,6 +5,10 @@ const COLLECTION_NAME = 'Phong';
 const DOCUMENT_NAME = 'Phong';
 
 const roomSchema = new Schema({
+    MaPhong:{
+        type:String,
+        required:true,
+    },
     TenPhong:{
         type:String,
         required:true,

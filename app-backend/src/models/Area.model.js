@@ -5,11 +5,14 @@ const COLLECTION_NAME = 'KhuVuc';
 const DOCUMENT_NAME = 'KhuVuc';
 
 const areaSchema = new Schema({
+    MaKhuVuc:{
+        type:String,
+        required:true,
+    },
     TenKhuVuc:{
         type:String,
         required:true,
     },
-
     HinhAnh:{
         type:String,
     },

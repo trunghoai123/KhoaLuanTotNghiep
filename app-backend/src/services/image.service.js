@@ -1,20 +1,31 @@
 
-const cloudinary = require('../config/config.cloudinary');
+const uploadCloud = require('../config/config.cloudinary');
 class ImageService {
 
-    static sendImageAndGetLink = async  (image) =>{
+    static sendImageAndGetLink = async  ({image}) =>{
         try{
-            const result = await cloudinary.uploader
-            .upload(image,{
-                folder: "RestaurantManagement",
-            }) 
-            
-            return {
-                code: 200,
-                metadata:{
-                    data: result.secure_url
+            uploadCloud.single(image)( function (err, result) {
+                if (err) {
+                    return {
+                        code: 500,
+                        metadata:{
+                            success:false,
+                            message: err.message,
+                            status: 'upload image failed',
+                        }
+                    }
                 }
-            } 
+
+                return {
+                    code: 200,
+                    metadata:{
+                        success:true,
+                        data: result
+                    }
+                } 
+            });
+            
+            
                   
         
                 
@@ -26,6 +37,7 @@ class ImageService {
             return {
                 code: 500,
                 metadata:{
+                    success:false,
                     message: err.message,
                     status: 'upload image failed',
                 }
