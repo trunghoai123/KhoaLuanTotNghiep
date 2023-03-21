@@ -18,6 +18,9 @@ const areaSchema = new Schema({
     },
     ViTriCuThe:{
         type:String,
+    },
+    SoNguoiToiDa:{
+        type:Number,
     }
 },{
     timestamps: true,

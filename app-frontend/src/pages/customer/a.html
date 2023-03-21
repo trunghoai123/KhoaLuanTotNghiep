@@ -1,0 +1,6 @@
+const { createSlice } = require("@reduxjs/toolkit"); const cartSlice = createSlice({ name: "cart",
+initialState: [], reducers: { createCart(state, action) {}, updateCart(state, action) {},
+deleteCart(state, action) {}, }, }); // Extract the action creators object and the reducer const {
+actions, reducer } = cartSlice; // Extract and export each action creator by name export const {
+createCart, updateCart, deleteCart } = actions; // Export the reducer, either as a default or named
+export export default reducer;
