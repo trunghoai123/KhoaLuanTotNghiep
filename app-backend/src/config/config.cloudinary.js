@@ -9,17 +9,17 @@ cloudinary.config({
   });
 
   
-const storage = new CloudinaryStorage({
-  cloudinary,
-  allowedFormats: ['jpg', 'png'],
-  filename: function (req, file, cb) {
-    cb(null, file.originalname); 
-  },
-  params: {
-    folder: "RestaurantManagement",
-  },
-});
+// const storage = new CloudinaryStorage({
+//   cloudinary,
+//   allowedFormats: ['jpg', 'png'],
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname); 
+//   },
+//   params: {
+//     folder: "RestaurantManagement",
+//   },
+// });
 
-const uploadCloud = multer({ storage });
+// const uploadCloud = multer({ storage });
 
-module.exports = uploadCloud;
+module.exports = cloudinary;
