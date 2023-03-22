@@ -9,6 +9,24 @@ class MenuController {
       next(err);
     }
   };
+  updateMenu = async (req, res, next) => {
+    try {
+      const result = await MenuService.updateMenu(req.body);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  deleteMenu = async (req, res, next) => {
+    try {
+      const result = await MenuService.deleteMenu(req.body);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
+
 
   getAllMenu = async (req, res, next) => {
     try {

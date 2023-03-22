@@ -30,6 +30,16 @@ class AreaController{
         }
     }
 
+    getAreaById = async (req, res, next) => {
+        try {
+            const result = await AreaService.getAreaById(req.params.areaId);
+            return res.status(result.code).json(result.metadata)
+        }
+        catch (err){
+            next(err);
+        }
+    }
+
     getAllArea = async (req, res, next) => {
         try {
             const result = await AreaService.getAllArea();

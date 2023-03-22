@@ -106,6 +106,27 @@ class AreaService {
             }
         }
     }
+    static getAreaById = async (id) => {
+        try {
+          const area = await areaModel.findOne({ _id: id });
+          return {
+            code: 200,
+            metadata: {
+              success: true,
+              data: area,
+            },
+          };
+        } catch (err) {
+          return {
+            code: 500,
+            metadata: {
+              success: false,
+              message: err.message,
+              status: "get area error",
+            },
+          };
+        }
+      };
 }
 
 module.exports = AreaService

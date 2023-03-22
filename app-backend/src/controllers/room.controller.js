@@ -12,6 +12,25 @@ class RoomController{
         }
     }
 
+    updateRoom = async (req, res, next) => {
+        try {
+            const result = await RoomService.updateRoom(req.body);
+            return res.status(result.code).json(result.metadata)
+        }
+        catch (err){
+            next(err);
+        }
+    }
+    deleteRoom = async (req, res, next) => {
+        try {
+            const result = await RoomService.deleteRoom(req.body);
+            return res.status(result.code).json(result.metadata)
+        }
+        catch (err){
+            next(err);
+        }
+    }
+
     getAllRoom = async (req, res, next) => {
         try {
             const result = await RoomService.getAllRoom();
@@ -21,7 +40,15 @@ class RoomController{
             next(err);
         }
     } 
-
+    getRoomById = async (req, res, next) => {
+        try {
+            const result = await RoomService.getRoomById(req.params.roomId);
+            return res.status(result.code).json(result.metadata)
+        }
+        catch (err){
+            next(err);
+        }
+    }
 
     getRoomMatchTimeAndSeat = async (req, res, next) => {
         try {

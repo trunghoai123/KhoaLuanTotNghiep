@@ -7,15 +7,16 @@ class RoomService {
 
 
 
-    static addRoom = async ({TenPhong , TrangThai , SoChoNgoiToiDa , HinhAnh, MaLoai , MaKhuVuc})=>{
+    static addRoom = async ({MaPhong,TenPhong , TrangThai , SoChoNgoiToiDa , HinhAnh, MaLoai , MaKhuVuc})=>{
         try{
             const newRoom = await roomModel.create({
-                TenPhong , TrangThai , SoChoNgoiToiDa  , HinhAnh, MaLoai , MaKhuVuc
+                MaPhong,TenPhong , TrangThai , SoChoNgoiToiDa  , HinhAnh, MaLoai , MaKhuVuc
             })
             if(newRoom){
                 return {
                     code: 201,
                     metadata:{
+                        success: true,
                         data: newRoom,
                     }
                 }
@@ -25,6 +26,7 @@ class RoomService {
             return {
                 code: 500,
                 metadata:{
+                    success: false,
                     message: err.message,
                     status: 'add room error',
                 }
@@ -32,12 +34,71 @@ class RoomService {
         }
     }
 
+    static updateRoom = async ({id,TenPhong , TrangThai , SoChoNgoiToiDa , HinhAnh, MaLoai , MaKhuVuc})=>{
+        try{
+            const updateRoom = await roomModel.findOneAndUpdate({
+                _id: id
+            },{
+                TenPhong , TrangThai , SoChoNgoiToiDa , HinhAnh, MaLoai , MaKhuVuc
+            },{
+                new: true
+            })
+            return {
+                code: 200,
+                metadata:{
+                    success: true,
+                    message: 'Update thành công',
+                    data: updateRoom,
+                }
+            }
+            
+        }
+        catch(err){
+            return {
+                code: 500,
+                metadata:{
+                    success: false,
+                    message: err.message,
+                    status: 'update room error',
+                }
+            }
+        }
+    }
+    static deleteRoom = async ({id})=>{
+        try{
+            await roomModel.deleteOne({ _id: id })
+            return {
+                code: 200,
+                metadata:{
+                    success: true,
+                    message: "Xóa thành công",
+                }
+            }
+            
+        }
+        catch(err){
+            return {
+                code: 500,
+                metadata:{
+                    success: false,
+                    message: err.message,
+                    status: 'delete room error',
+                }
+            }
+        }
+    }
+
+
     static getAllRoom = async () =>{
         try{
-            const rooms = await roomModel.find();
+            const rooms = await roomModel.find()
+            .populate('MaKhuVuc')
+            .populate('MaLoai')
+            .exec();
             return {
                 code: 200,
                 metadata: {
+                    success: true,
                     data: rooms
                 }
             }
@@ -46,12 +107,35 @@ class RoomService {
             return {
                 code: 500,
                 metadata:{
+                    success: false,
                     message: err.message,
                     status: 'get all room error',
                 }
             }
         }
     }
+
+    static getRoomById = async (id) => {
+        try {
+          const room = await roomModel.findOne({ _id: id });
+          return {
+            code: 200,
+            metadata: {
+              success: true,
+              data: room,
+            },
+          };
+        } catch (err) {
+          return {
+            code: 500,
+            metadata: {
+              success: false,
+              message: err.message,
+              status: "get room error",
+            },
+          };
+        }
+      };
 
     static getRoomMatchTimeAndSeat = async ({ SoNguoi , ThoiGianBatDau , ThoiGianKetThuc  }) =>{
         try{
