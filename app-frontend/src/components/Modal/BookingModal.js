@@ -235,6 +235,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
   const navigate = useNavigate();
   const [bookingType, setBookingType] = useState();
   const [loading, setLoading] = useState(false);
+  const [file, setFile] = useState();
   const {
     register,
     handleSubmit,
@@ -295,7 +296,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
           ListPhong: null,
           ListBan: null,
         };
-        // dispatch(getLinkFromImageFile({ image: image[0], id: image[0].name }))
+        // dispatch(getLinkFromImageFile({ image: file, id: image[0].name }))
         //   .then((value) => {
         //     console.log(value);
         //   })
@@ -338,14 +339,8 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
     setBookingType(val);
   };
   const handleMouseOutFile = (e) => {
-    // console.log(e.target.files[0]);
-    // dispatch(getLinkFromImageFile({ image: e.target.files[0], id: e.target.files[0].name }))
-    //   .then((value) => {
-    //     console.log(value);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    console.log(e.target.files[0]);
+    setFile(e.target.files[0]);
   };
   return (
     <BookingModalStyles>

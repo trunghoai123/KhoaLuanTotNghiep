@@ -97,7 +97,7 @@ const TableAdmin = (props) => {
         <thead className="table__head--container">
           <tr className="table__row">
             <th className="table__head item__id" scope="col">
-              Mã Bàn
+              Mã Bàn - Phòng
             </th>
             <th className="table__head" scope="col">
               Số Thứ Tự

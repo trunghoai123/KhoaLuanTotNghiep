@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { colors } from "../variables";
 import { Link, NavLink } from "react-router-dom";
+import LoginForm from "components/Login/LoginForm";
+import SignupForm from "components/Login/SignupForm";
 
 const HeaderStyles = styled.div`
   position: fixed;
@@ -70,6 +72,11 @@ const HeaderStyles = styled.div`
       display: flex;
       align-items: center;
       width: 120px;
+      &.logo__container {
+        left: 20px;
+        top: 0px;
+        position: absolute;
+      }
       .navlink {
         line-height: 54px;
         width: 100%;
@@ -102,15 +109,41 @@ const HeaderStyles = styled.div`
             }
           }
         }
+        .btn__login {
+          font-size: 12px;
+          cursor: pointer;
+          :hover {
+            text-decoration: underline;
+          }
+        }
       }
     }
   }
 `;
 
 const Header = (props) => {
+  const [isSigningin, setIsSigningin] = useState(false);
+  const [isRegitering, setIsRegistering] = useState(false);
+  const handleSignIn = () => {
+    setIsSigningin(true);
+  };
+  const handleCloseLoginForm = () => {
+    setIsSigningin(false);
+  };
+  const handleSignup = () => {
+    setIsRegistering(true);
+  };
+  const handleCloseSignupForm = () => {
+    setIsRegistering(false);
+  };
   return (
     <HeaderStyles>
       <div className="navbar__list">
+        <div className="link__container logo__container">
+          <NavLink className="navlink image__container" to={"/"}>
+            <img className="logo__image" src="/images/logo.png" alt="logo" />
+          </NavLink>
+        </div>
         <div className="link__container">
           <NavLink className="navlink" to={"dishes"}>
             Thực Đơn
@@ -126,11 +159,7 @@ const Header = (props) => {
             Phòng
           </NavLink>
         </div>
-        <div className="link__container">
-          <NavLink className="navlink image__container" to={"/"}>
-            <img className="logo__image" src="/images/logo.png" alt="logo" />
-          </NavLink>
-        </div>
+
         <div className="link__container">
           <NavLink className="navlink" to={"/orders"}>
             Phiếu Đặt
@@ -158,8 +187,17 @@ const Header = (props) => {
             </a>
           </span>
         </div>
+
         <div className="profile__container">
-          <div className="img__container">
+          <div className="link__container external__links">
+            <span className="btn__login" onClick={handleSignup}>
+              Đăng ký
+            </span>
+            <span className="btn__login" onClick={handleSignIn}>
+              Đăng Nhập
+            </span>
+          </div>
+          {/* <div className="img__container">
             <img className="img__profile" src="/images/VIP_room.jpg" alt="" />
             <div className="menu__hovered">
               <div className="menu__list">
@@ -174,9 +212,11 @@ const Header = (props) => {
                 </Link>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
+      {isSigningin && <LoginForm handleCloseForm={handleCloseLoginForm}></LoginForm>}
+      {isRegitering && <SignupForm handleCloseForm={handleCloseSignupForm}></SignupForm>}
     </HeaderStyles>
   );
 };

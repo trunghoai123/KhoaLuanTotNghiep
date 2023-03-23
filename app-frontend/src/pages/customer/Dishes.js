@@ -288,15 +288,17 @@ const Dishes = (props) => {
             })}
           </div>
           <div className="pagination__container">
-            <ReactPaginate
-              className="pagination__list"
-              breakLabel="..."
-              previousLabel={<CaretLeft></CaretLeft>}
-              pageRangeDisplayed={5}
-              nextLabel={<CaretRight></CaretRight>}
-              pageCount={3}
-              renderOnZeroPageCount={1}
-            />
+            {dishes && (
+              <ReactPaginate
+                className="pagination__list"
+                breakLabel="..."
+                previousLabel={<CaretLeft></CaretLeft>}
+                pageRangeDisplayed={5}
+                nextLabel={<CaretRight></CaretRight>}
+                pageCount={3}
+                renderOnZeroPageCount={1}
+              />
+            )}
           </div>
         </div>
       </div>

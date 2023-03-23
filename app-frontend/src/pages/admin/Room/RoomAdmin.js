@@ -96,7 +96,7 @@ const RoomAdmin = (props) => {
         <thead className="table__head--container">
           <tr className="table__row">
             <th className="table__head item__id" scope="col">
-              Mã Phòng
+              Mã Phòng - Khu Vực
             </th>
             <th className="table__head" scope="col">
               Tên Phòng

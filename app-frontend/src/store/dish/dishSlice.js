@@ -4,11 +4,22 @@ export const getDishById = createAsyncThunk("dish/getDishById", async (dishId, t
   const response = await axiosClient.get(`menu/getOneMenu/${dishId}`, {});
   return response.data;
 });
+// export const getLinkFromImageFile = createAsyncThunk(
+//   "image/getLinkFromImageFile",
+//   async ({ image, id }, thunkAPI) => {
+//     console.log(image, id);
+//     const response = await axiosClient.post(`/image/sendImageAndGetLink`, { image, id });
+//     return response.data;
+//   }
+// );
 export const getLinkFromImageFile = createAsyncThunk(
   "image/getLinkFromImageFile",
   async ({ image, id }, thunkAPI) => {
     console.log(image, id);
-    const response = await axiosClient.post(`/image/sendImageAndGetLink`, { image, id });
+    const response = await axiosClient.post(`/image/sendImageAndGetLink`, {
+      body: image,
+      headers: { "content-type": image.type, "content-length": `${image.size}` },
+    });
     return response.data;
   }
 );
