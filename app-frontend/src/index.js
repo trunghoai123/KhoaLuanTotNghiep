@@ -22,76 +22,76 @@ import { Provider } from "react-redux";
 import store from "store/index";
 import { SnackbarProvider } from "notistack";
 import Orders from "pages/customer/Orders";
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App></App>,
-    children: [
-      {
-        path: "/",
-        element: <HomePage></HomePage>,
-      },
-      {
-        path: "orders",
-        element: <Orders></Orders>,
-      },
-      {
-        path: "dishes",
-        element: <Dishes></Dishes>,
-      },
-      {
-        path: "booking",
-        element: <Booking></Booking>,
-      },
-      {
-        path: "introduce",
-        element: <Introduce></Introduce>,
-      },
-      {
-        path: "service",
-        element: <Service></Service>,
-      },
-    ],
-  },
-  {
-    path: "/admin",
-    element: <AppAdmin></AppAdmin>,
-    children: [
-      {
-        path: "",
-        element: <HomePage></HomePage>,
-      },
-      {
-        path: "area",
-        element: <AreaAdmin></AreaAdmin>,
-      },
-      {
-        path: "area/:areaId",
-        element: <AreaEditAdmin></AreaEditAdmin>,
-      },
-      {
-        path: "room",
-        element: <RoomAdmin></RoomAdmin>,
-      },
-      {
-        path: "room/:roomId",
-        element: <RoomEditAdmin></RoomEditAdmin>,
-      },
-      {
-        path: "/admin/table",
-        element: <TableAdmin></TableAdmin>,
-      },
-    ],
-  },
-]);
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element: <App></App>,
+//     children: [
+//       {
+//         path: "/",
+//         element: <HomePage></HomePage>,
+//       },
+//       {
+//         path: "orders",
+//         element: <Orders></Orders>,
+//       },
+//       {
+//         path: "dishes",
+//         element: <Dishes></Dishes>,
+//       },
+//       {
+//         path: "booking",
+//         element: <Booking></Booking>,
+//       },
+//       {
+//         path: "introduce",
+//         element: <Introduce></Introduce>,
+//       },
+//       {
+//         path: "service",
+//         element: <Service></Service>,
+//       },
+//     ],
+//   },
+//   {
+//     path: "/admin",
+//     element: <AppAdmin></AppAdmin>,
+//     children: [
+//       {
+//         path: "",
+//         element: <HomePage></HomePage>,
+//       },
+//       {
+//         path: "area",
+//         element: <AreaAdmin></AreaAdmin>,
+//       },
+//       {
+//         path: "area/:areaId",
+//         element: <AreaEditAdmin></AreaEditAdmin>,
+//       },
+//       {
+//         path: "room",
+//         element: <RoomAdmin></RoomAdmin>,
+//       },
+//       {
+//         path: "room/:roomId",
+//         element: <RoomEditAdmin></RoomEditAdmin>,
+//       },
+//       {
+//         path: "/admin/table",
+//         element: <TableAdmin></TableAdmin>,
+//       },
+//     ],
+//   },
+// ]);
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
+    {/* <Provider store={store}>
       <SnackbarProvider autoHideDuration={4000} />
       <RouterProvider router={router}></RouterProvider>
-    </Provider>
-    {/* <App /> */}
+    </Provider> */}
+    <App />
   </React.StrictMode>
 );
 
