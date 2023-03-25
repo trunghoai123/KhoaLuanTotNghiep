@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addOrder } from "store/order/orderSlice";
 import { enqueueSnackbar } from "notistack";
 import { redirect, useNavigate } from "react-router";
+import axios from "axios";
 const BookingModalStyles = styled.div`
   transition: all ease 200ms;
   position: fixed;
@@ -338,10 +339,29 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
   const handleChangeType = (val) => {
     setBookingType(val);
   };
-  // const handleMouseOutFile = (e) => {
-  //   console.log(e.target.files[0]);
-  //   setFile(e.target.files[0]);
-  // };
+  const convertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+  const handleMouseOutFile = async (e) => {
+    console.log(e.target.files[0]);
+    const base64 = await convertBase64(e.target.files[0]);
+    axios
+      .post("http://localhost:5500/api/image/sendImageAndGetLink", { image: base64 })
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
   return (
     <BookingModalStyles>
       <form className="main__form" onSubmit={handleSubmit(onSubmit)}>
@@ -353,7 +373,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
             </div>
           </div>
           <div className="modal__body">
-            {/* <div className="input__container">
+            <div className="input__container">
               <Input
                 onMouseOut={handleMouseOutFile}
                 className="input"
@@ -367,7 +387,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
               <div className="error__container">
                 <div className="error__message">{errors?.file?.message}</div>
               </div>
-            )} */}
+            )}
             <div className="general__infor">
               <div className="row__container">
                 <div className="value__container">
@@ -516,6 +536,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                         {...register("duration")}
                         placeholder="1"
                       />
+
                       <div className="additonal__tail">Giờ</div>
                     </div>
                     {errors?.duration && (

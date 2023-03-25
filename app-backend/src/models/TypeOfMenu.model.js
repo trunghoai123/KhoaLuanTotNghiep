@@ -8,7 +8,7 @@ const typeOfMenuSchema = new Schema({
     TenLoai:{
         type:String,
         required:true,
-    },
+    }
 },{
     timestamps: true,
     collection: COLLECTION_NAME,

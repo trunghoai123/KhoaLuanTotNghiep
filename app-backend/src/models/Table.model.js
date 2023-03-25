@@ -6,6 +6,10 @@ const DOCUMENT_NAME = "Ban";
 
 const tableSchema = new Schema(
   {
+    MaBan:{
+      type: String,
+      required: true,
+    },
     SoThuTuBan: {
       type: Number,
       required: true,

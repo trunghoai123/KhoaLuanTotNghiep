@@ -1,7 +1,6 @@
 const cloudinary = require('cloudinary').v2;
-
-// const { CloudinaryStorage } = require('multer-storage-cloudinary');
-// const multer = require('multer');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const multer = require('multer');
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
@@ -13,6 +12,9 @@ cloudinary.config({
 // const storage = new CloudinaryStorage({
 //   cloudinary,
 //   allowedFormats: ['jpg', 'png'],
+//   filename: function (req, file, cb) {
+//     cb(null, file.originalname); 
+//   },
 //   params: {
 //     folder: "RestaurantManagement",
 //   },

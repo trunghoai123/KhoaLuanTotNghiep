@@ -20,6 +20,9 @@ export const getLinkFromImageFile = createAsyncThunk(
       body: image,
       headers: { "content-type": image.type, "content-length": `${image.size}` },
     });
+    // async ({ image}, thunkAPI) => {
+    //   console.log(image);
+    //   const response = await axiosClient.post(`/image/sendImageAndGetLink`, { image });
     return response.data;
   }
 );
