@@ -9,6 +9,8 @@ router.use('/api/room', require('./room'))
 router.use('/api/account', require('./account'))
 router.use('/api/order', require('./order'))
 router.use('/api/customer', require('./customer'))
+router.use('/api/typeOfRoom', require('./typeOfRoom'))
+router.use('/api/typeOfMenu', require('./typeOfMenu'))
 router.use('/api/image', require('./image'))
 
 
