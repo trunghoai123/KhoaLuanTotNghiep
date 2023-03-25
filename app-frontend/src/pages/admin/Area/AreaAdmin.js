@@ -5,7 +5,7 @@ import Button from "components/Button/Button";
 import { colors } from "variables";
 import Search from "components/Search";
 import DropdownManage from "components/Dopdown/ButtonDropDown";
-import axiosClient from "utils/api";
+import axiosClient from "utils/axios";
 
 const AreaAdminStyles = styled.div`
   padding-top: 54px;

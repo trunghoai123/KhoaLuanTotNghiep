@@ -8,7 +8,7 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import axiosClient from "utils/api";
+import axiosClient from "utils/axios";
 import { getDishById, getLinkFromImageFile } from "store/dish/dishSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addOrder } from "store/order/orderSlice";
@@ -338,10 +338,10 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
   const handleChangeType = (val) => {
     setBookingType(val);
   };
-  const handleMouseOutFile = (e) => {
-    console.log(e.target.files[0]);
-    setFile(e.target.files[0]);
-  };
+  // const handleMouseOutFile = (e) => {
+  //   console.log(e.target.files[0]);
+  //   setFile(e.target.files[0]);
+  // };
   return (
     <BookingModalStyles>
       <form className="main__form" onSubmit={handleSubmit(onSubmit)}>

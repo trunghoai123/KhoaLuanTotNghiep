@@ -1,4 +1,4 @@
-import axiosClient from "utils/api";
+import axiosClient from "utils/axios";
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 // export const addToCartById = createAsyncThunk("booking/addToCartById", async (dishId, thunkAPI) => {
 //   const response = await axiosClient.get(`menu/getOneMenu/${dishId}`, {});

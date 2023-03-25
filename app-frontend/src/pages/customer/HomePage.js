@@ -136,14 +136,14 @@ const HomePage = (props) => {
         <div className="all__main">
           <div className="service__row">
             <div className="service__item">
-              <Link className="service__link" to={"/booking"}>
+              <Link className="service__link" to={"/dishes"}>
                 <img className="service__image" src={"images/home_1.jpg"} alt="" />
                 <div className="service__frame"></div>
                 <div className="service__title">Hẹn Hò</div>
               </Link>
             </div>
             <div className="service__item">
-              <Link className="service__link" to={"/booking"}>
+              <Link className="service__link" to={"/dishes"}>
                 <img className="service__image" src={"images/home_2.jpeg"} alt="" />
                 <div className="service__frame"></div>
                 <div className="service__title">Lễ Chúc Mừng</div>
@@ -152,14 +152,14 @@ const HomePage = (props) => {
           </div>
           <div className="service__row">
             <div className="service__item">
-              <Link className="service__link" to={"/booking"}>
+              <Link className="service__link" to={"/dishes"}>
                 <img className="service__image" src={"images/home_3.jpg"} alt="" />
                 <div className="service__frame"></div>
                 <div className="service__title">Gặp Gỡ</div>
               </Link>
             </div>
             <div className="service__item">
-              <Link className="service__link" to={"/booking"}>
+              <Link className="service__link" to={"/dishes"}>
                 <img className="service__image" src={"images/home_4.jpeg"} alt="" />
                 <div className="service__frame"></div>
                 <div className="service__title">Tiệc Thân Mật</div>
@@ -176,15 +176,15 @@ const HomePage = (props) => {
           <div className="service__main">
             <div className="main__left">
               <div className="left__intro">
-                Khám phá ngay những sảnh tiệc sang trọng và lịch lãm tại GOLDEN BARN
+                Khám phá ngay những sảnh tiệc sang trọng và lịch lãm tại Evergreen Garden
               </div>
-              <button className="left__button">Discover now</button>
+              <button className="left__button">Khám phá</button>
             </div>
             <div className="main__right">
-              GOLDEN BARN mang trên mình một lối kiến trúc hoàng gia sang trọng, mỗi góc tại cung
-              điện mang vẻ đẹp khác nhau dành cho quan khách. Mỗi sảnh tiệc là một sự đầu tư bậc
-              nhất về trang thiết bị, hệ thống âm thanh ánh sáng hiện đại và đội ngũ phục vụ chuyên
-              nghiệp luôn đáp ứng trọn vẹn nhất các loại hình tiệc đẳng cấp khác nhau.
+              Evergreen Garden mang trên mình một lối kiến trúc hoàng gia sang trọng, mỗi góc tại
+              cung điện mang vẻ đẹp khác nhau dành cho quan khách. Mỗi sảnh tiệc là một sự đầu tư
+              bậc nhất về trang thiết bị, hệ thống âm thanh ánh sáng hiện đại và đội ngũ phục vụ
+              chuyên nghiệp luôn đáp ứng trọn vẹn nhất các loại hình tiệc đẳng cấp khác nhau.
             </div>
           </div>
         </div>

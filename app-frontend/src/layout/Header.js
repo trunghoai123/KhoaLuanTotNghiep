@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { colors } from "../variables";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import LoginForm from "components/Login/LoginForm";
 import SignupForm from "components/Login/SignupForm";
+import { AuthContext } from "utils/context/AuthContext";
+import { enqueueSnackbar } from "notistack";
 
 const HeaderStyles = styled.div`
   position: fixed;
@@ -54,6 +56,7 @@ const HeaderStyles = styled.div`
               color: black;
               display: block;
               padding: 10px;
+              cursor: pointer;
               :hover {
                 background-color: lightGray;
               }
@@ -124,6 +127,15 @@ const HeaderStyles = styled.div`
 const Header = (props) => {
   const [isSigningin, setIsSigningin] = useState(false);
   const [isRegitering, setIsRegistering] = useState(false);
+  const { user, updateAuthUser } = useContext(AuthContext);
+  const navigation = useNavigate();
+  const handleLogout = () => {
+    updateAuthUser(null);
+    enqueueSnackbar("Đã đăng xuất", {
+      variant: "success",
+    });
+    navigation("/");
+  };
   const handleSignIn = () => {
     setIsSigningin(true);
   };
@@ -189,30 +201,34 @@ const Header = (props) => {
         </div>
 
         <div className="profile__container">
-          <div className="link__container external__links">
-            <span className="btn__login" onClick={handleSignup}>
-              Đăng ký
-            </span>
-            <span className="btn__login" onClick={handleSignIn}>
-              Đăng Nhập
-            </span>
-          </div>
-          {/* <div className="img__container">
-            <img className="img__profile" src="/images/VIP_room.jpg" alt="" />
-            <div className="menu__hovered">
-              <div className="menu__list">
-                <Link to={"/"} className="menu__item">
-                  Thông tin tài khoản
-                </Link>
-                <Link to={"/"} className="menu__item">
-                  Phiếu đặt
-                </Link>
-                <Link to={"/"} className="menu__item">
-                  Đăng xuất
-                </Link>
+          {!user && (
+            <div className="link__container external__links">
+              <span className="btn__login" onClick={handleSignup}>
+                Đăng ký
+              </span>
+              <span className="btn__login" onClick={handleSignIn}>
+                Đăng nhập
+              </span>
+            </div>
+          )}
+          {user && (
+            <div className="img__container">
+              <img className="img__profile" src="/images/VIP_room.jpg" alt="" />
+              <div className="menu__hovered">
+                <div className="menu__list">
+                  <Link to={"/"} className="menu__item">
+                    Thông tin tài khoản
+                  </Link>
+                  <Link to={"/orders"} className="menu__item">
+                    Phiếu đặt
+                  </Link>
+                  <span onClick={handleLogout} className="menu__item">
+                    Đăng xuất
+                  </span>
+                </div>
               </div>
             </div>
-          </div> */}
+          )}
         </div>
       </div>
       {isSigningin && <LoginForm handleCloseForm={handleCloseLoginForm}></LoginForm>}

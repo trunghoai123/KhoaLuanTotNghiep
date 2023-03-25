@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { Link, useNavigation } from "react-router-dom";
 import styled from "styled-components";
 import { colors, kinds } from "variables";
-import axiosClient from "utils/api";
+import axiosClient from "utils/axios";
 import ReactPaginate from "react-paginate";
 import { CaretLeft, CaretRight, CartPlus } from "react-bootstrap-icons";
 import Search from "components/Search";
@@ -11,6 +11,7 @@ import BookingModal from "components/Modal/BookingModal";
 import Cart from "components/Cart/Cart";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCartById } from "store/cart/cartSlice";
+import { AuthContext } from "utils/context/AuthContext";
 const DishesStyles = styled.div`
   .top__actions {
     display: flex;
@@ -207,12 +208,18 @@ const DishesStyles = styled.div`
 const Dishes = (props) => {
   const [showForm, setShowForm] = useState(false);
   const handleCloseForm = () => setShowForm(false);
-  const handleShowModal = () => setShowForm(true);
   const [dishes, setDishes] = useState();
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.cart);
-
+  const { user, updateAuthUser } = useContext(AuthContext);
+  const handleShowModal = () => {
+    if (user) {
+      setShowForm(true);
+    } else {
+    }
+  };
   useEffect(() => {
+    window.scrollTo(0, 0);
     const fetchDishes = async () => {
       try {
         const result = await axiosClient.get("menu/getAllMenu", {});

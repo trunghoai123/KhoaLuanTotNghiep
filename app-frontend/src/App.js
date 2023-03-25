@@ -1,21 +1,12 @@
 import "./styles/index.scss";
 import "./styles/__reset.scss";
 
-import React from "react";
-import PropTypes from "prop-types";
-import { Outlet } from "react-router-dom";
-import Footer from "./layout/Footer";
-import Header from "./layout/Header";
-import { useDispatch } from "react-redux";
-import { createCart } from "store/cart/cartSlice";
+import React, { useState } from "react";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/index.scss";
-import ReactDOM from "react-dom/client";
-import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/customer/HomePage";
-import Contact from "./pages/customer/Contact";
 import Introduce from "./pages/customer/Introduce";
 import Service from "./pages/customer/Service";
 import Booking from "./pages/customer/Booking";
@@ -31,10 +22,25 @@ import store from "store/index";
 import { SnackbarProvider } from "notistack";
 import Orders from "pages/customer/Orders";
 import AppCustomer from "pages/customer/AppCustomer";
+import { AuthContext } from "utils/context/AuthContext";
+import NotFound from "components/NotFound/NotFound";
+const App = (props) => {
+  const [user, setUser] = useState();
+  return (
+    <Provider store={store}>
+      <AuthContext.Provider value={{ user, updateAuthUser: setUser }}>
+        <SnackbarProvider autoHideDuration={4000} />
+        <RouterProvider router={router}></RouterProvider>
+      </AuthContext.Provider>
+    </Provider>
+  );
+};
+
 const router = createBrowserRouter([
   {
     path: "/",
     element: <AppCustomer></AppCustomer>,
+    errorElement: <NotFound></NotFound>,
     children: [
       {
         path: "/",
@@ -65,10 +71,16 @@ const router = createBrowserRouter([
   {
     path: "/admin",
     element: <AppAdmin></AppAdmin>,
+    errorElement: <NotFound></NotFound>,
     children: [
+      // {
+      //   path: "not-found",
+      //   element: <NotFound></NotFound>,
+      // },
       {
         path: "",
         element: <HomePage></HomePage>,
+        errorElement: <NotFound></NotFound>,
       },
       {
         path: "area",
@@ -87,30 +99,12 @@ const router = createBrowserRouter([
         element: <RoomEditAdmin></RoomEditAdmin>,
       },
       {
-        path: "/admin/table",
+        path: "table",
         element: <TableAdmin></TableAdmin>,
       },
     ],
   },
 ]);
-
-// const AppWithProvieders = () => {
-//   return (
-//     <Provider store={store}>
-//       <SnackbarProvider autoHideDuration={4000} />
-//       <RouterProvider router={router}></RouterProvider>
-//     </Provider>
-//   );
-// };
-
-const App = (props) => {
-  return (
-    <Provider store={store}>
-      <SnackbarProvider autoHideDuration={4000} />
-      <RouterProvider router={router}></RouterProvider>
-    </Provider>
-  );
-};
 
 App.propTypes = {};
 

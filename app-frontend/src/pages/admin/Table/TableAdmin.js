@@ -5,7 +5,7 @@ import Search from "components/Search";
 import DropdownManage from "components/Dopdown/ButtonDropDown";
 import { colors } from "variables";
 import Button from "components/Button/Button";
-import axiosClient from "utils/api";
+import axiosClient from "utils/axios";
 
 const TableAdminStyles = styled.div`
   padding-top: 54px;

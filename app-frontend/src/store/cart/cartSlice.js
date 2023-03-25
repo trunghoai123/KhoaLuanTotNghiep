@@ -1,4 +1,4 @@
-import axiosClient from "utils/api";
+import axiosClient from "utils/axios";
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 
 // const fetchDishes = async () => {

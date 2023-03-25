@@ -1,4 +1,4 @@
-import axiosClient from "utils/api";
+import axiosClient from "utils/axios";
 const { createSlice, createAsyncThunk } = require("@reduxjs/toolkit");
 export const addOrder = createAsyncThunk("order/addOrder", async (data, thunkAPI) => {
   const response = await axiosClient.post(`order/addOrder`, { ...data });

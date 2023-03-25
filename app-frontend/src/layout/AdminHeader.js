@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { colors } from "../variables";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import LoginForm from "components/Login/LoginForm";
 import SignupForm from "components/Login/SignupForm";
+import { useDispatch } from "react-redux";
+import { AuthContext } from "utils/context/AuthContext";
+import { enqueueSnackbar } from "notistack";
 
 const AdminHeaderStyles = styled.div`
   position: fixed;
@@ -54,6 +57,7 @@ const AdminHeaderStyles = styled.div`
               color: black;
               display: block;
               padding: 10px;
+              cursor: pointer;
               :hover {
                 background-color: lightGray;
               }
@@ -124,6 +128,15 @@ const AdminHeaderStyles = styled.div`
 const AdminHeader = (props) => {
   const [isSigningin, setIsSigningin] = useState(false);
   const [isRegitering, setIsRegistering] = useState(false);
+  const { user, updateAuthUser } = useContext(AuthContext);
+  const navigation = useNavigate();
+  const handleLogout = () => {
+    updateAuthUser(null);
+    enqueueSnackbar("Đã đăng xuất", {
+      variant: "success",
+    });
+    navigation("/");
+  };
   const handleSignIn = () => {
     setIsSigningin(true);
   };
@@ -136,6 +149,7 @@ const AdminHeader = (props) => {
   const handleCloseSignupForm = () => {
     setIsRegistering(false);
   };
+  console.log(user);
   return (
     <AdminHeaderStyles>
       <div className="navbar__list">
@@ -164,7 +178,6 @@ const AdminHeader = (props) => {
             Bàn
           </NavLink>
         </div>
-
         <div className="link__container">
           <NavLink className="navlink" to={"/admin/contact"}>
             Đặt Bàn
@@ -198,39 +211,35 @@ const AdminHeader = (props) => {
           </span>
         </div>
         <div className="profile__container">
-          <div className="link__container external__links">
-            <span className="btn__login" onClick={handleSignup}>
-              Đăng ký
-            </span>
-            <span className="btn__login" onClick={handleSignIn}>
-              Đăng Nhập
-            </span>
-          </div>
-          {/* <div className="img__container">
-            <img className="img__profile" src="/images/VIP_room.jpg" alt="" />
-            <div className="menu__hovered">
-              <div className="menu__list">
-                <Link to={"/"} className="menu__item">
-                  Thông tin tài khoản
-                </Link>
-                <Link to={"/"} className="menu__item">
-                  Phiếu đặt
-                </Link>
-                <Link to={"/"} className="menu__item">
-                  Đăng xuất
-                </Link>
+          {!user && (
+            <div className="link__container external__links">
+              <span className="btn__login" onClick={handleSignup}>
+                Đăng ký
+              </span>
+              <span className="btn__login" onClick={handleSignIn}>
+                Đăng nhập
+              </span>
+            </div>
+          )}
+          {user && (
+            <div className="img__container">
+              <img className="img__profile" src="/images/VIP_room.jpg" alt="" />
+              <div className="menu__hovered">
+                <div className="menu__list">
+                  <Link to={"/"} className="menu__item">
+                    Thông tin tài khoản
+                  </Link>
+                  <Link to={"/"} className="menu__item">
+                    Phiếu đặt
+                  </Link>{" "}
+                  <span onClick={handleLogout} className="menu__item">
+                    Đăng xuất
+                  </span>
+                </div>
               </div>
             </div>
-          </div> */}
+          )}
         </div>
-        {/* <div className="link__container external__links">
-          <span className="btn__login" onClick={handleSignup}>
-            Đăng ký
-          </span>
-          <span className="btn__login" onClick={handleSignIn}>
-            Đăng Nhập
-          </span>
-        </div> */}
       </div>
       {isSigningin && <LoginForm handleCloseForm={handleCloseLoginForm}></LoginForm>}
       {isRegitering && <SignupForm handleCloseForm={handleCloseSignupForm}></SignupForm>}

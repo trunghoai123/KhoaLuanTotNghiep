@@ -3,6 +3,7 @@ import cartSlice from "store/cart/cartSlice";
 import bookingSlice from "store/booking/bookingSlice";
 import dishSlice from "store/dish/dishSlice";
 import orderSlice from "store/order/orderSlice";
+import authSlice from "store/auth/authSlice";
 
 const store = configureStore({
   reducer: combineReducers({
@@ -10,6 +11,7 @@ const store = configureStore({
     booking: bookingSlice,
     dish: dishSlice,
     order: orderSlice,
+    auth: authSlice,
   }),
 });
 

@@ -28,7 +28,7 @@ const Footer = (props) => {
       <div className="footer">
         <div className="footer__top"></div>
         <div className="footer__bottom">
-          <div className="bottom_left">COPYRIGHT © | 2023 RUSTIC ROMANCE</div>
+          <div className="bottom_left">COPYRIGHT © | 2023 EVERGREEN GARDEN</div>
           <div className="bottom_right">DESIGNED BY TRUNG HOAI</div>
         </div>
       </div>

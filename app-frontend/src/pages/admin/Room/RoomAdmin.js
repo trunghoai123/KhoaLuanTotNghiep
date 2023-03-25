@@ -5,7 +5,7 @@ import Button from "components/Button/Button";
 import { colors } from "variables";
 import DropdownManage from "components/Dopdown/ButtonDropDown";
 import Search from "components/Search";
-import axiosClient from "utils/api";
+import axiosClient from "utils/axios";
 
 const RooomAdminStyles = styled.div`
   padding-top: 54px;

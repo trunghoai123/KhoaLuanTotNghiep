@@ -12,6 +12,8 @@ export const colors = {
   orange_1_hover: "#f9ab29",
   red_1: "#ff6161",
   red_1_hover: "#ef4444",
+  facebook: "#3b5998",
+  facebook_hover: "#002778",
 };
 
 export const dishes = [
