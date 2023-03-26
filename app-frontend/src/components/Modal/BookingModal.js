@@ -15,6 +15,7 @@ import { addOrder } from "store/order/orderSlice";
 import { enqueueSnackbar } from "notistack";
 import { redirect, useNavigate } from "react-router";
 import axios from "axios";
+import { useAuthContext } from "utils/context/AuthContext";
 const BookingModalStyles = styled.div`
   transition: all ease 200ms;
   position: fixed;
@@ -255,7 +256,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
     },
     resolver: yupResolver(schema),
   });
-
+  const { user, updateAuthUser } = useAuthContext();
   const onSubmit = (data) => {
     if (isValid) {
       const { size, duration, date, time, kind, note, image } = data;
@@ -286,12 +287,12 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
           });
         });
         const order = {
-          LoaiPhieuDat: Number(kind),
+          LoaiPhieuDat: bookingType ? 0 : kind === "0" ? 1 : 2,
           TrangThai: Number(0),
           SoLuongNguoi: Number(size),
           ThoiGianBatDau: startAt,
           ThoiGianKetThuc: endAt,
-          MaKhachHang: "64157b0f4841a550c1562a0a",
+          MaKhachHang: user?.id,
           ListThucDon: clonedCartItems,
           ListPhong: null,
           ListBan: null,
