@@ -47,7 +47,7 @@ const RooomAdminStyles = styled.div`
             }
           }
           .button {
-            margin-left: 8px;
+            margin: 0px 0px 12px 8px;
             &.button__update {
             }
             &.button__remove {
@@ -96,16 +96,16 @@ const RoomAdmin = (props) => {
         <thead className="table__head--container">
           <tr className="table__row">
             <th className="table__head item__id" scope="col">
-              Mã Phòng - Khu Vực
+              Mã Phòng
             </th>
             <th className="table__head" scope="col">
               Tên Phòng
             </th>
             <th className="table__head" scope="col">
-              Số Chỗ Ngồi Tối Đa
+              Khu vực
             </th>
             <th className="table__head" scope="col">
-              Trạng Thái
+              Số Chỗ Ngồi Tối Đa
             </th>
             <th className="table__head" scope="col">
               Hình Ảnh
@@ -116,10 +116,10 @@ const RoomAdmin = (props) => {
           {rooms?.map((room, index) => {
             return (
               <tr className="table__row" key={room?._id}>
-                <td className="table__data item__id">{room?._id}</td>
+                <td className="table__data item__id">{room?.MaPhong}</td>
                 <td className="table__data">{room?.TenPhong}</td>
+                <td className="table__data">{room?.MaKhuVuc?.MaKhuVuc}</td>
                 <td className="table__data">{room?.SoChoNgoiToiDa}</td>
-                <td className="table__data">{room?.TrangThai ? "Đang Dùng" : "Đang Trống"}</td>
                 <td className="table__data data__image">
                   <div className="img__container">
                     <img className="data__img" src={room?.HinhAnh} alt="area-img" />

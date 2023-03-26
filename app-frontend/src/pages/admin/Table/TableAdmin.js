@@ -47,7 +47,7 @@ const TableAdminStyles = styled.div`
             }
           }
           .button {
-            margin-left: 8px;
+            margin: 0px 0px 12px 8px;
             &.button__update {
             }
             &.button__remove {
@@ -97,16 +97,16 @@ const TableAdmin = (props) => {
         <thead className="table__head--container">
           <tr className="table__row">
             <th className="table__head item__id" scope="col">
-              Mã Bàn - Phòng
+              Mã Bàn
             </th>
             <th className="table__head" scope="col">
               Số Thứ Tự
             </th>
             <th className="table__head" scope="col">
-              Số Chỗ Ngồi
+              Phòng
             </th>
             <th className="table__head" scope="col">
-              Trạng Thái
+              Số Chỗ Ngồi
             </th>
           </tr>
         </thead>
@@ -114,10 +114,12 @@ const TableAdmin = (props) => {
           {tables?.map((table, index) => {
             return (
               <tr className="table__row" key={table?._id}>
-                <td className="table__data item__id">{table?._id}</td>
-                <td className="table__data">{table?.SoThuThuBan}</td>
+                <td className="table__data item__id" title={table?.MaBan}>
+                  {table?.MaBan}
+                </td>
+                <td className="table__data">{table?.SoThuTuBan}</td>
+                <td className="table__data">{table?.MaPhong?.MaPhong}</td>
                 <td className="table__data">{table?.SoChoNgoi}</td>
-                <td className="table__data">{table?.TrangThai ? "Đang Dùng" : "Đang Trống"}</td>
                 <td className="table__data">
                   <Button
                     className="button button__update"

@@ -242,7 +242,6 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
     handleSubmit,
     watch,
     getValues,
-
     formState: { errors, isValid, isLoading, isSubmitting },
   } = useForm({
     defaultValues: {
@@ -297,13 +296,6 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
           ListPhong: null,
           ListBan: null,
         };
-        // dispatch(getLinkFromImageFile({ image: file, id: image[0].name }))
-        //   .then((value) => {
-        //     console.log(value);
-        //   })
-        //   .catch((err) => {
-        //     console.log(err);
-        //   });
 
         setLoading(true);
         dispatch(addOrder(order))
@@ -321,20 +313,6 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
       }
     }
   };
-  // const createDateValue = (data, plusHour = 0) => {
-  //   const { date, time } = data;
-  //   const separatedDate = date.split("-");
-  //   const separatedTime = time.split(":");
-  //   return new Date(
-  //     separatedDate[0],
-  //     separatedDate[1] < 10
-  //       ? "0" + Number(separatedDate[1]) + 1
-  //       : Number(separatedDate[1]) + 1 + "",
-  //     separatedDate[2],
-  //     separatedTime[0] + plusHour,
-  //     separatedTime[1]
-  //   );
-  // };
 
   const handleChangeType = (val) => {
     setBookingType(val);
@@ -354,7 +332,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
     });
   };
   const handleMouseOutFile = async (e) => {
-    console.log(e.target.files[0]);
+    // console.log(e.target.files[0]);
     const base64 = await convertBase64(e.target.files[0]);
     axios
       .post("http://localhost:5500/api/image/sendImageAndGetLink", { image: base64 })
@@ -373,7 +351,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
             </div>
           </div>
           <div className="modal__body">
-            <div className="input__container">
+            {/* <div className="input__container">
               <Input
                 onMouseOut={handleMouseOutFile}
                 className="input"
@@ -387,7 +365,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
               <div className="error__container">
                 <div className="error__message">{errors?.file?.message}</div>
               </div>
-            )}
+            )} */}
             <div className="general__infor">
               <div className="row__container">
                 <div className="value__container">

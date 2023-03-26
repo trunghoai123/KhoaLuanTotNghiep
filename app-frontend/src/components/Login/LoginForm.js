@@ -13,12 +13,14 @@ import { colors } from "variables";
 import styled from "styled-components";
 import Button from "components/Button/Button";
 import { useForm } from "react-hook-form";
-import { AuthContext } from "utils/context/AuthContext";
+import { AuthContext, useAuthContext } from "utils/context/AuthContext";
 import { signIn } from "store/auth/authSlice";
 import { enqueueSnackbar } from "notistack";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
+import { useFormStateContext } from "utils/context/FormStateContext";
+import { useNavigate } from "react-router-dom";
 const LoginFormStyles = styled.div`
   transition: all ease 200ms;
   position: fixed;
@@ -98,9 +100,9 @@ const LoginForm = ({ handleCloseForm = () => {} }) => {
     },
     resolver: yupResolver(schema),
   });
+  const navigation = useNavigate();
   const dispatch = useDispatch();
   const onSubmit = (values) => {
-    console.log(values);
     const processedValue = {
       Email: values.email,
       MatKhau: values.password,
@@ -112,18 +114,25 @@ const LoginForm = ({ handleCloseForm = () => {} }) => {
             variant: "warning",
           });
         } else {
-          enqueueSnackbar("Đăng nhập thành công", {
-            variant: "success",
-          });
           updateAuthUser(data.payload.account);
           handleCloseForm();
+          if (data.payload.account.LoaiTaiKhoan === 1) {
+            enqueueSnackbar("Đăng nhập thành công với quyền nhân viên", {
+              variant: "success",
+            });
+            navigation("/admin");
+          } else {
+            enqueueSnackbar("Đăng nhập thành công", {
+              variant: "success",
+            });
+          }
         }
       })
       .catch((err) => {
         console.log("error while create account");
       });
   };
-  const { user, updateAuthUser } = useContext(AuthContext);
+  const { user, updateAuthUser } = useAuthContext();
   return (
     <LoginFormStyles>
       <form className="main__form" onSubmit={handleSubmit(onSubmit)}>

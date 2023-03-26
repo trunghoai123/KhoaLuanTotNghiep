@@ -22,16 +22,18 @@ import store from "store/index";
 import { SnackbarProvider } from "notistack";
 import Orders from "pages/customer/Orders";
 import AppCustomer from "pages/customer/AppCustomer";
-import { AuthContext } from "utils/context/AuthContext";
+import { AuthContext, AuthProvider } from "utils/context/AuthContext";
 import NotFound from "components/NotFound/NotFound";
+import { FormStateProvider } from "utils/context/FormStateContext";
 const App = (props) => {
-  const [user, setUser] = useState();
   return (
     <Provider store={store}>
-      <AuthContext.Provider value={{ user, updateAuthUser: setUser }}>
-        <SnackbarProvider autoHideDuration={4000} />
-        <RouterProvider router={router}></RouterProvider>
-      </AuthContext.Provider>
+      <AuthProvider>
+        <FormStateProvider>
+          <SnackbarProvider autoHideDuration={4000} />
+          <RouterProvider router={router}></RouterProvider>
+        </FormStateProvider>
+      </AuthProvider>
     </Provider>
   );
 };
@@ -73,10 +75,6 @@ const router = createBrowserRouter([
     element: <AppAdmin></AppAdmin>,
     errorElement: <NotFound></NotFound>,
     children: [
-      // {
-      //   path: "not-found",
-      //   element: <NotFound></NotFound>,
-      // },
       {
         path: "",
         element: <HomePage></HomePage>,
@@ -101,6 +99,10 @@ const router = createBrowserRouter([
       {
         path: "table",
         element: <TableAdmin></TableAdmin>,
+      },
+      {
+        path: "booking",
+        element: <Dishes></Dishes>,
       },
     ],
   },

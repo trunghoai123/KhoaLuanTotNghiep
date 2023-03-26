@@ -46,7 +46,7 @@ const AreaAdminStyles = styled.div`
             }
           }
           .button {
-            margin-left: 8px;
+            margin: 0px 0px 12px 8px;
             &.button__update {
             }
             &.button__remove {
@@ -115,10 +115,10 @@ const AreaAdmin = (props) => {
           {areas?.map((area, index) => {
             return (
               <tr className="table__row" key={area?._id}>
-                <td className="table__data item__id">{area._id}</td>
+                <td className="table__data item__id">{area.MaKhuVuc}</td>
                 <td className="table__data">{area?.TenKhuVuc}</td>
-                <td className="table__data">{area?.MoTa}</td>
                 <td className="table__data">{area?.ViTriCuThe}</td>
+                <td className="table__data">{area?.MoTa}</td>
                 <td className="table__data data__image">
                   <div className="img__container">
                     <img className="data__img" src={area?.HinhAnh} alt={area?.TenKhuVuc} />

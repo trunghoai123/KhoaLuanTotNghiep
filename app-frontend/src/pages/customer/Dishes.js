@@ -11,7 +11,8 @@ import BookingModal from "components/Modal/BookingModal";
 import Cart from "components/Cart/Cart";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCartById } from "store/cart/cartSlice";
-import { AuthContext } from "utils/context/AuthContext";
+import { useAuthContext } from "utils/context/AuthContext";
+import { useFormStateContext } from "utils/context/FormStateContext";
 const DishesStyles = styled.div`
   .top__actions {
     display: flex;
@@ -93,12 +94,12 @@ const DishesStyles = styled.div`
       }
     }
     .right__container {
-      height: 800px;
       padding: 20px;
       flex: 1;
       background-color: white;
-      overflow-y: auto;
-      ::-webkit-scrollbar {
+      /* height: 800px; */
+      /* overflow-y: auto; */
+      /* ::-webkit-scrollbar {
         width: 10px;
       }
       ::-webkit-scrollbar-track {
@@ -111,7 +112,7 @@ const DishesStyles = styled.div`
       }
       ::-webkit-scrollbar-thumb:hover {
         background: #555;
-      }
+      } */
       .dishes__container {
         display: flex;
         flex-wrap: wrap;
@@ -211,11 +212,14 @@ const Dishes = (props) => {
   const [dishes, setDishes] = useState();
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.cart);
-  const { user, updateAuthUser } = useContext(AuthContext);
+  const { user, updateAuthUser } = useAuthContext();
+  const { openSignIn, setOpenSignIn, openSignUp, setOpenSignUp } = useFormStateContext();
+  console.log(user);
   const handleShowModal = () => {
     if (user) {
       setShowForm(true);
     } else {
+      setOpenSignIn(true);
     }
   };
   useEffect(() => {

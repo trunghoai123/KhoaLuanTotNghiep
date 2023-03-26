@@ -18,8 +18,7 @@ import Button from "components/Button/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { createAccount } from "store/auth/authSlice";
 import { enqueueSnackbar } from "notistack";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "utils/context/AuthContext";
+import { useAuthContext } from "utils/context/AuthContext";
 const SignupFormStyles = styled.div`
   transition: all ease 200ms;
   position: fixed;
@@ -118,7 +117,7 @@ const SignupForm = ({ handleCloseForm = () => {} }) => {
     resolver: yupResolver(schema),
   });
   const dispatch = useDispatch();
-  const { user, updateAuthUser } = useContext(AuthContext);
+  const { user, updateAuthUser } = useAuthContext();
   const onSubmit = (values) => {
     const processedValue = {
       Email: values.email,

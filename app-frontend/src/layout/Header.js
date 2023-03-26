@@ -5,8 +5,9 @@ import { colors } from "../variables";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import LoginForm from "components/Login/LoginForm";
 import SignupForm from "components/Login/SignupForm";
-import { AuthContext } from "utils/context/AuthContext";
+import { useAuthContext } from "utils/context/AuthContext";
 import { enqueueSnackbar } from "notistack";
+import { useFormStateContext } from "utils/context/FormStateContext";
 
 const HeaderStyles = styled.div`
   position: fixed;
@@ -125,28 +126,26 @@ const HeaderStyles = styled.div`
 `;
 
 const Header = (props) => {
-  const [isSigningin, setIsSigningin] = useState(false);
-  const [isRegitering, setIsRegistering] = useState(false);
-  const { user, updateAuthUser } = useContext(AuthContext);
+  const { user, updateAuthUser } = useAuthContext();
   const navigation = useNavigate();
+  const { openSignIn, setOpenSignIn, openSignUp, setOpenSignUp } = useFormStateContext();
   const handleLogout = () => {
     updateAuthUser(null);
     enqueueSnackbar("Đã đăng xuất", {
       variant: "success",
     });
-    navigation("/");
   };
   const handleSignIn = () => {
-    setIsSigningin(true);
+    setOpenSignIn(true);
   };
   const handleCloseLoginForm = () => {
-    setIsSigningin(false);
+    setOpenSignIn(false);
   };
   const handleSignup = () => {
-    setIsRegistering(true);
+    setOpenSignUp(true);
   };
   const handleCloseSignupForm = () => {
-    setIsRegistering(false);
+    setOpenSignUp(false);
   };
   return (
     <HeaderStyles>
@@ -171,7 +170,6 @@ const Header = (props) => {
             Phòng
           </NavLink>
         </div>
-
         <div className="link__container">
           <NavLink className="navlink" to={"/orders"}>
             Phiếu Đặt
@@ -231,8 +229,8 @@ const Header = (props) => {
           )}
         </div>
       </div>
-      {isSigningin && <LoginForm handleCloseForm={handleCloseLoginForm}></LoginForm>}
-      {isRegitering && <SignupForm handleCloseForm={handleCloseSignupForm}></SignupForm>}
+      {openSignIn && <LoginForm handleCloseForm={handleCloseLoginForm}></LoginForm>}
+      {openSignUp && <SignupForm handleCloseForm={handleCloseSignupForm}></SignupForm>}
     </HeaderStyles>
   );
 };

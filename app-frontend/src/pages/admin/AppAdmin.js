@@ -5,13 +5,12 @@ import React, { useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Outlet } from "react-router-dom";
 import Footer from "layout/Footer";
-import Header from "layout/Header";
 import AdminHeader from "layout/AdminHeader";
-import { AuthContext } from "utils/context/AuthContext";
+import { useAuthContext } from "utils/context/AuthContext";
 import NotFound from "components/NotFound/NotFound";
 
 const AppAdmin = (props) => {
-  const { user, updateAuthUser } = useContext(AuthContext);
+  const { user, updateAuthUser } = useAuthContext();
   if (!user) return <NotFound></NotFound>;
   else
     return (

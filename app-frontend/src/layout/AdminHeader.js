@@ -6,8 +6,9 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import LoginForm from "components/Login/LoginForm";
 import SignupForm from "components/Login/SignupForm";
 import { useDispatch } from "react-redux";
-import { AuthContext } from "utils/context/AuthContext";
+import { useAuthContext } from "utils/context/AuthContext";
 import { enqueueSnackbar } from "notistack";
+import { useFormStateContext } from "utils/context/FormStateContext";
 
 const AdminHeaderStyles = styled.div`
   position: fixed;
@@ -126,9 +127,9 @@ const AdminHeaderStyles = styled.div`
 `;
 
 const AdminHeader = (props) => {
-  const [isSigningin, setIsSigningin] = useState(false);
-  const [isRegitering, setIsRegistering] = useState(false);
-  const { user, updateAuthUser } = useContext(AuthContext);
+  // const [isSigningin, setIsSigningin] = useState(false);
+  const { user, updateAuthUser } = useAuthContext();
+  const { openSignIn, setOpenSignIn, openSignUp, setOpenSignUp } = useFormStateContext();
   const navigation = useNavigate();
   const handleLogout = () => {
     updateAuthUser(null);
@@ -138,18 +139,17 @@ const AdminHeader = (props) => {
     navigation("/");
   };
   const handleSignIn = () => {
-    setIsSigningin(true);
+    setOpenSignIn(true);
   };
   const handleCloseLoginForm = () => {
-    setIsSigningin(false);
+    setOpenSignIn(false);
   };
   const handleSignup = () => {
-    setIsRegistering(true);
+    setOpenSignUp(true);
   };
   const handleCloseSignupForm = () => {
-    setIsRegistering(false);
+    setOpenSignUp(false);
   };
-  console.log(user);
   return (
     <AdminHeaderStyles>
       <div className="navbar__list">
@@ -179,7 +179,7 @@ const AdminHeader = (props) => {
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/admin/contact"}>
+          <NavLink className="navlink" to={"/admin/booking"}>
             Đặt Bàn
           </NavLink>
         </div>
@@ -241,8 +241,8 @@ const AdminHeader = (props) => {
           )}
         </div>
       </div>
-      {isSigningin && <LoginForm handleCloseForm={handleCloseLoginForm}></LoginForm>}
-      {isRegitering && <SignupForm handleCloseForm={handleCloseSignupForm}></SignupForm>}
+      {openSignIn && <LoginForm handleCloseForm={handleCloseLoginForm}></LoginForm>}
+      {openSignUp && <SignupForm handleCloseForm={handleCloseSignupForm}></SignupForm>}
     </AdminHeaderStyles>
   );
 };
