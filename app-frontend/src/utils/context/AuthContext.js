@@ -10,8 +10,18 @@ const AuthContext = createContext();
 
 const AuthProvider = (props) => {
   const [user, setUser] = useState(null);
-  const value = { user, updateAuthUser: setUser };
-  useEffect(() => {}, []);
+  const handleSetUser = (account) => {
+    localStorage.removeItem("Restaurant-Account");
+    localStorage.setItem("Restaurant-Account", JSON.stringify(account));
+    setUser(account);
+  };
+  const value = { user, updateAuthUser: handleSetUser };
+  useEffect(() => {
+    const localUser = JSON.parse(localStorage.getItem("Restaurant-Account"));
+    if (localUser) {
+      setUser(localUser);
+    }
+  }, []);
   return <AuthContext.Provider value={value} {...props}></AuthContext.Provider>;
 };
 
