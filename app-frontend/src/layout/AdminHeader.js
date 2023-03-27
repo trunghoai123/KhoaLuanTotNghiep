@@ -1,7 +1,6 @@
 import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import { colors } from "../variables";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import LoginForm from "components/Login/LoginForm";
 import SignupForm from "components/Login/SignupForm";
@@ -9,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useAuthContext } from "utils/context/AuthContext";
 import { enqueueSnackbar } from "notistack";
 import { useFormStateContext } from "utils/context/FormStateContext";
+import { colors } from "variables";
 
 const AdminHeaderStyles = styled.div`
   position: fixed;
@@ -72,53 +72,109 @@ const AdminHeaderStyles = styled.div`
         }
       }
     }
-    .link__container {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      width: 120px;
-      &.logo__container {
-        left: 20px;
-        top: 0px;
-        position: absolute;
+    .list__link__container {
+      background-color: ${(props) => colors.gold_1_blur};
+      position: absolute;
+      left: 0px;
+      height: 100vh;
+      width: 200px;
+      transition: all ease 300ms;
+      &.hidden {
+        left: -200px;
       }
-      .navlink {
-        line-height: 54px;
-        width: 100%;
-        height: 100%;
-        font-weight: 300;
+      .icon__toggle__container {
+        position: absolute;
+        top: 0px;
+        right: -54px;
+        font-size: 20px;
+        width: 54px;
+        height: 54px;
         display: flex;
         justify-content: center;
-        color: white;
-        text-transform: uppercase;
-        text-decoration: none;
-        &.image__container {
-          height: 100%;
-        }
-        &:hover {
-          color: white;
-        }
-        .logo__image {
-          height: 100%;
+        align-items: center;
+        cursor: pointer;
+
+        background-color: ${(props) => colors.gold_1};
+        :hover {
+          background-color: ${(props) => colors.gold_1_blur};
         }
       }
-      &.external__links {
-        column-gap: 8px;
-        justify-content: center;
-        .link__external {
-          .external__link {
+      .link__container {
+        cursor: pointer;
+        /* height: 100%; */
+        display: flex;
+        align-items: center;
+        width: 120px;
+        width: 100%;
+        text-align: center;
+        transition: all ease 150ms;
+        :hover {
+          background-color: ${(props) => colors.gold_1};
+        }
+        &.menu__list {
+          display: block;
+        }
+
+        &.logo__container {
+          left: 20px;
+          top: 0px;
+          position: absolute;
+        }
+        .navlink {
+          position: relative;
+          line-height: 54px;
+          width: 100%;
+          height: 100%;
+          font-weight: 300;
+          display: flex;
+          justify-content: center;
+          color: white;
+          text-transform: uppercase;
+          text-decoration: none;
+          .down__icon__container {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translate(-50%, -50%);
+          }
+          &.image__container {
+            height: 100%;
+          }
+          &:hover {
             color: white;
-            font-size: 18px;
+          }
+          .logo__image {
+            height: 100%;
+          }
+        }
+        .sublinks__container {
+          .sublink {
+            display: block;
+            color: white;
+            text-decoration: none;
             :hover {
-              color: white;
+              background-color: ${colors.gold_1_blur};
             }
           }
         }
-        .btn__login {
-          font-size: 12px;
-          cursor: pointer;
-          :hover {
-            text-decoration: underline;
+        &.external__links {
+          column-gap: 8px;
+          justify-content: center;
+          .link__external {
+            .external__link {
+              color: white;
+              font-size: 18px;
+              :hover {
+                color: white;
+              }
+            }
+          }
+          .btn__login {
+            font-size: 12px;
+            cursor: pointer;
+            :hover {
+              text-decoration: underline;
+            }
           }
         }
       }
@@ -129,7 +185,14 @@ const AdminHeaderStyles = styled.div`
 const AdminHeader = (props) => {
   // const [isSigningin, setIsSigningin] = useState(false);
   const { user, updateAuthUser } = useAuthContext();
-  const { openSignIn, setOpenSignIn, openSignUp, setOpenSignUp } = useFormStateContext();
+  const {
+    openSignIn,
+    setOpenSignIn,
+    openSignUp,
+    setOpenSignUp,
+    adminNavbarState,
+    setAdminNavbarState,
+  } = useFormStateContext();
   const navigation = useNavigate();
   const handleLogout = () => {
     updateAuthUser(null);
@@ -137,6 +200,11 @@ const AdminHeader = (props) => {
       variant: "success",
     });
     navigation("/");
+  };
+  const handleToggleAdminNavbar = () => {
+    setAdminNavbarState((oldState) => {
+      return { ...oldState, isOpen: !oldState.isOpen };
+    });
   };
   const handleSignIn = () => {
     setOpenSignIn(true);
@@ -153,52 +221,46 @@ const AdminHeader = (props) => {
   return (
     <AdminHeaderStyles>
       <div className="navbar__list">
-        <div className="link__container logo__container">
-          <NavLink className="navlink image__container" to={"/admin"}>
-            <img className="logo__image" src={"/images/logo.png"} alt="logo" />
-          </NavLink>
-        </div>
-        <div className="link__container">
-          <NavLink className="navlink" to={"/admin/area"}>
-            Khu vực
-          </NavLink>
-        </div>
-        <div className="link__container">
-          <NavLink className="navlink" to={"/admin/room"}>
-            Phòng
-          </NavLink>
-        </div>
-        <div className="link__container">
-          <NavLink className="navlink" to={"/admin/table"}>
-            Bàn
-          </NavLink>
-        </div>
-        <div className="link__container">
-          <NavLink className="navlink" to={"/admin/booking"}>
-            Đặt Bàn
-          </NavLink>
-        </div>
-        <div className="link__container">
-          <NavLink className="navlink" to={"/admin/blog"}>
-            Tài khoản
-          </NavLink>
-        </div>
-        <div className="link__container external__links">
-          <span className="link__external">
-            <a className="external__link" href="/admin/">
-              <i className="fa-brands fa-square-youtube"></i>
-            </a>
-          </span>
-          <span className="link__external">
-            <a className="external__link" href="/admin/">
-              <i className="fa-brands fa-square-facebook"></i>
-            </a>
-          </span>
-          <span className="link__external">
-            <span className="external__link">
-              <i className="fa-brands fa-twitter"></i>
+        <div className={`list__link__container ${adminNavbarState?.isOpen ? "" : "hidden"}`}>
+          <div className="icon__toggle__container" onClick={handleToggleAdminNavbar}>
+            {adminNavbarState?.isOpen ? (
+              <i className="fa-solid fa-xmark"></i>
+            ) : (
+              <i className="fa-solid fa-list-ul"></i>
+            )}
+          </div>
+          <div className="link__container menu__list">
+            <span className="navlink" to={"/admin/area"}>
+              Khu vực
+              <div className="down__icon__container">
+                <i className="fa-solid fa-caret-down"></i>
+              </div>
             </span>
-          </span>
+            <div className="sublinks__container">
+              <NavLink className="sublink">Tìm kiếm</NavLink>
+              <NavLink className="sublink">Cập nhật</NavLink>
+            </div>
+          </div>
+          <div className="link__container">
+            <span className="navlink" to={"/admin/room"}>
+              Phòng
+            </span>
+          </div>
+          <div className="link__container">
+            <span className="navlink" to={"/admin/table"}>
+              Bàn
+            </span>
+          </div>
+          <div className="link__container">
+            <span className="navlink" to={"/admin/booking"}>
+              Đặt Bàn
+            </span>
+          </div>
+          <div className="link__container">
+            <span className="navlink" to={"/admin/blog"}>
+              Tài khoản
+            </span>
+          </div>
         </div>
         <div className="profile__container">
           {!user && (

@@ -5,7 +5,18 @@ const FormStateContext = createContext();
 const FormStateProvider = (props) => {
   const [openSignIn, setOpenSignIn] = useState(false);
   const [openSignUp, setOpenSignUp] = useState(false);
-  const value = { openSignIn, setOpenSignIn, openSignUp, setOpenSignUp };
+  const [adminNavbarState, setAdminNavbarState] = useState({
+    isOpen: false,
+    openning: [],
+  });
+  const value = {
+    openSignIn,
+    setOpenSignIn,
+    openSignUp,
+    setOpenSignUp,
+    adminNavbarState,
+    setAdminNavbarState,
+  };
   useEffect(() => {}, []);
   return <FormStateContext.Provider value={value} {...props}></FormStateContext.Provider>;
 };

@@ -1,6 +1,7 @@
 export const colors = {
   brown_1: "#4e402d",
   gold_1: "#dcb46e",
+  gold_1_blur: "#bbae78",
   gray_1: "#d1d2d4",
   light_gray_1: "#f5f5fa",
   brown_shadow: "#2b2319",

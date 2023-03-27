@@ -71,7 +71,6 @@ const TableAdmin = (props) => {
       try {
         const result = await axiosClient.get("table/getAllTable", {});
         if (result?.data?.data) {
-          console.log(result.data.data);
           setTables(result.data.data);
         }
       } catch (error) {
