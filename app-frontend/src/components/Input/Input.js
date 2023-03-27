@@ -3,16 +3,20 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { colors } from "variables";
 const InputTextStyles = styled.input`
-  width: 100%;
   border: 1px solid ${colors.gray_1};
   outline: none;
   padding: ${(props) => props.padding};
+  width: ${(props) => props.width};
 `;
 
 const Input = React.forwardRef(
-  ({ type = "text", placeholder = "", name = "", padding = "6px 12px", ...rest }, ref) => {
+  (
+    { width = "100%", type = "text", placeholder = "", name = "", padding = "6px 12px", ...rest },
+    ref
+  ) => {
     return (
       <InputTextStyles
+        width={width}
         type={type}
         name={name}
         placeholder={placeholder}

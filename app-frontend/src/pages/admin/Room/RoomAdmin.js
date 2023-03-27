@@ -118,7 +118,7 @@ const RoomAdmin = (props) => {
               <tr className="table__row" key={room?._id}>
                 <td className="table__data item__id">{room?.MaPhong}</td>
                 <td className="table__data">{room?.TenPhong}</td>
-                <td className="table__data">{room?.MaKhuVuc?.MaKhuVuc}</td>
+                <td className="table__data">{room?.MaKhuVuc?.TenKhuVuc}</td>
                 <td className="table__data">{room?.SoChoNgoiToiDa}</td>
                 <td className="table__data data__image">
                   <div className="img__container">

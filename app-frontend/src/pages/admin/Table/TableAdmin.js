@@ -118,7 +118,7 @@ const TableAdmin = (props) => {
                   {table?.MaBan}
                 </td>
                 <td className="table__data">{table?.SoThuTuBan}</td>
-                <td className="table__data">{table?.MaPhong?.MaPhong}</td>
+                <td className="table__data">{table?.MaPhong?.TenPhong}</td>
                 <td className="table__data">{table?.SoChoNgoi}</td>
                 <td className="table__data">
                   <Button

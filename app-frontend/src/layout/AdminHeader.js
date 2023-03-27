@@ -159,11 +159,6 @@ const AdminHeader = (props) => {
           </NavLink>
         </div>
         <div className="link__container">
-          <NavLink className="navlink" to={"/admin"}>
-            Trang Chủ
-          </NavLink>
-        </div>
-        <div className="link__container">
           <NavLink className="navlink" to={"/admin/area"}>
             Khu vực
           </NavLink>
@@ -186,11 +181,6 @@ const AdminHeader = (props) => {
         <div className="link__container">
           <NavLink className="navlink" to={"/admin/blog"}>
             Tài khoản
-          </NavLink>
-        </div>
-        <div className="link__container">
-          <NavLink className="navlink" to={"/admin/about"}>
-            Chính Sách
           </NavLink>
         </div>
         <div className="link__container external__links">

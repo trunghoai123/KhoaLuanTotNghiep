@@ -80,6 +80,11 @@ const BookingModalStyles = styled.div`
           background: #555;
         }
         .general__infor {
+          .group__title {
+            padding-bottom: 20px;
+            text-align: center;
+            border-top: 1px solid lightgray;
+          }
           .row__container {
             margin-bottom: 30px;
             display: flex;
@@ -95,6 +100,19 @@ const BookingModalStyles = styled.div`
                 }
               }
               .input__container {
+                &.phone__input__container {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  column-gap: 12px;
+                  .shared__place {
+                    /* width: auto; */
+                    /* flex: 1; */
+                  }
+                  .btn__search--phone {
+                    /* margin-left: auto; */
+                  }
+                }
                 &.time__picker__container {
                   position: relative;
                   display: flex;
@@ -223,6 +241,17 @@ const BookingModalStyles = styled.div`
 
 const schema = yup
   .object({
+    phone: yup
+      .string("hãy xem lại số điện thoại")
+      .matches(/[0][0-9][0-9]{8}/, "hãy nhập đúng định dạng số điện thoại")
+      .required("hãy nhập số lượng"),
+    fullname: yup
+      .string("hãy xem lại họ tên")
+      .matches(
+        /^(([a-zA-Z\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*)([a-zA-Z\s\'ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*)([a-zA-Z\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]))*$/,
+        "hãy kiểm tra lại họ tên"
+      )
+      .required("hãy nhập họ tên"),
     size: yup.string("hãy xem lại số lượng").required("hãy nhập số lượng"),
     time: yup.string("hãy xem lại thời gian").required("hãy nhập thời gian"),
     date: yup.string("hãy xem lại ngày").required("hãy chọn ngày"),
@@ -243,6 +272,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
     handleSubmit,
     watch,
     getValues,
+    setValue,
     formState: { errors, isValid, isLoading, isSubmitting },
   } = useForm({
     defaultValues: {
@@ -250,13 +280,23 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
       time: "07:43",
       date: "2023-03-15",
       kind: "0",
-      duration: "1",
       note: "Không có gì",
       image: "",
+      phone: "",
+      fullname: "",
+      // phone: "006461526",
+      // fullname: "Nguyễn Trung Hoài",
     },
     resolver: yupResolver(schema),
   });
   const { user, updateAuthUser } = useAuthContext();
+  useEffect(() => {
+    if (user.LoaiTaiKhoan === 0) {
+      setValue("fullname", "trung hoai");
+      setValue("phone", "0906461526");
+    }
+  });
+  console.log(errors);
   const onSubmit = (data) => {
     if (isValid) {
       const { size, duration, date, time, kind, note, image } = data;
@@ -291,13 +331,12 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
           TrangThai: Number(0),
           SoLuongNguoi: Number(size),
           ThoiGianBatDau: startAt,
-          ThoiGianKetThuc: endAt,
+          // ThoiGianKetThuc: endAt,
           MaKhachHang: user?.id,
           ListThucDon: clonedCartItems,
           ListPhong: null,
           ListBan: null,
         };
-
         setLoading(true);
         dispatch(addOrder(order))
           .then((value) => {
@@ -322,11 +361,9 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
     return new Promise((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
-
       fileReader.onload = () => {
         resolve(fileReader.result);
       };
-
       fileReader.onerror = (error) => {
         reject(error);
       };
@@ -341,6 +378,9 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
         console.log(res.data);
       });
   };
+  const handleSearchCustomer = () => {
+    console.log("hello");
+  };
   return (
     <BookingModalStyles>
       <form className="main__form" onSubmit={handleSubmit(onSubmit)}>
@@ -352,6 +392,68 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
             </div>
           </div>
           <div className="modal__body">
+            {user.LoaiTaiKhoan === 1 && (
+              <div className="general__infor customer__infor">
+                <div className="group__title">Thông tin khách hàng</div>
+                <div className="row__container">
+                  <div className="value__container">
+                    <div className="label__container">
+                      <label className="label" htmlFor="size">
+                        Số điện thoại
+                      </label>
+                    </div>
+                    <div className="input__container phone__input__container">
+                      <Input
+                        className="input shared__place"
+                        id="phone"
+                        placeholder="0906461526"
+                        type="text"
+                        {...register("phone")}
+                        autoComplete="off"
+                        // width="auto"
+                      />
+                      <Button
+                        padding="6px"
+                        type="button"
+                        bgColor={colors.orange_2}
+                        bgHover={colors.orange_2_hover}
+                        className="btn__search--phone"
+                        onClick={handleSearchCustomer}
+                      >
+                        <i className="icon__search fa fa-search"></i>
+                      </Button>
+                    </div>
+                    {errors?.phone && (
+                      <div className="error__container">
+                        <div className="error__message">{errors?.phone?.message}</div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="value__container">
+                    <div className="label__container">
+                      <label className="label" htmlFor="data">
+                        Họ và tên
+                      </label>
+                    </div>
+                    <div className="input__container">
+                      <Input
+                        type="fullname"
+                        className="input"
+                        autoComplete="off"
+                        id="fullname"
+                        {...register("fullname")}
+                      />
+                    </div>
+                    {errors?.fullname && (
+                      <div className="error__container">
+                        <div className="error__message">{errors?.fullname?.message}</div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+            <hr></hr>
             {/* <div className="input__container">
               <Input
                 onMouseOut={handleMouseOutFile}
@@ -499,7 +601,23 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                       )}
                     </div>
                   )}
-                  <div className="value__container">
+                  {!bookingType && (
+                    <div className="value__container">
+                      <div className="label__container">
+                        <label className="label">Ghi chú thêm</label>
+                      </div>
+                      <div className="input__container" htmlFor="note">
+                        <TextArea
+                          {...register("note")}
+                          resize="none"
+                          rows="3"
+                          id="note"
+                          className="input"
+                        ></TextArea>
+                      </div>
+                    </div>
+                  )}
+                  {/* <div className="value__container">
                     <div className="label__container">
                       <label className="label" htmlFor="duration">
                         Thời gian
@@ -515,7 +633,6 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                         {...register("duration")}
                         placeholder="1"
                       />
-
                       <div className="additonal__tail">Giờ</div>
                     </div>
                     {errors?.duration && (
@@ -523,26 +640,8 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                         <div className="error__message">{errors?.duration?.message} </div>
                       </div>
                     )}
-                  </div>
+                  </div> */}
                 </div>
-                {!bookingType && (
-                  <div className="row__container">
-                    <div className="value__container">
-                      <div className="label__container">
-                        <label className="label">Ghi chú thêm</label>
-                      </div>
-                      <div className="input__container" htmlFor="note">
-                        <TextArea
-                          {...register("note")}
-                          resize="none"
-                          rows="3"
-                          id="note"
-                          className="input"
-                        ></TextArea>
-                      </div>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
           </div>

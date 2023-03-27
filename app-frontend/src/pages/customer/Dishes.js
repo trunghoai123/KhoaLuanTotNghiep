@@ -214,7 +214,6 @@ const Dishes = (props) => {
   const { cartItems } = useSelector((state) => state.cart);
   const { user, updateAuthUser } = useAuthContext();
   const { openSignIn, setOpenSignIn, openSignUp, setOpenSignUp } = useFormStateContext();
-  console.log(user);
   const handleShowModal = () => {
     if (user) {
       setShowForm(true);
