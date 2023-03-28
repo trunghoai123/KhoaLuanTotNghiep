@@ -9,6 +9,7 @@ import { useAuthContext } from "utils/context/AuthContext";
 import { enqueueSnackbar } from "notistack";
 import { useFormStateContext } from "utils/context/FormStateContext";
 import { colors } from "variables";
+import NavbarItem from "components/Navbar/NavbarItem";
 
 const AdminHeaderStyles = styled.div`
   position: fixed;
@@ -109,7 +110,9 @@ const AdminHeaderStyles = styled.div`
         text-align: center;
         transition: all ease 150ms;
         :hover {
-          background-color: ${(props) => colors.gold_1};
+          .navlink {
+            background-color: ${(props) => colors.gold_1};
+          }
         }
         &.menu__list {
           display: block;
@@ -153,7 +156,7 @@ const AdminHeaderStyles = styled.div`
             color: white;
             text-decoration: none;
             :hover {
-              background-color: ${colors.gold_1_blur};
+              background-color: ${colors.gold_1};
             }
           }
         }
@@ -181,6 +184,89 @@ const AdminHeaderStyles = styled.div`
     }
   }
 `;
+
+const adminNavbarItems = [
+  {
+    title: "Khu vực",
+    id: 1,
+    subNavs: [
+      {
+        id: 1,
+        title: "Tìm kiếm",
+        to: "area/search",
+      },
+      {
+        id: 2,
+        title: "Cập nhật",
+        to: "area/update/",
+      },
+    ],
+  },
+  {
+    title: "Phòng",
+    subNavs: [
+      {
+        id: 1,
+        title: "Tìm kiếm",
+        to: "area/search",
+      },
+      {
+        id: 2,
+        title: "Cập nhật",
+        to: "area/update/",
+      },
+    ],
+  },
+  {
+    title: "Bàn",
+    subNavs: [
+      {
+        id: 1,
+        title: "Tìm kiếm",
+        to: "area/search",
+      },
+      {
+        id: 2,
+        title: "Cập nhật",
+        to: "area/update/",
+      },
+    ],
+  },
+  {
+    title: "Phiếu đặt",
+    subNavs: [
+      {
+        id: 1,
+        title: "Tìm kiếm",
+        to: "area/search",
+      },
+      {
+        id: 2,
+        title: "Cập nhật",
+        to: "area/update/",
+      },
+    ],
+  },
+  {
+    title: "Hóa Đơn",
+    subNavs: [
+      {
+        id: 1,
+        title: "Tìm kiếm",
+        to: "area/search",
+      },
+      {
+        id: 2,
+        title: "Cập nhật",
+        to: "area/update/",
+      },
+    ],
+  },
+  {
+    title: "Tài Khoản",
+    subNavs: [],
+  },
+];
 
 const AdminHeader = (props) => {
   // const [isSigningin, setIsSigningin] = useState(false);
@@ -229,7 +315,10 @@ const AdminHeader = (props) => {
               <i className="fa-solid fa-list-ul"></i>
             )}
           </div>
-          <div className="link__container menu__list">
+          {adminNavbarItems.map((navItem) => {
+            return <NavbarItem navItem={navItem}></NavbarItem>;
+          })}
+          {/* <div className="link__container menu__list">
             <span className="navlink" to={"/admin/area"}>
               Khu vực
               <div className="down__icon__container">
@@ -260,7 +349,7 @@ const AdminHeader = (props) => {
             <span className="navlink" to={"/admin/blog"}>
               Tài khoản
             </span>
-          </div>
+          </div> */}
         </div>
         <div className="profile__container">
           {!user && (
@@ -283,7 +372,7 @@ const AdminHeader = (props) => {
                   </Link>
                   <Link to={"/"} className="menu__item">
                     Phiếu đặt
-                  </Link>{" "}
+                  </Link>
                   <span onClick={handleLogout} className="menu__item">
                     Đăng xuất
                   </span>
