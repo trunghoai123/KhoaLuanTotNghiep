@@ -33,7 +33,8 @@ const NavbarItemStyles = styled.div`
     height: 100%;
     font-weight: 300;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left: 40px;
     color: white;
     text-transform: uppercase;
     text-decoration: none;
@@ -58,7 +59,8 @@ const NavbarItemStyles = styled.div`
       display: block;
       color: white;
       text-decoration: none;
-      text-indent: 30px;
+      text-align: start;
+      text-indent: 60px;
       :hover {
         background-color: ${colors.gold_1};
       }
@@ -109,7 +111,7 @@ const NavbarItem = ({ navItem }) => {
         <div className="sublinks__container">
           {navItem.subNavs.map((subNav) => {
             return (
-              <NavLink key={subNav?.id} className="sublink">
+              <NavLink to={subNav?.to} key={subNav?.id} className="sublink">
                 {subNav?.title}
               </NavLink>
             );

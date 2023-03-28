@@ -100,92 +100,27 @@ const AdminHeaderStyles = styled.div`
           background-color: ${(props) => colors.gold_1_blur};
         }
       }
-      .link__container {
-        cursor: pointer;
-        /* height: 100%; */
-        display: flex;
-        align-items: center;
-        width: 120px;
-        width: 100%;
-        text-align: center;
-        transition: all ease 150ms;
-        :hover {
-          .navlink {
-            background-color: ${(props) => colors.gold_1};
-          }
-        }
-        &.menu__list {
-          display: block;
-        }
-
-        &.logo__container {
-          left: 20px;
-          top: 0px;
-          position: absolute;
-        }
-        .navlink {
-          position: relative;
-          line-height: 54px;
-          width: 100%;
-          height: 100%;
-          font-weight: 300;
-          display: flex;
-          justify-content: center;
-          color: white;
-          text-transform: uppercase;
-          text-decoration: none;
-          .down__icon__container {
-            position: absolute;
-            top: 50%;
-            right: 10px;
-            transform: translate(-50%, -50%);
-          }
-          &.image__container {
-            height: 100%;
-          }
-          &:hover {
-            color: white;
-          }
-          .logo__image {
-            height: 100%;
-          }
-        }
-        .sublinks__container {
-          .sublink {
-            display: block;
-            color: white;
-            text-decoration: none;
-            :hover {
-              background-color: ${colors.gold_1};
-            }
-          }
-        }
-        &.external__links {
-          column-gap: 8px;
-          justify-content: center;
-          .link__external {
-            .external__link {
-              color: white;
-              font-size: 18px;
-              :hover {
-                color: white;
-              }
-            }
-          }
-          .btn__login {
-            font-size: 12px;
-            cursor: pointer;
-            :hover {
-              text-decoration: underline;
-            }
-          }
-        }
-      }
     }
   }
 `;
 
 const adminNavbarItems = [
+  {
+    title: "Nhân viên",
+    id: 1,
+    subNavs: [
+      {
+        id: 1,
+        title: "Lập hóa đơn",
+        to: "order/search",
+      },
+      {
+        id: 2,
+        title: "Lập phiếu đặt",
+        to: "order/update/",
+      },
+    ],
+  },
   {
     title: "Khu vực",
     id: 1,
