@@ -135,18 +135,27 @@ class RoomService {
             },
           };
         }
-      };
+    };
 
-    static getRoomMatchTimeAndSeat = async ({ SoNguoi , ThoiGianBatDau , ThoiGianKetThuc  }) =>{
+    static getRoomMatchTimeAndSeat = async ({ SoNguoi , ThoiGianBatDau , LoaiPhieuDat , MaLoaiPhong }) =>{
         try{
             //lay các phiếu đặt phòng có thời gian không hợp lệ
             const orders = await orderModel.find({
-                $or: [
-                    { ThoiGianBatDau: { $lte: ThoiGianBatDau } ,  ThoiGianKetThuc: { $gte: ThoiGianBatDau }},
-                    { ThoiGianBatDau: { $lte: ThoiGianKetThuc } ,  ThoiGianKetThuc: { $gte: ThoiGianKetThuc } },
-                    { ThoiGianBatDau: { $lte: ThoiGianBatDau } ,  ThoiGianKetThuc: { $gte: ThoiGianKetThuc } },
-                    { ThoiGianBatDau: { $gte: ThoiGianBatDau } ,  ThoiGianKetThuc: { $lte: ThoiGianKetThuc } },
-                ]     
+                $and: [
+                    {
+                      $expr: {
+                        $eq: [
+                          { $dateToString: { format: "%Y-%m-%d", date: "$ThoiGianBatDau" } },
+                          ThoiGianBatDau
+                        ]
+                      }
+                    },
+                    {
+                        LoaiPhieuDat: { $eq: LoaiPhieuDat}
+                    }
+                  ]
+                
+                    
             },{_id: 1})
 
             //chỉ lấy mã
@@ -170,11 +179,13 @@ class RoomService {
                     $and: [
                       { _id: { $nin: roomIdNotMatch } },
                       { SoChoNgoiToiDa: { $gte: SoNguoi } },
+                      { MaLoai: { $eq: MaLoaiPhong}}
                     ]
                   }).lean()
             }else{
                 roomMatchs = await roomModel.find({
-                    SoChoNgoiToiDa: { $gte: SoNguoi }
+                    SoChoNgoiToiDa: { $gte: SoNguoi },
+                    MaLoai: { $eq: MaLoaiPhong}
                 })
             }
 
@@ -199,6 +210,119 @@ class RoomService {
             }
         }
     }
+
+    static getRoomByTypeRoomId = async ({MaLoai}) => {
+        try {
+          const rooms = await roomModel.find({ MaLoai : MaLoai }).populate('MaKhuVuc')
+          .populate('MaLoai')
+          return {
+            code: 200,
+            metadata: {
+              success: true,
+              data: rooms,
+            },
+          };
+        } catch (err) {
+          return {
+            code: 500,
+            metadata: {
+              success: false,
+              message: err.message,
+              status: "get room error",
+            },
+          };
+        }
+    };
+    static getRoomByAreaId = async ({MaKhuVuc}) => {
+        try {
+          const rooms = await roomModel.find({ MaKhuVuc : MaKhuVuc }).populate('MaKhuVuc')
+          .populate('MaLoai')
+          return {
+            code: 200,
+            metadata: {
+              success: true,
+              data: rooms,
+            },
+          };
+        } catch (err) {
+          return {
+            code: 500,
+            metadata: {
+              success: false,
+              message: err.message,
+              status: "get room error",
+            },
+          };
+        }
+    };
+
+    static getRoomByAll = async ({MaPhong,TenPhong , TrangThai , SoChoNgoiToiDa , MaLoai , MaKhuVuc}) => {
+        try {
+            let query = {}
+            if(MaLoai && !MaKhuVuc){
+                query = {
+                    MaPhong: { $regex: MaPhong },
+                    TenPhong: { $regex: TenPhong },
+                    TrangThai: TrangThai,
+                    SoChoNgoiToiDa: { $gte: SoChoNgoiToiDa },
+                    MaLoai: MaLoai,
+                    }
+            }
+            if(!MaLoai && MaKhuVuc){
+                query = {
+                    MaPhong: { $regex: MaPhong },
+                    TenPhong: { $regex: TenPhong },
+                    TrangThai: TrangThai,
+                    SoChoNgoiToiDa: { $gte: SoChoNgoiToiDa },
+                    MaKhuVuc: MaKhuVuc,
+                    }
+            }
+            if(!MaLoai && !MaKhuVuc){
+                query = {
+                    MaPhong: { $regex: MaPhong },
+                    TenPhong: { $regex: TenPhong },
+                    TrangThai: TrangThai,
+                    SoChoNgoiToiDa: { $gte: SoChoNgoiToiDa },
+                    }
+            }
+            if(MaLoai && MaKhuVuc){
+                query = {
+                    MaPhong: { $regex: MaPhong },
+                    TenPhong: { $regex: TenPhong },
+                    TrangThai: TrangThai,
+                    SoChoNgoiToiDa: { $gte: SoChoNgoiToiDa },
+                    MaKhuVuc: MaKhuVuc,
+                    MaLoai: MaLoai,
+                }
+            }
+                
+            const rooms = await roomModel.find(query)
+                .populate({
+                    path: 'MaKhuVuc',
+                    select: 'TenKhuVuc MaKhuVuc'
+                  })
+                .populate('MaLoai')
+            return {
+                code: 200,
+                metadata: {
+                success: true,
+                data: rooms,
+                },
+            };
+        } catch (err) {
+          return {
+            code: 500,
+            metadata: {
+              success: false,
+              message: err.message,
+              status: "get room error",
+            },
+          };
+        }
+    };
+
+    
+
 }
 
 module.exports = RoomService

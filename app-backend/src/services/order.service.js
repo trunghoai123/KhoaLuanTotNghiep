@@ -73,7 +73,7 @@ class OrderService {
 
   static getOrderByUser = async ({ MaKhachHang }) => {
     try {
-      const orders = await orderModel.find({ MaKhachHang });
+      const orders = await orderModel.find({ MaKhachHang })
       return {
         code: 200,
         metadata: {
@@ -116,7 +116,7 @@ class OrderService {
 
   static getAllOrder = async () => {
     try {
-      const orders = await orderModel.find();
+      const orders = await orderModel.find()
       return {
         code: 200,
         metadata: {

@@ -8,5 +8,8 @@ router.post('/addRoom' , roomController.addRoom)
 router.post('/updateRoom' , roomController.updateRoom)
 router.post('/deleteRoom' , roomController.deleteRoom)
 router.get('/getRoomMatchTimeAndSeat' , roomController.getRoomMatchTimeAndSeat)
+router.get('/getRoomByAreaId' , roomController.getRoomByAreaId)
+router.get('/getRoomByTypeRoomId' , roomController.getRoomByTypeRoomId)
+router.get('/getRoomByAll' , roomController.getRoomByAll)
 
 module.exports = router
