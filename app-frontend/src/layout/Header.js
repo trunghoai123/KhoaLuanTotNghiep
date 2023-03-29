@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { colors } from "../variables";
@@ -135,6 +135,11 @@ const Header = (props) => {
       variant: "success",
     });
   };
+  useEffect(() => {
+    if (user?.LoaiTaiKhoan === 1) {
+      navigation("/admin");
+    }
+  });
   const handleSignIn = () => {
     setOpenSignIn(true);
   };

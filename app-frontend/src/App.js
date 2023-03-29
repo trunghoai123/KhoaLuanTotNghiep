@@ -85,7 +85,7 @@ const router = createBrowserRouter([
         element: <AreaAdmin></AreaAdmin>,
       },
       {
-        path: "area/:areaId",
+        path: "area/update",
         element: <AreaEditAdmin></AreaEditAdmin>,
       },
       {

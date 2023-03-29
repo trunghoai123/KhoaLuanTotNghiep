@@ -117,7 +117,7 @@ const adminNavbarItems = [
       {
         id: 2,
         title: "Lập phiếu đặt",
-        to: "order/update/",
+        to: "order/update",
       },
     ],
   },
@@ -133,7 +133,7 @@ const adminNavbarItems = [
       {
         id: 2,
         title: "Cập nhật",
-        to: "area/update/",
+        to: "area/update",
       },
     ],
   },
@@ -143,12 +143,12 @@ const adminNavbarItems = [
       {
         id: 1,
         title: "Tìm kiếm",
-        to: "area/search",
+        to: "room/search",
       },
       {
         id: 2,
         title: "Cập nhật",
-        to: "area/update/",
+        to: "room/update",
       },
     ],
   },
@@ -163,7 +163,7 @@ const adminNavbarItems = [
       {
         id: 2,
         title: "Cập nhật",
-        to: "area/update/",
+        to: "area/update",
       },
     ],
   },
@@ -178,7 +178,7 @@ const adminNavbarItems = [
       {
         id: 2,
         title: "Cập nhật",
-        to: "area/update/",
+        to: "area/update",
       },
     ],
   },
@@ -193,7 +193,7 @@ const adminNavbarItems = [
       {
         id: 2,
         title: "Cập nhật",
-        to: "area/update/",
+        to: "area/update",
       },
     ],
   },

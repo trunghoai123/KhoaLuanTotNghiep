@@ -108,7 +108,7 @@ const AreaEditAdmin = (props) => {
           </li>
         </DropdownManage>
       </div>
-      <div className="properties__container">
+      {/* <div className="properties__container">
         <div className="input__container">
           <div className="input__row">
             <input className="input__prop" type="text" placeholder="Mã khu vực" name="area-id" />
@@ -144,7 +144,7 @@ const AreaEditAdmin = (props) => {
             <div>Cập Nhật</div>
           </Button>
         </div>
-      </div>
+      </div> */}
       <table className="main__table table table-striped">
         <thead className="table__head--container">
           <tr className="table__row">
