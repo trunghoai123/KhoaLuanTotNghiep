@@ -49,6 +49,33 @@ class TableController{
             next(err);
         }
     } 
+    getTableByAll = async (req, res, next) => {
+        try {
+            const result = await TableService.getTableByAll(req.body);
+            return res.status(result.code).json(result.metadata)
+        }
+        catch (err){
+            next(err);
+        }
+    }
+    getTableMatchTimeAndSeat = async (req, res, next) => {
+        try {
+            const result = await TableService.getTableMatchTimeAndSeat(req.body);
+            return res.status(result.code).json(result.metadata)
+        }
+        catch (err){
+            next(err);
+        }
+    }
+    getTableByRoomId = async (req, res, next) => {
+        try {
+            const result = await TableService.getTableByRoomId(req.body);
+            return res.status(result.code).json(result.metadata)
+        }
+        catch (err){
+            next(err);
+        }
+    }
 }
 
 module.exports = new TableController()

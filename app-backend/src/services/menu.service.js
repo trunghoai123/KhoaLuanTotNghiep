@@ -130,6 +130,61 @@ static deleteMenu = async ({id})=>{
       };
     }
   };
+
+
+  static getMenuByAll = async ({TenMon,GiaMon , DonViTinh , MoTa , MaLoai }) => {
+    try {
+        let query = {
+              TenMon: { $regex: TenMon , $options: 'i'},
+              DonViTinh: { $regex: DonViTinh , $options: 'i'},
+              MoTa: { $regex: MoTa , $options: 'i'},
+              GiaMon: { $gte: GiaMon? GiaMon : 0 },
+            }
+        if(MaLoai){
+            query.MaLoai = MaLoai
+        }
+        
+        const menus = await menuModel.find(query)
+            .populate('MaLoai')
+        return {
+            code: 200,
+            metadata: {
+            success: true,
+            data: menus,
+            },
+        };
+    } catch (err) {
+      return {
+        code: 500,
+        metadata: {
+          success: false,
+          message: err.message,
+          status: "get menus error",
+        },
+      };
+    }
+};
+static getMenuByTypeMenuId = async ({MaLoai}) => {
+    try {
+      const menus = await menuModel.find({ MaLoai : MaLoai }).populate('MaLoai')
+      return {
+        code: 200,
+        metadata: {
+          success: true,
+          data: menus,
+        },
+      };
+    } catch (err) {
+      return {
+        code: 500,
+        metadata: {
+          success: false,
+          message: err.message,
+          status: "get menu error",
+        },
+      };
+    }
+};
 }
 
 module.exports = MenuService;

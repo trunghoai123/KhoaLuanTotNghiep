@@ -39,6 +39,15 @@ const orderSchema = new Schema({
     GhiChu: {
         type: String,
     },
+    HoTen: {
+        type: String,
+    },
+    Email: {
+        type: String,
+    },
+    SoDienThoai: {
+        type: String,
+    },
     MaNhanVien:{
         type: Schema.Types.ObjectId,
         ref:'NhanVien'

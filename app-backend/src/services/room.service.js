@@ -258,44 +258,22 @@ class RoomService {
 
     static getRoomByAll = async ({MaPhong,TenPhong , TrangThai , SoChoNgoiToiDa , MaLoai , MaKhuVuc}) => {
         try {
-            let query = {}
-            if(MaLoai && !MaKhuVuc){
-                query = {
-                    MaPhong: { $regex: MaPhong },
-                    TenPhong: { $regex: TenPhong },
-                    TrangThai: TrangThai,
+            let query = {
+                    MaPhong: { $regex: MaPhong, $options: 'i' },
+                    TenPhong: { $regex: TenPhong , $options: 'i'},
                     SoChoNgoiToiDa: { $gte: SoChoNgoiToiDa },
-                    MaLoai: MaLoai,
-                    }
-            }
-            if(!MaLoai && MaKhuVuc){
-                query = {
-                    MaPhong: { $regex: MaPhong },
-                    TenPhong: { $regex: TenPhong },
-                    TrangThai: TrangThai,
-                    SoChoNgoiToiDa: { $gte: SoChoNgoiToiDa },
-                    MaKhuVuc: MaKhuVuc,
-                    }
-            }
-            if(!MaLoai && !MaKhuVuc){
-                query = {
-                    MaPhong: { $regex: MaPhong },
-                    TenPhong: { $regex: TenPhong },
-                    TrangThai: TrangThai,
-                    SoChoNgoiToiDa: { $gte: SoChoNgoiToiDa },
-                    }
-            }
-            if(MaLoai && MaKhuVuc){
-                query = {
-                    MaPhong: { $regex: MaPhong },
-                    TenPhong: { $regex: TenPhong },
-                    TrangThai: TrangThai,
-                    SoChoNgoiToiDa: { $gte: SoChoNgoiToiDa },
-                    MaKhuVuc: MaKhuVuc,
-                    MaLoai: MaLoai,
                 }
+            if(MaLoai){
+                query.MaLoai = MaLoai
             }
-                
+            if(MaKhuVuc){
+                query.MaKhuVuc = MaKhuVuc
+            }
+            if(TrangThai){
+                query.TrangThai = TrangThai
+            }
+            
+            
             const rooms = await roomModel.find(query)
                 .populate({
                     path: 'MaKhuVuc',
