@@ -23,6 +23,10 @@ import { useFormStateContext } from "utils/context/FormStateContext";
 import { useNavigate } from "react-router-dom";
 import Input from "components/Input/Input";
 import TextArea from "components/TextArea/TextArea";
+import { convertBase64 } from "utils/utils";
+import axios from "axios";
+import { uploadImage } from "utils/api";
+import { useState } from "react";
 const AreaUpdateFormStyles = styled.div`
   transition: all ease 200ms;
   position: fixed;
@@ -109,6 +113,21 @@ const AreaUpdateFormStyles = styled.div`
                 }
               }
               .input__container {
+                &.img__file__container {
+                  input[type="file"] {
+                    cursor: pointer;
+                  }
+                  position: relative;
+                  .label__upload {
+                    cursor: pointer;
+                    position: absolute;
+                    top: 50%;
+                    left: 90px;
+                    font-size: 30px;
+                    transform: translate(-50%, -50%);
+                    color: white;
+                  }
+                }
                 &.phone__input__container {
                   display: flex;
                   align-items: center;
@@ -180,7 +199,7 @@ const AreaUpdateFormStyles = styled.div`
 //     // image: yup.string().required(),
 //   })
 //   .required();
-const AreaUpdateForm = ({ handleCloseForm = () => {} }) => {
+const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
   const {
     register,
     handleSubmit,
@@ -194,37 +213,17 @@ const AreaUpdateForm = ({ handleCloseForm = () => {} }) => {
     },
     //   resolver: yupResolver(schema),
   });
+  const [imageSelecting, setImageSelecting] = useState("");
   const navigation = useNavigate();
   const dispatch = useDispatch();
-  const onSubmit = (values) => {
-    //   const processedValue = {
-    //     Email: values.email,
-    //     MatKhau: values.password,
-    //   };
-    //   dispatch(signIn(processedValue))
-    //     .then((data) => {
-    //       if (data.error) {
-    //         enqueueSnackbar("Không thể đăng nhập, tài khoản hoặc mật khẩu không chính xác", {
-    //           variant: "warning",
-    //         });
-    //       } else {
-    //         updateAuthUser(data.payload.account);
-    //         handleCloseForm();
-    //         if (data.payload.account.LoaiTaiKhoan === 1) {
-    //           enqueueSnackbar("Đăng nhập thành công với quyền nhân viên", {
-    //             variant: "success",
-    //           });
-    //           navigation("/admin");
-    //         } else {
-    //           enqueueSnackbar("Đăng nhập thành công", {
-    //             variant: "success",
-    //           });
-    //         }
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       console.log("error while create account");
-    //     });
+  const onSubmit = (values) => {};
+  const handleChangeImage = async (e) => {
+    const base64 = await convertBase64(e.target.files[0]);
+    console.log(base64);
+    uploadImage(base64).then((image) => {
+      console.log(image);
+      setImageSelecting(image.data);
+    });
   };
   const { user, updateAuthUser } = useAuthContext();
   return (
@@ -292,8 +291,22 @@ const AreaUpdateForm = ({ handleCloseForm = () => {} }) => {
                       Hình ảnh
                     </label>
                   </div>
-                  <div className="input__container">
-                    <Input type="file" className="input" id="image" {...register("image")} />
+                  <div className="input__container img__file__container">
+                    <label className="label__upload" htmlFor="image">
+                      <i className="fa-solid fa-upload"></i>
+                    </label>
+                    <Input
+                      width="180px"
+                      isImgFile={true}
+                      type="file"
+                      imgUrl={imageSelecting}
+                      className="input"
+                      id="image"
+                      onChange={handleChangeImage}
+                      {...register("image", {
+                        onChange: (e) => handleChangeImage(e),
+                      })}
+                    />
                   </div>
                   {errors?.image && (
                     <div className="error__container">

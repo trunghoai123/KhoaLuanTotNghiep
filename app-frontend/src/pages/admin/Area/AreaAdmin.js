@@ -67,7 +67,7 @@ const AreaAdminStyles = styled.div`
 const AreaAdmin = (props) => {
   const [areas, setAreas] = useState();
   const [openUpdateForm, setOpenUpdateForm] = useState(false);
-  const [updatingAreaId, setUpdatingAreaId] = useState(null);
+  const [mode, setMode] = useState({ mode: 0, id: null }); // 0: none, 1: update. 2: add
   useEffect(() => {
     const fetchDishes = async () => {
       try {
@@ -83,22 +83,20 @@ const AreaAdmin = (props) => {
     fetchDishes();
   }, []);
   const handleOpenUpdate = (id) => {
-    console.log(id);
-    setUpdatingAreaId(id);
+    setMode({ id, mode: 1 });
     setOpenUpdateForm(true);
   };
   const handleCloseUpdateForm = () => {
-    setUpdatingAreaId(null);
+    setMode({ id: null, mode: 0 });
     setOpenUpdateForm(false);
   };
-  console.log(openUpdateForm);
   return (
     <AreaAdminStyles>
       <div className="top__actions">
         <Search placeHolder="Tìm Kiếm"></Search>
         <DropdownManage>
           <li>
-            <div className="dropdown-item dropdown__item" href="/">
+            <div onClick={handleOpenUpdate} className="dropdown-item dropdown__item" href="/">
               Thêm Khu Vực
             </div>
           </li>
@@ -170,7 +168,9 @@ const AreaAdmin = (props) => {
           })}
         </tbody>
       </table>
-      {openUpdateForm && <AreaUpdateForm handleCloseForm={handleCloseUpdateForm}></AreaUpdateForm>}
+      {openUpdateForm && (
+        <AreaUpdateForm mode={mode} handleCloseForm={handleCloseUpdateForm}></AreaUpdateForm>
+      )}
     </AreaAdminStyles>
   );
 };

@@ -371,12 +371,13 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
   };
   const handleMouseOutFile = async (e) => {
     // console.log(e.target.files[0]);
-    const base64 = await convertBase64(e.target.files[0]);
-    axios
-      .post("http://localhost:5500/api/image/sendImageAndGetLink", { image: base64 })
-      .then((res) => {
-        console.log(res.data);
-      });
+    console.log(e);
+    // const base64 = await convertBase64(e.target.files[0]);
+    // axios
+    //   .post("http://localhost:5500/api/image/sendImageAndGetLink", { image: base64 })
+    //   .then((res) => {
+    //     console.log(res.data);
+    //   });
   };
   const handleSearchCustomer = () => {
     console.log("hello");
@@ -454,7 +455,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
               </div>
             )}
             <hr></hr>
-            {/* <div className="input__container">
+            <div className="input__container">
               <Input
                 onMouseOut={handleMouseOutFile}
                 className="input"
@@ -468,7 +469,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
               <div className="error__container">
                 <div className="error__message">{errors?.file?.message}</div>
               </div>
-            )} */}
+            )}
             <div className="general__infor">
               <div className="row__container">
                 <div className="value__container">
