@@ -6,6 +6,7 @@ import { colors } from "variables";
 import Search from "components/Search";
 import DropdownManage from "components/Dopdown/ButtonDropDown";
 import axiosClient from "utils/axios";
+import AreaUpdateForm from "components/Area/AreaUpdateForm";
 
 const AreaAdminStyles = styled.div`
   padding-top: 54px;
@@ -65,6 +66,8 @@ const AreaAdminStyles = styled.div`
 
 const AreaAdmin = (props) => {
   const [areas, setAreas] = useState();
+  const [openUpdateForm, setOpenUpdateForm] = useState(false);
+  const [updatingAreaId, setUpdatingAreaId] = useState(null);
   useEffect(() => {
     const fetchDishes = async () => {
       try {
@@ -79,6 +82,16 @@ const AreaAdmin = (props) => {
     };
     fetchDishes();
   }, []);
+  const handleOpenUpdate = (id) => {
+    console.log(id);
+    setUpdatingAreaId(id);
+    setOpenUpdateForm(true);
+  };
+  const handleCloseUpdateForm = () => {
+    setUpdatingAreaId(null);
+    setOpenUpdateForm(false);
+  };
+  console.log(openUpdateForm);
   return (
     <AreaAdminStyles>
       <div className="top__actions">
@@ -101,6 +114,9 @@ const AreaAdmin = (props) => {
               Tên Khu Vực
             </th>
             <th className="table__head" scope="col">
+              Số Người Tối Đa
+            </th>
+            <th className="table__head" scope="col">
               Vị Trí Cụ Thể
             </th>
             <th className="table__head" scope="col">
@@ -117,6 +133,7 @@ const AreaAdmin = (props) => {
               <tr className="table__row" key={area?._id}>
                 <td className="table__data item__id">{area.MaKhuVuc}</td>
                 <td className="table__data">{area?.TenKhuVuc}</td>
+                <td className="table__data">{area?.SoNguoiToiDa}</td>
                 <td className="table__data">{area?.ViTriCuThe}</td>
                 <td className="table__data">{area?.MoTa}</td>
                 <td className="table__data data__image">
@@ -126,7 +143,8 @@ const AreaAdmin = (props) => {
                 </td>
                 <td className="table__data">
                   <Button
-                    to={`/admin/area/${area?._id}`}
+                    // to={`/admin/area/update/${area?._id}`}
+                    onClick={() => handleOpenUpdate(area?._id)}
                     className="button button__update"
                     bgHover={colors.orange_1_hover}
                     bgColor={colors.orange_1}
@@ -152,6 +170,7 @@ const AreaAdmin = (props) => {
           })}
         </tbody>
       </table>
+      {openUpdateForm && <AreaUpdateForm handleCloseForm={handleCloseUpdateForm}></AreaUpdateForm>}
     </AreaAdminStyles>
   );
 };

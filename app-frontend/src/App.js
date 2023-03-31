@@ -81,13 +81,13 @@ const router = createBrowserRouter([
         errorElement: <NotFound></NotFound>,
       },
       {
-        path: "area",
+        path: "area/update",
         element: <AreaAdmin></AreaAdmin>,
       },
-      {
-        path: "area/update",
-        element: <AreaEditAdmin></AreaEditAdmin>,
-      },
+      // {
+      //   path: "area/update",
+      //   element: <AreaEditAdmin></AreaEditAdmin>,
+      // },
       {
         path: "room",
         element: <RoomAdmin></RoomAdmin>,
