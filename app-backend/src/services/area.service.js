@@ -146,6 +146,28 @@ class AreaService {
       };
     }
   };
+
+  static getAreaByAreaId = async ({ MaKhuVuc }) => {
+    try {
+      const area = await areaModel.findOne({ MaKhuVuc });
+      return {
+        code: 200,
+        metadata: {
+          success: true,
+          data: area,
+        },
+      };
+    } catch (err) {
+      return {
+        code: 500,
+        metadata: {
+          success: false,
+          message: err.message,
+          status: "get area error",
+        },
+      };
+    }
+  };
 }
 
 module.exports = AreaService;

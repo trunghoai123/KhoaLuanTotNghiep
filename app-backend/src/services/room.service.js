@@ -256,6 +256,29 @@ class RoomService {
         }
     };
 
+    static getRoomByRoomId = async ({MaPhong}) => {
+        try {
+          const rooms = await roomModel.findOne({ MaPhong : MaPhong }).populate('MaKhuVuc')
+          .populate('MaLoai')
+          return {
+            code: 200,
+            metadata: {
+              success: true,
+              data: rooms,
+            },
+          };
+        } catch (err) {
+          return {
+            code: 500,
+            metadata: {
+              success: false,
+              message: err.message,
+              status: "get room error",
+            },
+          };
+        }
+    };
+
     static getRoomByAll = async ({MaPhong,TenPhong , TrangThai , SoChoNgoiToiDa , MaLoai , MaKhuVuc}) => {
         try {
             let query = {

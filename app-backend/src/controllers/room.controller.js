@@ -78,9 +78,9 @@ class RoomController{
             next(err);
         }
     }
-    getRoomByAreaId = async (req, res, next) => {
+    getRoomByRoomId = async (req, res, next) => {
         try {
-            const result = await RoomService.getRoomByAreaId(req.body);
+            const result = await RoomService.getRoomByRoomId(req.body);
             return res.status(result.code).json(result.metadata)
         }
         catch (err){
