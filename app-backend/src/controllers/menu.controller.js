@@ -30,7 +30,7 @@ class MenuController {
 
   getAllMenu = async (req, res, next) => {
     try {
-      const result = await MenuService.getAllMenu(req.params);
+      const result = await MenuService.getAllMenu(req.body);
       return res.status(result.code).json(result.metadata);
     } catch (err) {
       next(err);
@@ -40,6 +40,22 @@ class MenuController {
   getOneMenu = async (req, res, next) => {
     try {
       const result = await MenuService.getOneMenu(req.params.dishId);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
+  getMenuByTypeMenuId = async (req, res, next) => {
+    try {
+      const result = await MenuService.getMenuByTypeMenuId(req.body);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
+  getMenuByAll = async (req, res, next) => {
+    try {
+      const result = await MenuService.getMenuByAll(req.body);
       return res.status(result.code).json(result.metadata);
     } catch (err) {
       next(err);

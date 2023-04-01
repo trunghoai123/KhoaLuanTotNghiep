@@ -1,5 +1,9 @@
 const orderModel = require("../models/order.model");
 const orderDetailModel = require("../models/orderDetail.model");
+const {sendMail} = require("../utils");
+
+
+
 
 class OrderService {
   static addOrder = async ({
@@ -12,6 +16,10 @@ class OrderService {
     ListThucDon,
     ListPhong,
     ListBan,
+    HoTen ,
+    Email ,
+    SoDienThoai,
+    GhiChu
   }) => {
     try {
       const newOrder = await orderModel.create({
@@ -21,6 +29,7 @@ class OrderService {
         ThoiGianBatDau,
         ThoiGianKetThuc,
         MaKhachHang,
+        GhiChu
       });
       if (newOrder) {
         const newOrderDetail = await orderDetailModel.create({
@@ -31,6 +40,23 @@ class OrderService {
         });
 
         if (newOrderDetail) {
+          let subject = "";
+          if(LoaiPhieuDat == 0){
+            subject = "Yêu cầu đặt bàn thành công"
+          }
+          if(LoaiPhieuDat == 1 || LoaiPhieuDat == 2){
+            subject = "Yêu cầu đặt phòng thành công"
+          }
+         
+            
+
+
+          let mail = Email
+           
+          let html = `<h3>${subject}</h3>`
+
+          let check = sendMail(mail,subject,html)
+
           return {
             code: 201,
             metadata: {
@@ -73,7 +99,7 @@ class OrderService {
 
   static getOrderByUser = async ({ MaKhachHang }) => {
     try {
-      const orders = await orderModel.find({ MaKhachHang });
+      const orders = await orderModel.find({ MaKhachHang })
       return {
         code: 200,
         metadata: {
@@ -116,7 +142,7 @@ class OrderService {
 
   static getAllOrder = async () => {
     try {
-      const orders = await orderModel.find();
+      const orders = await orderModel.find()
       return {
         code: 200,
         metadata: {

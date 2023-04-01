@@ -18,6 +18,17 @@ class AccountController {
       next(err);
     }
   };
+
+  getAccountCustomerByAccessToken = async (req, res, next) => {
+    try {
+      const result = await AccountService.getAccountCustomerByAccessToken(
+        req.body
+      );
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = new AccountController();

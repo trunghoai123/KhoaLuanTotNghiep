@@ -6,8 +6,9 @@ const DOCUMENT_NAME = 'PhieuDat';
 
 const orderSchema = new Schema({
     /**
-     * 0 phiếu đặt phòng
-     * 1 phiếu đặt bàn
+     * 0 phiếu đặt bàn
+     * 1 phiếu đặt phòng thường
+     * 2 phòng vip
      */
     LoaiPhieuDat:{
         type: Number,
@@ -36,6 +37,15 @@ const orderSchema = new Schema({
         type: Date,
     },
     GhiChu: {
+        type: String,
+    },
+    HoTen: {
+        type: String,
+    },
+    Email: {
+        type: String,
+    },
+    SoDienThoai: {
         type: String,
     },
     MaNhanVien:{

@@ -1,9 +1,10 @@
 const accountModel = require("../models/account.model")
 const customerModel = require("../models/customer.model")
+const JWT = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const crypto = require('node:crypto')
 const KeyTokenService = require("./keyToken.service")
-const {createTokenPair} = require('../auth/authUtils')
+const {createTokenPair, verifyToken} = require('../auth/authUtils')
 
 
 class AccountService {
@@ -47,8 +48,8 @@ class AccountService {
                     Email , MaTaiKhoan : newAccount._id
                 })
 
-                const privateKey = crypto.randomBytes(64).toString('hex')
-                const publicKey = crypto.randomBytes(64).toString('hex')
+                const privateKey = process.env.KEY_PRIVATE
+                const publicKey =  process.env.KEY_PUBLIC
 
                 const keyStore = await KeyTokenService.createKeyToken({
                     userId: newAccount._id,
@@ -129,8 +130,9 @@ class AccountService {
         }
 
         
-        const privateKey = crypto.randomBytes(64).toString('hex')
-        const publicKey = crypto.randomBytes(64).toString('hex')
+        const privateKey = process.env.KEY_PRIVATE
+        const publicKey =  process.env.KEY_PUBLIC
+
 
         const tokens = await createTokenPair({userId: account._id , Email} , publicKey , privateKey )
 
@@ -149,6 +151,53 @@ class AccountService {
 
     }
 
+    static getAccountCustomerByAccessToken = async ({AccessToken})=>{
+        
+        if(!AccessToken){
+            return {
+                code: 404,
+                metadata:{
+                    success: false,
+                    message: "token null",
+                    
+                }
+            }
+        }
+        const publicKey =  process.env.KEY_PUBLIC
+        try {
+            const decode  = await JWT.verify( AccessToken.toString(),  publicKey)
+            if(decode){
+                const account = await accountModel.find({ _id: decode.userId }).select('-MatKhau').lean()
+                const customer = await customerModel.find({ MaTaiKhoan: decode.userId }).lean()
+
+                return {
+                    code: 200,
+                    metadata:{
+                        success: true,
+                        data: {
+                            account,
+                            customer
+                        },
+                        
+                    }
+                }
+            }
+            
+    
+        } catch (error) {
+            return {
+                code: 500,
+                metadata:{
+                    success: false,
+                    message: error.message,
+                    
+                }
+            }
+        }
+        
+    }
+
+  
     
 }
 

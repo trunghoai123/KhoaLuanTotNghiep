@@ -1,5 +1,9 @@
 const express = require('express');
+const { apiKey } = require('../auth/checkAuth');
 const router = express.Router()
+
+
+//router.use(apiKey)
 
 
 router.use('/api/menu', require('./menu'))
