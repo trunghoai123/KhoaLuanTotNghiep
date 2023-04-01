@@ -16,7 +16,6 @@ const InputTextStyles = styled.input`
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
-      ``
       `;
   }}; ;
 `;

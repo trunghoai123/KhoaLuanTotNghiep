@@ -25,7 +25,7 @@ import Input from "components/Input/Input";
 import TextArea from "components/TextArea/TextArea";
 import { convertBase64 } from "utils/utils";
 import axios from "axios";
-import { uploadImage } from "utils/api";
+import { getAreaById, uploadImage } from "utils/api";
 import { useState } from "react";
 const AreaUpdateFormStyles = styled.div`
   transition: all ease 200ms;
@@ -114,18 +114,24 @@ const AreaUpdateFormStyles = styled.div`
               }
               .input__container {
                 &.img__file__container {
+                  position: relative;
                   input[type="file"] {
                     cursor: pointer;
                   }
-                  position: relative;
                   .label__upload {
                     cursor: pointer;
                     position: absolute;
                     top: 50%;
                     left: 90px;
-                    font-size: 30px;
+                    font-size: 22px;
+                    text-align: center;
                     transform: translate(-50%, -50%);
-                    color: white;
+                    color: black;
+                    background-color: rgba(0, 0, 0, 0.15);
+                    padding: 10px;
+                    height: 50px;
+                    width: 50px;
+                    border-radius: 50%;
                   }
                 }
                 &.phone__input__container {
@@ -177,54 +183,84 @@ const AreaUpdateFormStyles = styled.div`
   }
 `;
 
-// const schema = yup
-//   .object({
-//     phone: yup
-//       .string("hãy xem lại số điện thoại")
-//       .matches(/[0][0-9][0-9]{8}/, "hãy nhập đúng định dạng số điện thoại")
-//       .required("hãy nhập số lượng"),
-//     fullname: yup
-//       .string("hãy xem lại họ tên")
-//       .matches(
-//         /^(([a-zA-Z\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*)([a-zA-Z\s\'ÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]*)([a-zA-Z\sÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ]))*$/,
-//         "hãy kiểm tra lại họ tên"
-//       )
-//       .required("hãy nhập họ tên"),
-//     size: yup.string("hãy xem lại số lượng").required("hãy nhập số lượng"),
-//     time: yup.string("hãy xem lại thời gian").required("hãy nhập thời gian"),
-//     date: yup.string("hãy xem lại ngày").required("hãy chọn ngày"),
-//     kind: yup.string("hãy xem lại loại").required("hãy chọn loại"),
-//     duration: yup.string("hãy xem lại thời gian").required("hãy nhập thời gian"),
-//     note: yup.string(),
-//     // image: yup.string().required(),
-//   })
-//   .required();
+const schema = yup
+  .object({
+    id: yup.string("hãy xem lại số điện thoại").required("hãy nhập mã"),
+    name: yup.string("hãy xem lại họ tên").required("hãy nhập tên"),
+    // image: yup
+    //   .string("hãy xem lại số lượng")
+    //   .required("hãy chọn ảnh")
+    //   .test({
+    //     name: "check-image",
+    //     skipAbsent: true,
+    //     test(value, ctx) {
+    //       console.log(ctx);
+    //       console.log(value);
+    //       console.log(Array.from(value));
+    //       for (let i = 0; i < value.length; i++) {
+    //         console.log(value[i]);
+    //       }
+    //       if (!(value === ctx.options.parent.password)) {
+    //         return ctx.createError({ message: "Mật khẩu xác nhận sai" });
+    //       }
+    //       return true;
+    //     },
+    //   }),
+    detail: yup.string("hãy xem lại thời gian").required("hãy nhập vị trí cụ thể"),
+    description: yup.string("hãy xem lại thời gian").required("hãy nhập mô tả"),
+  })
+  .required();
 const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
   const {
     register,
     handleSubmit,
     watch,
     getValues,
+    clearErrors,
+    setError,
     formState: { errors, isValid, isLoading, isSubmitting },
   } = useForm({
     defaultValues: {
-      email: "hoaitrung@gmail.com",
-      password: "123123123",
+      // email: "hoaitrung@gmail.com",
+      // password: "123123123",
     },
-    //   resolver: yupResolver(schema),
+    resolver: yupResolver(schema),
   });
   const [imageSelecting, setImageSelecting] = useState("");
   const navigation = useNavigate();
   const dispatch = useDispatch();
-  const onSubmit = (values) => {};
+  const [isLoadedImage, setIsLoadedImage] = useState(false);
+  const onSubmit = async (values) => {
+    console.log(values);
+    if (!isLoadedImage) {
+      setError("image", { type: "required", message: "Hãy chọn ảnh" });
+    } else {
+      clearErrors("image");
+      const checkAreaId = async () => {
+        getAreaById(values?.id)
+          .then((data) => {
+            console.log(data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      };
+      await checkAreaId();
+    }
+  };
   const handleChangeImage = async (e) => {
+    if (e.target.files.length > 0) {
+      setIsLoadedImage(true);
+    } else {
+      setIsLoadedImage(false);
+    }
     const base64 = await convertBase64(e.target.files[0]);
-    console.log(base64);
     uploadImage(base64).then((image) => {
       console.log(image);
       setImageSelecting(image.data);
     });
   };
+  console.log(errors);
   const { user, updateAuthUser } = useAuthContext();
   return (
     <AreaUpdateFormStyles>
@@ -233,7 +269,9 @@ const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
         <div className="modal__main">
           <div className="modal__title">
             <div className="title__container">
-              <h4 className="title__text">Đặt Bàn</h4>
+              <h4 className="title__text">
+                {mode?.mode === 1 ? "Cập Nhật Khu Vực" : "Thêm Khu Vực"}
+              </h4>
             </div>
           </div>
           <div className="modal__body">
@@ -251,6 +289,7 @@ const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
                       id="id"
                       placeholder="A1"
                       type="text"
+                      name="id"
                       autoComplete="off"
                       {...register("id")}
                     />
@@ -274,6 +313,7 @@ const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
                       placeholder="Khu Vực Tiếp Đón"
                       className="input"
                       id="name"
+                      name="name"
                       {...register("name")}
                     />
                   </div>
@@ -301,8 +341,8 @@ const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
                       type="file"
                       imgUrl={imageSelecting}
                       className="input"
+                      name="image"
                       id="image"
-                      onChange={handleChangeImage}
                       {...register("image", {
                         onChange: (e) => handleChangeImage(e),
                       })}
@@ -325,6 +365,7 @@ const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
                       resize="none"
                       className="input"
                       id="detail"
+                      name="detail"
                       {...register("detail")}
                     ></TextArea>
                   </div>
@@ -345,6 +386,7 @@ const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
                   <div className="input__container">
                     <TextArea
                       className="input"
+                      name="description"
                       id="description"
                       {...register("description")}
                       resize="none"
