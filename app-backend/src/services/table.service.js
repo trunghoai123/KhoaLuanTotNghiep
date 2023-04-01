@@ -260,6 +260,28 @@ class TableService{
           };
         }
     };
+
+    static getTableByTableId = async ({MaBan}) => {
+        try {
+          const table = await modelTable.findOne({ MaBan : MaBan }).populate('MaPhong')
+          return {
+            code: 200,
+            metadata: {
+              success: true,
+              data: table,
+            },
+          };
+        } catch (err) {
+          return {
+            code: 500,
+            metadata: {
+              success: false,
+              message: err.message,
+              status: "get table error",
+            },
+          };
+        }
+    };
 }
 
 module.exports = TableService;

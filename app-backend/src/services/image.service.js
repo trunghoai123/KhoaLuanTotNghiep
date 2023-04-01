@@ -22,7 +22,7 @@ class ImageService {
                 code: 500,
                 metadata:{
                     success:false,
-                    message: err.message,
+                    message: err,
                     status: 'upload image failed',
                 }
             }
