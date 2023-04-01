@@ -123,7 +123,7 @@ const adminNavbarItems = [
   },
   {
     title: "Khu vực",
-    id: 1,
+    id: 2,
     subNavs: [
       {
         id: 1,
@@ -139,6 +139,7 @@ const adminNavbarItems = [
   },
   {
     title: "Phòng",
+    id: 3,
     subNavs: [
       {
         id: 1,
@@ -154,6 +155,7 @@ const adminNavbarItems = [
   },
   {
     title: "Bàn",
+    id: 4,
     subNavs: [
       {
         id: 1,
@@ -169,6 +171,7 @@ const adminNavbarItems = [
   },
   {
     title: "Phiếu đặt",
+    id: 5,
     subNavs: [
       {
         id: 1,
@@ -184,6 +187,7 @@ const adminNavbarItems = [
   },
   {
     title: "Hóa Đơn",
+    id: 6,
     subNavs: [
       {
         id: 1,
@@ -251,7 +255,7 @@ const AdminHeader = (props) => {
             )}
           </div>
           {adminNavbarItems.map((navItem) => {
-            return <NavbarItem navItem={navItem}></NavbarItem>;
+            return <NavbarItem key={navItem?.id} navItem={navItem}></NavbarItem>;
           })}
           {/* <div className="link__container menu__list">
             <span className="navlink" to={"/admin/area"}>

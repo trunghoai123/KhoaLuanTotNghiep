@@ -15,6 +15,8 @@ const InputTextStyles = styled.input`
         background-image: url("${props.imgUrl}");
         background-size: contain;
         background-repeat: no-repeat;
+        background-position: center;
+      ``
       `;
   }}; ;
 `;

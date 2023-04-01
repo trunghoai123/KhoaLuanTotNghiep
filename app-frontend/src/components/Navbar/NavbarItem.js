@@ -94,7 +94,7 @@ const NavbarItem = ({ navItem }) => {
     setExpand(!expand);
   };
   return (
-    <NavbarItemStyles key={navItem?.id} className="link__container menu__list">
+    <NavbarItemStyles className="link__container menu__list">
       <span onClick={handleExpand} className="navlink" to={"/admin/area"}>
         {navItem?.title}
         {navItem?.subNavs?.length > 0 && (
