@@ -229,6 +229,7 @@ const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
   const [imageSelecting, setImageSelecting] = useState("");
   const navigation = useNavigate();
   const dispatch = useDispatch();
+
   const [isLoadedImage, setIsLoadedImage] = useState(false);
   const onSubmit = async (values) => {
     console.log(values);
@@ -238,15 +239,28 @@ const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
       clearErrors("image");
       const checkAreaId = async () => {
         console.log(values.id);
-        getAreaByAreaId(values.id)
-          .then((data) => {
-            console.log(data);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
+        try {
+          const data = await getAreaByAreaId(values.id);
+          console.log(data);
+          return true;
+        } catch (error) {
+          console.log(error);
+          return false;
+        }
       };
-      await checkAreaId();
+      const checkingRs = await checkAreaId();
+      if (checkingRs) {
+        // MaKhuVuc,
+        // TenKhuVuc,
+        // HinhAnh,
+        // MoTa,
+        // ViTriCuThe,
+        // SoNguoiToiDa,
+      } else {
+        enqueueSnackbar("Mã khu vực bị trùng", {
+          variant: "error",
+        });
+      }
     }
   };
   const handleChangeImage = async (e) => {

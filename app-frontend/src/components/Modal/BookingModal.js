@@ -256,7 +256,7 @@ const schema = yup
     time: yup.string("hãy xem lại thời gian").required("hãy nhập thời gian"),
     date: yup.string("hãy xem lại ngày").required("hãy chọn ngày"),
     kind: yup.string("hãy xem lại loại").required("hãy chọn loại"),
-    duration: yup.string("hãy xem lại thời gian").required("hãy nhập thời gian"),
+    // duration: yup.string("hãy xem lại thời gian").required("hãy nhập thời gian"),
     note: yup.string(),
     // image: yup.string().required(),
   })
@@ -296,20 +296,19 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
       setValue("phone", "0906461526");
     }
   });
-  console.log(errors);
   const onSubmit = (data) => {
     if (isValid) {
-      const { size, duration, date, time, kind, note, image } = data;
+      const { size, date, time, kind, note, image } = data;
       let startAt = new Date(new Date(date + "T" + time));
-      let addedDate = new Date(
-        new Date(date + "T" + time).setHours(
-          new Date(date + "T" + time).getHours() + Number(duration)
-        )
-      );
-      let endAt = addedDate;
+      // let addedDate = new Date(
+      //   new Date(date + "T" + time).setHours(
+      //     new Date(date + "T" + time).getHours() + Number(duration)
+      //   )
+      // );
+      // let endAt = addedDate;
       if (
-        endAt.getHours() >= 23 ||
-        endAt.getHours() <= 6 ||
+        // endAt.getHours() >= 23 ||
+        // endAt.getHours() <= 6 ||
         startAt.getHours() <= 6 ||
         startAt.getHours() >= 23
       ) {
@@ -338,6 +337,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
           ListBan: null,
         };
         setLoading(true);
+        // addOrderAPI(order)
         dispatch(addOrder(order))
           .then((value) => {
             console.log(value);
@@ -455,7 +455,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
               </div>
             )}
             <hr></hr>
-            <div className="input__container">
+            {/* <div className="input__container">
               <Input
                 onMouseOut={handleMouseOutFile}
                 className="input"
@@ -469,7 +469,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
               <div className="error__container">
                 <div className="error__message">{errors?.file?.message}</div>
               </div>
-            )}
+            )} */}
             <div className="general__infor">
               <div className="row__container">
                 <div className="value__container">
@@ -564,11 +564,6 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
                     </div>
                   ) : (
                     <div className="value__container">
-                      <div className="label__container">
-                        <label className="label" htmlFor="duration">
-                          Phòng
-                        </label>
-                      </div>
                       <div className="input__container radio__group">
                         <div className="radio__container">
                           <label htmlFor="kind-normal" className="radio__label">
