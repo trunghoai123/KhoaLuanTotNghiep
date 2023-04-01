@@ -25,7 +25,7 @@ import Input from "components/Input/Input";
 import TextArea from "components/TextArea/TextArea";
 import { convertBase64 } from "utils/utils";
 import axios from "axios";
-import { getAreaById, uploadImage } from "utils/api";
+import { getAreaByAreaId, uploadImage } from "utils/api";
 import { useState } from "react";
 const AreaUpdateFormStyles = styled.div`
   transition: all ease 200ms;
@@ -237,7 +237,8 @@ const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
     } else {
       clearErrors("image");
       const checkAreaId = async () => {
-        getAreaById(values?.id)
+        console.log(values.id);
+        getAreaByAreaId(values.id)
           .then((data) => {
             console.log(data);
           })
@@ -260,7 +261,6 @@ const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
       setImageSelecting(image.data);
     });
   };
-  console.log(errors);
   const { user, updateAuthUser } = useAuthContext();
   return (
     <AreaUpdateFormStyles>

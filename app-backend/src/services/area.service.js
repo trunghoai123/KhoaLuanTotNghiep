@@ -149,6 +149,7 @@ class AreaService {
 
   static getAreaByAreaId = async ({ MaKhuVuc }) => {
     try {
+      console.log(MaKhuVuc);
       const area = await areaModel.findOne({ MaKhuVuc });
       return {
         code: 200,

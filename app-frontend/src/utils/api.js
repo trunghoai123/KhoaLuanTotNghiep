@@ -6,8 +6,8 @@ export const uploadImage = (base64) => {
   });
 };
 
-export const getAreaById = (id) => {
-  return axiosClient.post(`/area/getAreaById/${id}`).then((res) => {
+export const getAreaByAreaId = (MaKhuVuc) => {
+  return axiosClient.get(`/area/getAreaByAreaId`, { MaKhuVuc }).then((res) => {
     return res.data;
   });
 };
