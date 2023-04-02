@@ -29,6 +29,9 @@ class OrderService {
         ThoiGianBatDau,
         ThoiGianKetThuc,
         MaKhachHang,
+        HoTen ,
+        Email ,
+        SoDienThoai,
         GhiChu
       });
       if (newOrder) {
@@ -120,7 +123,13 @@ class OrderService {
   };
   static getOrderDetailByOrder = async ({ MaPhieuDat }) => {
     try {
-      const orderDetail = await orderDetailModel.find({ MaPhieuDat });
+      const orderDetail = await orderDetailModel.find({ MaPhieuDat })
+      .populate({
+        path: 'MaPhieuDat',
+        populate: {
+          path: 'MaKhachHang',
+        }
+      }).exec();
       return {
         code: 200,
         metadata: {
@@ -161,6 +170,131 @@ class OrderService {
       };
     }
   };
+
+  static getOrderById = async ({ id }) => {
+    try {
+      const order = await orderModel.findOne({ _id: id }).populate('MaKhachHang')
+      return {
+        code: 200,
+        metadata: {
+          success: true,
+          data: order,
+        },
+      };
+    } catch (err) {
+      return {
+        code: 500,
+        metadata: {
+          success: false,
+          message: err.message,
+          status: "get order by id error",
+        },
+      };
+    }
+  };
+
+  static updateOrder = async ({
+    id,
+    LoaiPhieuDat,
+    TrangThai,
+    SoLuongNguoi,
+    ThoiGianBatDau,
+    ThoiGianKetThuc,
+    MaKhachHang,
+    ListThucDon,
+    ListPhong,
+    ListBan,
+    HoTen ,
+    Email ,
+    SoDienThoai,
+    GhiChu
+  }) => {
+    try {
+      const updateOrder = await orderModel.findOneAndUpdate({
+        _id: id
+    },{
+      LoaiPhieuDat,
+      TrangThai,
+      SoLuongNguoi,
+      ThoiGianBatDau,
+      ThoiGianKetThuc,
+      MaKhachHang,
+      HoTen ,
+      Email ,
+      SoDienThoai,
+      GhiChu
+    },{
+        new: true
+    })
+      if (updateOrder) {
+        const updateOrderDetail = await orderDetailModel.findOneAndUpdate({
+            MaPhieuDat: updateOrder._id, 
+        },{
+          ListThucDon,
+          ListPhong,
+          ListBan,
+        },{
+          new: true
+        })
+
+        if (updateOrderDetail) {
+          // let subject = "";
+          // if(LoaiPhieuDat == 0){
+          //   subject = "Yêu cầu đặt bàn thành công"
+          // }
+          // if(LoaiPhieuDat == 1 || LoaiPhieuDat == 2){
+          //   subject = "Yêu cầu đặt phòng thành công"
+          // }
+         
+            
+
+
+          // let mail = Email
+           
+          // let html = `<h3>${subject}</h3>`
+
+          // let check = sendMail(mail,subject,html)
+
+          return {
+            code: 200,
+            metadata: {
+              success: true,
+              data: {
+                Order: updateOrder,
+                OrderDetail: updateOrderDetail,
+              },
+            },
+          };
+        }
+
+        return {
+          code: 500,
+          metadata: {
+            success: false,
+            data: null,
+          },
+        };
+      }
+
+      return {
+        code: 500,
+        metadata: {
+          success: false,
+          data: null,
+        },
+      };
+    } catch (err) {
+      return {
+        code: 500,
+        metadata: {
+          success: false,
+          message: err.message,
+          status: "update order error",
+        },
+      };
+    }
+  };
+
 }
 
 module.exports = OrderService;

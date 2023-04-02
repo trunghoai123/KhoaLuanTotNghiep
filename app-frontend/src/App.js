@@ -89,13 +89,13 @@ const router = createBrowserRouter([
       //   element: <AreaEditAdmin></AreaEditAdmin>,
       // },
       {
-        path: "room",
+        path: "room/update",
         element: <RoomAdmin></RoomAdmin>,
       },
-      {
-        path: "room/:roomId",
-        element: <RoomEditAdmin></RoomEditAdmin>,
-      },
+      // {
+      //   path: "room/:roomId",
+      //   element: <RoomEditAdmin></RoomEditAdmin>,
+      // },
       {
         path: "table",
         element: <TableAdmin></TableAdmin>,

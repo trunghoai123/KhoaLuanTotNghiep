@@ -10,6 +10,7 @@ class AreaController {
     }
   };
   updateArea = async (req, res, next) => {
+    console.log(req.body);
     try {
       const result = await AreaService.updateArea(req.body);
       return res.status(result.code).json(result.metadata);
@@ -48,6 +49,22 @@ class AreaController {
     try {
       console.log(req.body);
       const result = await AreaService.getAreaByAreaId(req.body);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
+  getAllArea = async (req, res, next) => {
+    try {
+      const result = await AreaService.getAllArea();
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
+  getAreaByAll = async (req, res, next) => {
+    try {
+      const result = await AreaService.getAreaByAll(req.body);
       return res.status(result.code).json(result.metadata);
     } catch (err) {
       next(err);

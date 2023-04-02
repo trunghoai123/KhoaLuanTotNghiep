@@ -94,13 +94,13 @@ const NavbarItem = ({ navItem }) => {
     setExpand(!expand);
   };
   return (
-    <NavbarItemStyles className="link__container menu__list">
+    <NavbarItemStyles key={navItem?.id} className="link__container menu__list">
       <span onClick={handleExpand} className="navlink" to={"/admin/area"}>
         {navItem?.title}
         {navItem?.subNavs?.length > 0 && (
           <div className="down__icon__container">
             {expand ? (
-              <i class="fa-solid fa-caret-right"></i>
+              <i className="fa-solid fa-caret-right"></i>
             ) : (
               <i className="fa-solid fa-caret-down"></i>
             )}

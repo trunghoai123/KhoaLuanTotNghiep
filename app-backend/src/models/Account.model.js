@@ -8,6 +8,7 @@ const accountSchema = new Schema({
     Email:{
         type:String,
         required:true,
+        unique:true,
     },
     MatKhau:{
         type:String,

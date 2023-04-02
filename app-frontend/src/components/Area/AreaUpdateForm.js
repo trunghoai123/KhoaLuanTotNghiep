@@ -25,8 +25,9 @@ import Input from "components/Input/Input";
 import TextArea from "components/TextArea/TextArea";
 import { convertBase64 } from "utils/utils";
 import axios from "axios";
-import { getAreaByAreaId, uploadImage } from "utils/api";
+import { addNewArea, getAreaByAreaId, getAreaById, updateArea, uploadImage } from "utils/api";
 import { useState } from "react";
+import { useEffect } from "react";
 const AreaUpdateFormStyles = styled.div`
   transition: all ease 200ms;
   position: fixed;
@@ -183,42 +184,33 @@ const AreaUpdateFormStyles = styled.div`
   }
 `;
 
-const schema = yup
-  .object({
-    id: yup.string("hãy xem lại số điện thoại").required("hãy nhập mã"),
-    name: yup.string("hãy xem lại họ tên").required("hãy nhập tên"),
-    // image: yup
-    //   .string("hãy xem lại số lượng")
-    //   .required("hãy chọn ảnh")
-    //   .test({
-    //     name: "check-image",
-    //     skipAbsent: true,
-    //     test(value, ctx) {
-    //       console.log(ctx);
-    //       console.log(value);
-    //       console.log(Array.from(value));
-    //       for (let i = 0; i < value.length; i++) {
-    //         console.log(value[i]);
-    //       }
-    //       if (!(value === ctx.options.parent.password)) {
-    //         return ctx.createError({ message: "Mật khẩu xác nhận sai" });
-    //       }
-    //       return true;
-    //     },
-    //   }),
-    detail: yup.string("hãy xem lại thời gian").required("hãy nhập vị trí cụ thể"),
-    description: yup.string("hãy xem lại thời gian").required("hãy nhập mô tả"),
-  })
-  .required();
-const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
+const AreaUpdateForm = ({ handleCloseForm = () => {}, mode, setMode }) => {
+  const schema = yup
+    .object({
+      id: yup.string("hãy xem lại mã").test({
+        name: "check-id",
+        skipAbsent: true,
+        test(value, ctx) {
+          if (mode.mode === 2) {
+            if (value.trim() === "") {
+              return ctx.createError({ message: "hãy nhập mã" });
+            }
+          }
+          return true;
+        },
+      }),
+      name: yup.string("hãy xem lại tên").required("hãy nhập tên"),
+      detail: yup.string("hãy xem lại chi tiết").required("hãy nhập vị trí cụ thể"),
+      description: yup.string("hãy xem lại mô tả").required("hãy nhập mô tả"),
+    })
+    .required();
   const {
     register,
     handleSubmit,
-    watch,
-    getValues,
+    setValue,
     clearErrors,
     setError,
-    formState: { errors, isValid, isLoading, isSubmitting },
+    formState: { errors },
   } = useForm({
     defaultValues: {
       // email: "hoaitrung@gmail.com",
@@ -226,54 +218,126 @@ const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
     },
     resolver: yupResolver(schema),
   });
+  const [currentArea, setCurrentArea] = useState(null);
   const [imageSelecting, setImageSelecting] = useState("");
-  const navigation = useNavigate();
-  const dispatch = useDispatch();
-
+  useEffect(() => {
+    if (mode.mode === 1) {
+      const loadAreaOnUpdate = async () => {
+        try {
+          const data = await getAreaById(mode.id);
+          const area = data.data;
+          setCurrentArea(area);
+          if (area) {
+            setValue("id", area.MaKhuVuc);
+            setValue("name", area.TenKhuVuc);
+            setValue("description", area.MoTa);
+            setValue("detail", area.ViTriCuThe);
+            setImageSelecting(area.HinhAnh);
+            setIsLoadedImage(true);
+          } else {
+          }
+        } catch (error) {
+          console.log(error);
+          return;
+        }
+      };
+      loadAreaOnUpdate();
+    }
+  }, []);
   const [isLoadedImage, setIsLoadedImage] = useState(false);
   const onSubmit = async (values) => {
-    console.log(values);
     if (!isLoadedImage) {
       setError("image", { type: "required", message: "Hãy chọn ảnh" });
     } else {
       clearErrors("image");
-      const checkAreaId = async () => {
-        console.log(values.id);
+      if (mode.mode === 1) {
+        //update
+        const updatedArea = {
+          id: currentArea?._id,
+          TenKhuVuc: values.name.trim(),
+          HinhAnh: imageSelecting,
+          MoTa: values.description.trim(),
+          ViTriCuThe: values.detail.trim(),
+          SoNguoiToiDa: currentArea?.SoNguoiToiDa,
+        };
+        console.log(updatedArea);
         try {
-          const data = await getAreaByAreaId(values.id);
-          console.log(data);
-          return true;
+          const addAreaRs = await updateArea(updatedArea);
+          if (addAreaRs.data._id) {
+            enqueueSnackbar("Cập nhật khu vực thành công", {
+              variant: "success",
+            });
+            handleCloseForm();
+          }
         } catch (error) {
           console.log(error);
-          return false;
+          enqueueSnackbar("Lỗi!. Không thể cập nhật khu vực", {
+            variant: "error",
+          });
         }
-      };
-      const checkingRs = await checkAreaId();
-      if (checkingRs) {
-        // MaKhuVuc,
+        // id,
         // TenKhuVuc,
         // HinhAnh,
         // MoTa,
         // ViTriCuThe,
         // SoNguoiToiDa,
       } else {
-        enqueueSnackbar("Mã khu vực bị trùng", {
-          variant: "error",
-        });
+        const checkAreaId = async () => {
+          try {
+            const data = await getAreaByAreaId(values.id);
+            if (data.data) {
+              return true;
+            } else {
+              return false;
+            }
+          } catch (error) {
+            console.log(error);
+            return false;
+          }
+        };
+        const checkingRs = await checkAreaId();
+        if (!checkingRs) {
+          const newArea = {
+            MaKhuVuc: values.id.trim(),
+            TenKhuVuc: values.name.trim(),
+            HinhAnh: imageSelecting,
+            MoTa: values.description.trim(),
+            ViTriCuThe: values.detail.trim(),
+            SoNguoiToiDa: 0,
+          };
+          try {
+            const addAreaRs = await addNewArea(newArea);
+            if (addAreaRs.data._id) {
+              enqueueSnackbar("Thêm khu vực thành công", {
+                variant: "success",
+              });
+              handleCloseForm();
+            }
+          } catch (error) {
+            console.log(error);
+            enqueueSnackbar("Lỗi!. Không thể thêm khu vực", {
+              variant: "error",
+            });
+          }
+        } else {
+          enqueueSnackbar("Mã khu vực bị trùng", {
+            variant: "error",
+          });
+        }
       }
     }
   };
   const handleChangeImage = async (e) => {
     if (e.target.files.length > 0) {
       setIsLoadedImage(true);
+      const base64 = await convertBase64(e.target.files[0]);
+      uploadImage(base64).then((image) => {
+        setImageSelecting(image.data);
+      });
     } else {
       setIsLoadedImage(false);
+      setImageSelecting(null);
     }
-    const base64 = await convertBase64(e.target.files[0]);
-    uploadImage(base64).then((image) => {
-      console.log(image);
-      setImageSelecting(image.data);
-    });
   };
   const { user, updateAuthUser } = useAuthContext();
   return (
@@ -299,9 +363,9 @@ const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
                   </div>
                   <div className="input__container">
                     <Input
+                      disabled={mode?.mode === 1 ? true : false}
                       className="input"
                       id="id"
-                      placeholder="A1"
                       type="text"
                       name="id"
                       autoComplete="off"
@@ -324,7 +388,6 @@ const AreaUpdateForm = ({ handleCloseForm = () => {}, mode }) => {
                     <Input
                       autoComplete="off"
                       type="text"
-                      placeholder="Khu Vực Tiếp Đón"
                       className="input"
                       id="name"
                       name="name"

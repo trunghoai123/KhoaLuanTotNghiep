@@ -6,6 +6,10 @@ import { colors } from "variables";
 import DropdownManage from "components/Dopdown/ButtonDropDown";
 import Search from "components/Search";
 import axiosClient from "utils/axios";
+import { getAllRoom } from "utils/api";
+import RoomUpdateForm from "components/Room/RoomUpdateForm";
+import { confirmAlert } from "react-confirm-alert";
+import { enqueueSnackbar } from "notistack";
 
 const RooomAdminStyles = styled.div`
   padding-top: 54px;
@@ -66,27 +70,75 @@ const RooomAdminStyles = styled.div`
 
 const RoomAdmin = (props) => {
   const [rooms, setRoms] = useState();
+  const [openUpdateForm, setOpenUpdateForm] = useState(false);
+  const [mode, setMode] = useState({ mode: 0, id: null });
   useEffect(() => {
-    const fetchDishes = async () => {
+    const fetchRooms = async () => {
       try {
-        const result = await axiosClient.get("room/getAllRoom", {});
-        if (result?.data?.data) {
-          setRoms(result.data.data);
+        const result = await getAllRoom();
+        if (result?.data) {
+          setRoms(result.data);
         }
       } catch (error) {
         console.log(error);
         return;
       }
     };
-    fetchDishes();
+    fetchRooms();
   }, []);
+  const handleOpenUpdate = (id) => {
+    if (id) {
+      setMode({ id, mode: 1 });
+    } else {
+      setMode({ id: null, mode: 2 });
+    }
+    setOpenUpdateForm(true);
+  };
+  const handleCloseUpdateForm = () => {
+    setMode({ id: null, mode: 0 });
+    setOpenUpdateForm(false);
+  };
+  const handleDelete = (id) => {
+    // const deleteArea = async (id) => {
+    //   try {
+    //     await deleteAreaById({ id });
+    //     setMode({ ...mode });
+    //     enqueueSnackbar("Đã xóa khu vực", {
+    //       variant: "success",
+    //     });
+    //   } catch (error) {
+    //     console.log(error);
+    //     enqueueSnackbar("Lỗi!. Không thể xóa khu vực", {
+    //       variant: "error",
+    //     });
+    //   }
+    // };
+    // confirmAlert({
+    //   title: "Xác nhận",
+    //   message: "Bạn có muốn xóa khu vực đã chọn không",
+    //   buttons: [
+    //     {
+    //       label: "Có",
+    //       onClick: () => deleteArea(id),
+    //     },
+    //     {
+    //       label: "Không",
+    //       onClick: () => {},
+    //     },
+    //   ],
+    // });
+  };
   return (
     <RooomAdminStyles>
       <div className="top__actions">
         <Search placeHolder="Tìm Kiếm"></Search>
         <DropdownManage>
           <li>
-            <div className="dropdown-item dropdown__item" href="/">
+            <div
+              onClick={() => handleOpenUpdate(null)}
+              className="dropdown-item dropdown__item"
+              href="/"
+            >
               Thêm Phòng
             </div>
           </li>
@@ -127,10 +179,10 @@ const RoomAdmin = (props) => {
                 </td>
                 <td className="table__data">
                   <Button
-                    to={room?._id}
                     className="button button__update"
                     bgHover={colors.orange_1_hover}
                     bgColor={colors.orange_1}
+                    onClick={() => handleOpenUpdate(room?._id)}
                   >
                     <div>
                       <span className="text">Cập Nhật</span>
@@ -138,6 +190,7 @@ const RoomAdmin = (props) => {
                     </div>
                   </Button>
                   <Button
+                    onClick={() => handleDelete(room?._id)}
                     className="button button__remove"
                     bgHover={colors.red_1_hover}
                     bgColor={colors.red_1}
@@ -153,6 +206,13 @@ const RoomAdmin = (props) => {
           })}
         </tbody>
       </table>
+      {openUpdateForm && (
+        <RoomUpdateForm
+          setMode={setMode}
+          mode={mode}
+          handleCloseForm={handleCloseUpdateForm}
+        ></RoomUpdateForm>
+      )}
     </RooomAdminStyles>
   );
 };
