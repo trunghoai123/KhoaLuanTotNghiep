@@ -1,4 +1,5 @@
 import React from "react";
+import "react-confirm-alert/src/react-confirm-alert.css";
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./styles/index.scss";

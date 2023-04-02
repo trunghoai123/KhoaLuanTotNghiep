@@ -10,6 +10,7 @@ class AreaController {
     }
   };
   updateArea = async (req, res, next) => {
+    console.log(req.body);
     try {
       const result = await AreaService.updateArea(req.body);
       return res.status(result.code).json(result.metadata);

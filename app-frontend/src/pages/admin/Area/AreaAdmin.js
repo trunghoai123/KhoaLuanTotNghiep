@@ -7,7 +7,9 @@ import Search from "components/Search";
 import DropdownManage from "components/Dopdown/ButtonDropDown";
 import axiosClient from "utils/axios";
 import AreaUpdateForm from "components/Area/AreaUpdateForm";
-
+import { confirmAlert } from "react-confirm-alert";
+import { deleteAreaById, getAllArea } from "utils/api";
+import { enqueueSnackbar } from "notistack";
 const AreaAdminStyles = styled.div`
   padding-top: 54px;
   .top__actions {
@@ -67,28 +69,63 @@ const AreaAdminStyles = styled.div`
 const AreaAdmin = (props) => {
   const [areas, setAreas] = useState();
   const [openUpdateForm, setOpenUpdateForm] = useState(false);
-  const [mode, setMode] = useState({ mode: 0, id: null }); // 0: none, 1: update. 2: add
+  const [mode, setMode] = useState({ mode: 0, id: null }); // 0: noneOfBoth, 1: update. 2: add
   useEffect(() => {
-    const fetchDishes = async () => {
+    const fetchAreas = async () => {
       try {
-        const result = await axiosClient.get("area/getAllArea", {});
-        if (result?.data?.data) {
-          setAreas(result.data.data);
+        const result = await getAllArea();
+        if (result?.data) {
+          setAreas(result.data);
         }
       } catch (error) {
         console.log(error);
         return;
       }
     };
-    fetchDishes();
-  }, []);
+    fetchAreas();
+  }, [mode]);
   const handleOpenUpdate = (id) => {
-    setMode({ id, mode: 1 });
+    if (id) {
+      setMode({ id, mode: 1 });
+    } else {
+      setMode({ id: null, mode: 2 });
+    }
     setOpenUpdateForm(true);
   };
   const handleCloseUpdateForm = () => {
     setMode({ id: null, mode: 0 });
     setOpenUpdateForm(false);
+  };
+
+  const handleDelete = (id) => {
+    const deleteArea = async (id) => {
+      try {
+        await deleteAreaById({ id });
+        setMode({ ...mode });
+        enqueueSnackbar("Đã xóa khu vực", {
+          variant: "success",
+        });
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar("Lỗi!. Không thể xóa khu vực", {
+          variant: "error",
+        });
+      }
+    };
+    confirmAlert({
+      title: "Xác nhận",
+      message: "Bạn có muốn xóa khu vực đã chọn không",
+      buttons: [
+        {
+          label: "Có",
+          onClick: () => deleteArea(id),
+        },
+        {
+          label: "Không",
+          onClick: () => {},
+        },
+      ],
+    });
   };
   return (
     <AreaAdminStyles>
@@ -96,7 +133,11 @@ const AreaAdmin = (props) => {
         <Search placeHolder="Tìm Kiếm"></Search>
         <DropdownManage>
           <li>
-            <div onClick={handleOpenUpdate} className="dropdown-item dropdown__item" href="/">
+            <div
+              onClick={() => handleOpenUpdate(null)}
+              className="dropdown-item dropdown__item"
+              href="/"
+            >
               Thêm Khu Vực
             </div>
           </li>
@@ -156,6 +197,7 @@ const AreaAdmin = (props) => {
                     className="button button__remove"
                     bgHover={colors.red_1_hover}
                     bgColor={colors.red_1}
+                    onClick={() => handleDelete(area?._id)}
                   >
                     <div>
                       <span className="text">Xóa</span>
@@ -169,7 +211,11 @@ const AreaAdmin = (props) => {
         </tbody>
       </table>
       {openUpdateForm && (
-        <AreaUpdateForm mode={mode} handleCloseForm={handleCloseUpdateForm}></AreaUpdateForm>
+        <AreaUpdateForm
+          setMode={setMode}
+          mode={mode}
+          handleCloseForm={handleCloseUpdateForm}
+        ></AreaUpdateForm>
       )}
     </AreaAdminStyles>
   );

@@ -208,7 +208,6 @@ const adminNavbarItems = [
 ];
 
 const AdminHeader = (props) => {
-  // const [isSigningin, setIsSigningin] = useState(false);
   const { user, updateAuthUser } = useAuthContext();
   const {
     openSignIn,
