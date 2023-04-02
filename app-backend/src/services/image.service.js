@@ -4,7 +4,8 @@ class ImageService {
  
     static sendImageAndGetLink = async ({image}) =>{
         try{
-            const result = await cloudinary.uploader.upload(image, 
+            console.log(image);
+            const result = await cloudinary.uploader.upload(image,
                 {folder:"RestaurantManagement"})
 
               
@@ -22,7 +23,7 @@ class ImageService {
                 code: 500,
                 metadata:{
                     success:false,
-                    message: err,
+                    message: err.message,
                     status: 'upload image failed',
                 }
             }

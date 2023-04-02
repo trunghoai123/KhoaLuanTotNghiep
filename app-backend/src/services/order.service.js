@@ -1,6 +1,6 @@
 const orderModel = require("../models/order.model");
 const orderDetailModel = require("../models/orderDetail.model");
-const {sendMail} = require("../utils");
+const {sendMail, templateMailSendOrder , templateMailChangeStatus} = require("../utils");
 
 
 
@@ -43,20 +43,15 @@ class OrderService {
         });
 
         if (newOrderDetail) {
-          let subject = "";
+
+
+          let subject = "Yêu cầu đặt phòng thành công";
           if(LoaiPhieuDat == 0){
             subject = "Yêu cầu đặt bàn thành công"
           }
-          if(LoaiPhieuDat == 1 || LoaiPhieuDat == 2){
-            subject = "Yêu cầu đặt phòng thành công"
-          }
-         
-            
-
-
           let mail = Email
            
-          let html = `<h3>${subject}</h3>`
+          let html = templateMailSendOrder(LoaiPhieuDat)
 
           let check = sendMail(mail,subject,html)
 
@@ -238,22 +233,18 @@ class OrderService {
         })
 
         if (updateOrderDetail) {
-          // let subject = "";
-          // if(LoaiPhieuDat == 0){
-          //   subject = "Yêu cầu đặt bàn thành công"
-          // }
-          // if(LoaiPhieuDat == 1 || LoaiPhieuDat == 2){
-          //   subject = "Yêu cầu đặt phòng thành công"
-          // }
-         
+          
+          if(TrangThai == 1){
+            let subject = "Đặt phòng thành công";
+            if(LoaiPhieuDat == 0){
+              subject = "Đặt bàn thành công"
+            }
+            let mail = Email
             
+            let html = templateMailChangeStatus(LoaiPhieuDat)
 
-
-          // let mail = Email
-           
-          // let html = `<h3>${subject}</h3>`
-
-          // let check = sendMail(mail,subject,html)
+            let check = sendMail(mail,subject,html)
+          }
 
           return {
             code: 200,

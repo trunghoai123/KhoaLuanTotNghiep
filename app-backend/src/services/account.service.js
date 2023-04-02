@@ -6,7 +6,7 @@ const bcrypt = require('bcrypt')
 const crypto = require('node:crypto')
 const KeyTokenService = require("./keyToken.service")
 const {createTokenPair, verifyToken} = require('../auth/authUtils')
-const {sendMail} = require("../utils");
+const {sendMail, templateMailSendOTP} = require("../utils");
 
 
 class AccountService {
@@ -69,7 +69,7 @@ class AccountService {
                 //Gửi mail
                 let subject = "Xác thực tài khoản"
                 let mail = Email
-                let html = `<p>Không cung cấp mã xác thực cho bất cứ ai</p><h4>Mã xác thực: ${OTP} </h4>`
+                let html = templateMailSendOTP(OTP)
 
                 let check = sendMail(mail,subject,html)
                 //Lưu OTP
@@ -128,7 +128,7 @@ class AccountService {
             //Gửi mail
             let subject = "Xác thực tài khoản"
             let mail = Email
-            let html = `<p>Không cung cấp mã xác thực cho bất cứ ai</p><h4>Mã xác thực: ${OTP} </h4>`
+            let html = templateMailSendOTP(OTP)
 
             let check = sendMail(mail,subject,html)
             //Lưu OTP
@@ -305,7 +305,7 @@ class AccountService {
             //Gửi mail
             let subject = "Xác thực tài khoản"
             let mail = Email
-            let html = `<p>Không cung cấp mã xác thực cho bất cứ ai</p><h4>Mã xác thực: ${OTP} </h4>`
+            let html = templateMailSendOTP(OTP)
 
             let check = sendMail(mail,subject,html)
             //Lưu OTP
