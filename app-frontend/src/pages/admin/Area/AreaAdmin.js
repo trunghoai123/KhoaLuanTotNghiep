@@ -75,7 +75,6 @@ const AreaAdmin = (props) => {
         if (result?.data?.data) {
           setAreas(result.data.data);
         }
-        console.log("got all area");
       } catch (error) {
         console.log(error);
         return;

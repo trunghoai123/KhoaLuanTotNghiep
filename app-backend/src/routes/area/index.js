@@ -3,7 +3,7 @@ const areaController = require("../../controllers/area.controller");
 const router = express.Router();
 
 router.get("/getAllArea", areaController.getAllArea);
-router.get("/getAreaByAreaId", areaController.getAreaByAreaId);
+router.post("/getAreaByAreaId", areaController.getAreaByAreaId);
 router.get("/getAreaById/:areaId", areaController.getAreaById);
 router.post("/addArea", areaController.addArea);
 router.post("/updateArea", areaController.updateArea);
