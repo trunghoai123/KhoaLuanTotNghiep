@@ -17,9 +17,14 @@ const AuthProvider = (props) => {
   };
   const value = { user, updateAuthUser: handleSetUser };
   useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem("Restaurant-Account"));
-    if (localUser) {
-      setUser(localUser);
+    if (
+      localStorage.getItem("Restaurant-Account") !== undefined &&
+      localStorage.getItem("Restaurant-Account") !== "undefined"
+    ) {
+      const localUser = JSON.parse(localStorage.getItem("Restaurant-Account"));
+      if (localUser) {
+        setUser(localUser);
+      }
     }
   }, []);
   return <AuthContext.Provider value={value} {...props}></AuthContext.Provider>;
