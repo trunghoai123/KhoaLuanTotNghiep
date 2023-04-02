@@ -18,11 +18,20 @@ class AccountService {
             //hàm lean trả về 1 obj thuần túy
             const account = await accountModel.findOne({ Email }).lean()
             if(account){
+                if(account.XacThuc){
+                    return {
+                        code: 300,
+                        metadata:{
+                            success: false,
+                            message: "Email đã được đăng ký",
+                        }
+                    }
+                }
                 return {
                     code: 300,
                     metadata:{
                         success: false,
-                        message: "Email đã tồn tại",
+                        message: "Email đã được đăng ký , đăng nhập để xác thưc",
                     }
                 }
             }
@@ -76,6 +85,7 @@ class AccountService {
                     code: 201,
                     metadata:{
                         success: true,
+                        verifyOTP: true,
                         account: newAccount,
                         message:'Tài khoản đã được tạo, vui lòng xác thực email'
                     }
@@ -109,13 +119,34 @@ class AccountService {
                 }
             }
 
-        // if(!account.XacThuc) 
-        //     return {
-        //         code: 500,
-        //         metadata:{
-        //             message: 'Tài khoản chưa xác thực',
-        //         }
-        //     }
+        if(!account.XacThuc) {
+            //Xác thực
+
+            //Random OTP
+            const OTP = Math.floor(Math.random() * 9000 + 1000) + "";
+            
+            //Gửi mail
+            let subject = "Xác thực tài khoản"
+            let mail = Email
+            let html = `<p>Không cung cấp mã xác thực cho bất cứ ai</p><h4>Mã xác thực: ${OTP} </h4>`
+
+            let check = sendMail(mail,subject,html)
+            //Lưu OTP
+            const otpHash = await bcrypt.hash(OTP, 10)
+            const newOTP = await otpModel.create({
+                Email , OTP: otpHash
+            })
+                
+
+            return {
+                code: 200,
+                metadata:{
+                    verifyOTP: true,
+                    message: 'Đang đợi xác thực',
+                }
+            }
+        }
+            
 
     
         
@@ -259,6 +290,54 @@ class AccountService {
                     success: false,
                     message: err.message,
                     status: 'Vertify OTP failed',
+                }
+            }
+        }
+
+    }
+    static sendOtp = async ({Email })=>{
+        try{
+            //Xác thực
+
+            //Random OTP
+            const OTP = Math.floor(Math.random() * 9000 + 1000) + "";
+            
+            //Gửi mail
+            let subject = "Xác thực tài khoản"
+            let mail = Email
+            let html = `<p>Không cung cấp mã xác thực cho bất cứ ai</p><h4>Mã xác thực: ${OTP} </h4>`
+
+            let check = sendMail(mail,subject,html)
+            //Lưu OTP
+            const otpHash = await bcrypt.hash(OTP, 10)
+            const newOTP = await otpModel.create({
+                Email , OTP: otpHash
+            })
+            if(newOTP){
+                return {
+                    code: 200,
+                    metadata:{
+                        success: true,
+                        message:"Gửi OTP thành công",
+                    }
+                }
+            }
+            
+            return {
+                code: 200,
+                metadata:{
+                    success: false,
+                    message:"Gửi OTP thất bại",
+                }
+            }
+        }
+        catch(error) {
+            return {
+                code: 500,
+                metadata:{
+                    success: false,
+                    message: err.message,
+                    status: 'Send OTP failed',
                 }
             }
         }
