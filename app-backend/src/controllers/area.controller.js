@@ -54,6 +54,22 @@ class AreaController {
       next(err);
     }
   };
+  getAllArea = async (req, res, next) => {
+    try {
+      const result = await AreaService.getAllArea();
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
+  getAreaByAll = async (req, res, next) => {
+    try {
+      const result = await AreaService.getAreaByAll(req.body);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = new AreaController();

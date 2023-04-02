@@ -169,6 +169,42 @@ class AreaService {
       };
     }
   };
+
+  static getAreaByAll = async ({
+    MaKhuVuc,
+    TenKhuVuc,
+    MoTa,
+    ViTriCuThe,
+    SoNguoiToiDa,
+  }) => {
+    try {
+      let query = {
+        MaBan: { $regex: MaBan, $options: "i" },
+        TenKhuVuc: { $regex: TenKhuVuc, $options: "i" },
+        MoTa: { $regex: MoTa, $options: "i" },
+        ViTriCuThe: { $regex: ViTriCuThe, $options: "i" },
+        SoNguoiToiDa: { $gte: SoNguoiToiDa },
+      };
+
+      const areas = await areaModel.find(query);
+      return {
+        code: 200,
+        metadata: {
+          success: true,
+          data: areas,
+        },
+      };
+    } catch (err) {
+      return {
+        code: 500,
+        metadata: {
+          success: false,
+          message: err.message,
+          status: "get areas error",
+        },
+      };
+    }
+  };
 }
 
 module.exports = AreaService;

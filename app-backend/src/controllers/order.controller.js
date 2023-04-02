@@ -33,6 +33,22 @@ class OrderController {
       next(err);
     }
   };
+  getOrderById = async (req, res, next) => {
+    try {
+      const result = await OrderService.getOrderById(req.body);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
+  updateOrder = async (req, res, next) => {
+    try {
+      const result = await OrderService.updateOrder(req.body);
+      return res.status(result.code).json(result.metadata);
+    } catch (err) {
+      next(err);
+    }
+  };
 }
 
 module.exports = new OrderController();

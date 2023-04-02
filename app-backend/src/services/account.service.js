@@ -1,10 +1,12 @@
 const accountModel = require("../models/account.model")
 const customerModel = require("../models/customer.model")
+const otpModel = require("../models/otp.model")
 const JWT = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const crypto = require('node:crypto')
 const KeyTokenService = require("./keyToken.service")
 const {createTokenPair, verifyToken} = require('../auth/authUtils')
+const {sendMail} = require("../utils");
 
 
 class AccountService {
@@ -16,11 +18,20 @@ class AccountService {
             //hàm lean trả về 1 obj thuần túy
             const account = await accountModel.findOne({ Email }).lean()
             if(account){
+                if(account.XacThuc){
+                    return {
+                        code: 300,
+                        metadata:{
+                            success: false,
+                            message: "Email đã được đăng ký",
+                        }
+                    }
+                }
                 return {
                     code: 300,
                     metadata:{
                         success: false,
-                        message: "Email đã tồn tại",
+                        message: "Email đã được đăng ký , đăng nhập để xác thưc",
                     }
                 }
             }
@@ -44,38 +55,39 @@ class AccountService {
                 //     }
                 // })
 
+                //Tạo khánh hàng
                 const newCustomer = await customerModel.create({
                     Email , MaTaiKhoan : newAccount._id
                 })
 
-                const privateKey = process.env.KEY_PRIVATE
-                const publicKey =  process.env.KEY_PUBLIC
 
-                const keyStore = await KeyTokenService.createKeyToken({
-                    userId: newAccount._id,
-                    publicKey,
-                    privateKey
-                })
+                //Xác thực
 
-                if(!keyStore){
-                    return {
-                        code: 300,
-                        metadata:{
-                            success: false,
-                            message: "Lỗi tạo public key",
-                        }
-                    }
-                }
-
-
-                const tokens = await createTokenPair({userId: newAccount._id , Email} , publicKey , privateKey )
+                //Random OTP
+                const OTP = Math.floor(Math.random() * 9000 + 1000) + "";
                 
+                //Gửi mail
+                let subject = "Xác thực tài khoản"
+                let mail = Email
+                let html = `<p>Không cung cấp mã xác thực cho bất cứ ai</p><h4>Mã xác thực: ${OTP} </h4>`
+
+                let check = sendMail(mail,subject,html)
+                //Lưu OTP
+                const otpHash = await bcrypt.hash(OTP, 10)
+                const newOTP = await otpModel.create({
+                    Email , OTP: otpHash
+                })
+                
+
+                
+
                 return {
                     code: 201,
                     metadata:{
                         success: true,
+                        verifyOTP: true,
                         account: newAccount,
-                        tokens
+                        message:'Tài khoản đã được tạo, vui lòng xác thực email'
                     }
                 }
             }
@@ -107,13 +119,34 @@ class AccountService {
                 }
             }
 
-        // if(!account.XacThuc) 
-        //     return {
-        //         code: 500,
-        //         metadata:{
-        //             message: 'Tài khoản chưa xác thực',
-        //         }
-        //     }
+        if(!account.XacThuc) {
+            //Xác thực
+
+            //Random OTP
+            const OTP = Math.floor(Math.random() * 9000 + 1000) + "";
+            
+            //Gửi mail
+            let subject = "Xác thực tài khoản"
+            let mail = Email
+            let html = `<p>Không cung cấp mã xác thực cho bất cứ ai</p><h4>Mã xác thực: ${OTP} </h4>`
+
+            let check = sendMail(mail,subject,html)
+            //Lưu OTP
+            const otpHash = await bcrypt.hash(OTP, 10)
+            const newOTP = await otpModel.create({
+                Email , OTP: otpHash
+            })
+                
+
+            return {
+                code: 200,
+                metadata:{
+                    verifyOTP: true,
+                    message: 'Đang đợi xác thực',
+                }
+            }
+        }
+            
 
     
         
@@ -197,7 +230,119 @@ class AccountService {
         
     }
 
-  
+    static verifyOtp = async ({Email , OTP })=>{
+        try{
+            const getotp = await otpModel.find({Email})
+            if(!getotp.length) {
+                return {
+                    code: 404,
+                    metadata:{
+                        success: false,
+                        message: "OTP hết hạn",
+                        
+                    }
+                }
+            }
+            const otpLast = getotp[getotp.length - 1]
+            const otpValid = await bcrypt.compare(OTP, otpLast.OTP);
+
+            if (!otpValid)
+                return {
+                    code: 400,
+                    metadata:{
+                        success: false,
+                        message: "OTP không chính xác",
+                        
+                    }
+            }
+            
+            //update
+            const userUpdate = await accountModel.findOneAndUpdate({Email}, { 
+                $set:{XacThuc: true}
+            }
+            , { new: true })
+
+            //tạo tokens
+            const privateKey = process.env.KEY_PRIVATE
+            const publicKey =  process.env.KEY_PUBLIC
+
+
+            const tokens = await createTokenPair({userId: userUpdate._id , Email} , publicKey , privateKey )
+
+            await KeyTokenService.createKeyToken({
+                privateKey , publicKey , refreshToken: tokens.refreshToken , userId: userUpdate._id })
+
+            return {
+                code: 200,
+                metadata:{
+                    success: true,
+                    message:"Xác thực thành công",
+                    account: userUpdate,
+                    tokens
+                }
+            }
+    
+        }
+        catch(error) {
+            return {
+                code: 500,
+                metadata:{
+                    success: false,
+                    message: err.message,
+                    status: 'Vertify OTP failed',
+                }
+            }
+        }
+
+    }
+    static sendOtp = async ({Email })=>{
+        try{
+            //Xác thực
+
+            //Random OTP
+            const OTP = Math.floor(Math.random() * 9000 + 1000) + "";
+            
+            //Gửi mail
+            let subject = "Xác thực tài khoản"
+            let mail = Email
+            let html = `<p>Không cung cấp mã xác thực cho bất cứ ai</p><h4>Mã xác thực: ${OTP} </h4>`
+
+            let check = sendMail(mail,subject,html)
+            //Lưu OTP
+            const otpHash = await bcrypt.hash(OTP, 10)
+            const newOTP = await otpModel.create({
+                Email , OTP: otpHash
+            })
+            if(newOTP){
+                return {
+                    code: 200,
+                    metadata:{
+                        success: true,
+                        message:"Gửi OTP thành công",
+                    }
+                }
+            }
+            
+            return {
+                code: 200,
+                metadata:{
+                    success: false,
+                    message:"Gửi OTP thất bại",
+                }
+            }
+        }
+        catch(error) {
+            return {
+                code: 500,
+                metadata:{
+                    success: false,
+                    message: err.message,
+                    status: 'Send OTP failed',
+                }
+            }
+        }
+
+    }
     
 }
 
