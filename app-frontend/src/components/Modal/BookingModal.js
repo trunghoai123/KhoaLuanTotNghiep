@@ -320,7 +320,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
         // endAt.getHours() >= 23 ||
         // endAt.getHours() <= 6 ||
         startAt.getHours() <= 6 ||
-        startAt.getHours() >= 23
+        startAt.getHours() >= 22
       ) {
         enqueueSnackbar("hãy xem lại thời gian (nhà hàng đóng của vào 11 giờ tối)", {
           variant: "warning",
@@ -350,6 +350,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
         setLoading(true);
         dispatch(addOrder(order))
           .then((value) => {
+            console.log(value);
             setLoading(false);
             enqueueSnackbar("đã đặt thành công, đang chờ xác nhận", {
               variant: "success",

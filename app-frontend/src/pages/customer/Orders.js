@@ -5,8 +5,9 @@ import { colors } from "variables";
 import Search from "components/Search";
 import Button from "components/Button/Button";
 import ViewOrderDetailModal from "components/Modal/ViewOrderDetailModal";
-import { getCustomerByUserId, getOrderByUser } from "utils/api";
+import { getCustomerByUserId, getOneMenu, getOrderByUser, getOrderDetailByOrder } from "utils/api";
 import { useAuthContext } from "utils/context/AuthContext";
+import { getDishById } from "store/dish/dishSlice";
 const OrdersStyles = styled.div`
   padding-top: 54px;
   .main__orders {
@@ -102,18 +103,50 @@ const Orders = (props) => {
     const getCustomer = async () => {
       if (user) {
         const data = await getCustomerByUserId(user._id);
-        console.log(data);
         if (data.data) {
           const customer = data.data;
           const orderList = await getOrderByUser(customer.MaTaiKhoan);
           if (orderList.data) {
-            setOrders(orderList.data);
+            const clonedList = [];
+            for (let i = 0; i < orderList.data.length; i++) {
+              const totalPrice = await calculateTotalPrice(orderList.data[i]);
+              console.log(totalPrice);
+              clonedList.push({ ...orderList.data[i], total: totalPrice });
+
+              // console.log(totalPrice);
+            }
+            // console.log(clonedList);
+            // setOrders(clonedList);
+            // setOrders(orderList.data);
           }
         }
       }
     };
     getCustomer();
   }, [user]);
+  const calculateTotalPrice = async (orderId) => {
+    let dishes = [];
+    let total = 0;
+    try {
+      const order = await getOrderDetailByOrder(orderId);
+      const orderDetail = order.data[0];
+      dishes = orderDetail.ListThucDon;
+    } catch (error) {
+      console.log(error);
+    }
+    if (dishes !== null) {
+      if (Array.isArray(dishes)) {
+        for (let i = 0; i < dishes.length; i++) {
+          // console.log(dishes[i].MaThucDon);
+          const fetchedDish = await getOneMenu(dishes[i].MaThucDon);
+          if (fetchedDish.data) {
+            total += fetchedDish.data.GiaMon * dishes[i].SoLuong;
+          }
+        }
+      }
+    }
+    return total;
+  };
   return (
     <OrdersStyles>
       {showForm && <ViewOrderDetailModal handleCloseForm={handleCloseForm}></ViewOrderDetailModal>}
@@ -163,6 +196,7 @@ const Orders = (props) => {
                 </thead>
                 <tbody className="table__body">
                   {orders.map((order) => {
+                    const total = calculateTotalPrice(order?._id);
                     return (
                       <tr className="table__row" key={order._id}>
                         <td className="table__data item__id">
@@ -182,8 +216,8 @@ const Orders = (props) => {
                             " - " +
                             new Date(order.ThoiGianBatDau).toLocaleDateString()}
                         </td>
-                        <td className="table__data">Chưa biết</td>
-                        <td className="table__data">chưa biết</td>
+                        <td className="table__data"></td>
+                        <td className="table__data">{total}</td>
                         <td className="table__data">
                           <Button
                             className="button button__remove"

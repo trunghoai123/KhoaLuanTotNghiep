@@ -60,3 +60,15 @@ export const getOrderByUser = async (id) => {
     return res.data;
   });
 };
+
+export const getOrderDetailByOrder = async (id) => {
+  return axiosClient.post(`order/getOrderDetailByOrder`, { MaPhieuDat: id }).then((res) => {
+    return res.data;
+  });
+};
+
+export const getOneMenu = async (id) => {
+  return axiosClient.get(`menu/getOneMenu/${id}`).then((res) => {
+    return res.data;
+  });
+};
