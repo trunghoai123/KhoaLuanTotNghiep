@@ -1,9 +1,10 @@
 const orderModel = require("../models/order.model");
 const orderDetailModel = require("../models/orderDetail.model");
-const {sendMail} = require("../utils");
-
-
-
+const {
+  sendMail,
+  templateMailSendOrder,
+  templateMailChangeStatus,
+} = require("../utils");
 
 class OrderService {
   static addOrder = async ({
@@ -16,10 +17,10 @@ class OrderService {
     ListThucDon,
     ListPhong,
     ListBan,
-    HoTen ,
-    Email ,
+    HoTen,
+    Email,
     SoDienThoai,
-    GhiChu
+    GhiChu,
   }) => {
     try {
       const newOrder = await orderModel.create({
@@ -29,10 +30,10 @@ class OrderService {
         ThoiGianBatDau,
         ThoiGianKetThuc,
         MaKhachHang,
-        HoTen ,
-        Email ,
+        HoTen,
+        Email,
         SoDienThoai,
-        GhiChu
+        GhiChu,
       });
       if (newOrder) {
         const newOrderDetail = await orderDetailModel.create({
@@ -43,22 +44,15 @@ class OrderService {
         });
 
         if (newOrderDetail) {
-          let subject = "";
-          if(LoaiPhieuDat == 0){
-            subject = "Yêu cầu đặt bàn thành công"
+          let subject = "Yêu cầu đặt phòng thành công";
+          if (LoaiPhieuDat == 0) {
+            subject = "Yêu cầu đặt bàn thành công";
           }
-          if(LoaiPhieuDat == 1 || LoaiPhieuDat == 2){
-            subject = "Yêu cầu đặt phòng thành công"
-          }
-         
-            
+          let mail = Email;
 
+          let html = templateMailSendOrder(LoaiPhieuDat);
 
-          let mail = Email
-           
-          let html = `<h3>${subject}</h3>`
-
-          let check = sendMail(mail,subject,html)
+          let check = sendMail(mail, subject, html);
 
           return {
             code: 201,
@@ -102,7 +96,7 @@ class OrderService {
 
   static getOrderByUser = async ({ MaKhachHang }) => {
     try {
-      const orders = await orderModel.find({ MaKhachHang })
+      const orders = await orderModel.find({ MaKhachHang });
       return {
         code: 200,
         metadata: {
@@ -123,13 +117,23 @@ class OrderService {
   };
   static getOrderDetailByOrder = async ({ MaPhieuDat }) => {
     try {
-      const orderDetail = await orderDetailModel.find({ MaPhieuDat })
-      .populate({
-        path: 'MaPhieuDat',
-        populate: {
-          path: 'MaKhachHang',
-        }
-      }).exec();
+      const orderDetail = await orderDetailModel
+        .find({ MaPhieuDat })
+        .populate({
+          path: "MaPhieuDat",
+          populate: {
+            path: "MaKhachHang",
+          },
+        })
+        .populate("ListThucDon.MaThucDon")
+        .populate({
+          path: "ListPhong",
+          populate: {
+            path: "MaLoai",
+          },
+        })
+        .populate("ListBan")
+        .exec();
       return {
         code: 200,
         metadata: {
@@ -151,7 +155,7 @@ class OrderService {
 
   static getAllOrder = async () => {
     try {
-      const orders = await orderModel.find()
+      const orders = await orderModel.find();
       return {
         code: 200,
         metadata: {
@@ -173,7 +177,9 @@ class OrderService {
 
   static getOrderById = async ({ id }) => {
     try {
-      const order = await orderModel.findOne({ _id: id }).populate('MaKhachHang')
+      const order = await orderModel
+        .findOne({ _id: id })
+        .populate("MaKhachHang");
       return {
         code: 200,
         metadata: {
@@ -204,56 +210,59 @@ class OrderService {
     ListThucDon,
     ListPhong,
     ListBan,
-    HoTen ,
-    Email ,
+    HoTen,
+    Email,
     SoDienThoai,
-    GhiChu
+    GhiChu,
   }) => {
     try {
-      const updateOrder = await orderModel.findOneAndUpdate({
-        _id: id
-    },{
-      LoaiPhieuDat,
-      TrangThai,
-      SoLuongNguoi,
-      ThoiGianBatDau,
-      ThoiGianKetThuc,
-      MaKhachHang,
-      HoTen ,
-      Email ,
-      SoDienThoai,
-      GhiChu
-    },{
-        new: true
-    })
+      const updateOrder = await orderModel.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        {
+          LoaiPhieuDat,
+          TrangThai,
+          SoLuongNguoi,
+          ThoiGianBatDau,
+          ThoiGianKetThuc,
+          MaKhachHang,
+          HoTen,
+          Email,
+          SoDienThoai,
+          GhiChu,
+        },
+        {
+          new: true,
+        }
+      );
       if (updateOrder) {
-        const updateOrderDetail = await orderDetailModel.findOneAndUpdate({
-            MaPhieuDat: updateOrder._id, 
-        },{
-          ListThucDon,
-          ListPhong,
-          ListBan,
-        },{
-          new: true
-        })
+        const updateOrderDetail = await orderDetailModel.findOneAndUpdate(
+          {
+            MaPhieuDat: updateOrder._id,
+          },
+          {
+            ListThucDon,
+            ListPhong,
+            ListBan,
+          },
+          {
+            new: true,
+          }
+        );
 
         if (updateOrderDetail) {
-          // let subject = "";
-          // if(LoaiPhieuDat == 0){
-          //   subject = "Yêu cầu đặt bàn thành công"
-          // }
-          // if(LoaiPhieuDat == 1 || LoaiPhieuDat == 2){
-          //   subject = "Yêu cầu đặt phòng thành công"
-          // }
-         
-            
+          if (TrangThai == 1) {
+            let subject = "Đặt phòng thành công";
+            if (LoaiPhieuDat == 0) {
+              subject = "Đặt bàn thành công";
+            }
+            let mail = Email;
 
+            let html = templateMailChangeStatus(LoaiPhieuDat);
 
-          // let mail = Email
-           
-          // let html = `<h3>${subject}</h3>`
-
-          // let check = sendMail(mail,subject,html)
+            let check = sendMail(mail, subject, html);
+          }
 
           return {
             code: 200,
@@ -294,7 +303,6 @@ class OrderService {
       };
     }
   };
-
 }
 
 module.exports = OrderService;

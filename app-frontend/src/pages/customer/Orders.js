@@ -102,22 +102,22 @@ const Orders = (props) => {
   useEffect(() => {
     const getCustomer = async () => {
       if (user) {
+        calculateTotalPrice("642866df1da55b0b5d28c7f4");
         const data = await getCustomerByUserId(user._id);
         if (data.data) {
           const customer = data.data;
           const orderList = await getOrderByUser(customer.MaTaiKhoan);
           if (orderList.data) {
-            const clonedList = [];
-            for (let i = 0; i < orderList.data.length; i++) {
-              const totalPrice = await calculateTotalPrice(orderList.data[i]);
-              console.log(totalPrice);
-              clonedList.push({ ...orderList.data[i], total: totalPrice });
+            // const clonedList = [];
+            // for (let i = 0; i < orderList.data.length; i++) {
+            //   const totalPrice = await calculateTotalPrice(orderList.data[i]);
+            //   console.log(totalPrice);
+            //   clonedList.push({ ...orderList.data[i], total: totalPrice });
 
-              // console.log(totalPrice);
-            }
-            // console.log(clonedList);
+            //   console.log(totalPrice);
+            // }
             // setOrders(clonedList);
-            // setOrders(orderList.data);
+            setOrders(orderList.data);
           }
         }
       }
@@ -129,22 +129,24 @@ const Orders = (props) => {
     let total = 0;
     try {
       const order = await getOrderDetailByOrder(orderId);
+      console.log(order);
       const orderDetail = order.data[0];
       dishes = orderDetail.ListThucDon;
     } catch (error) {
       console.log(error);
     }
-    if (dishes !== null) {
-      if (Array.isArray(dishes)) {
-        for (let i = 0; i < dishes.length; i++) {
-          // console.log(dishes[i].MaThucDon);
-          const fetchedDish = await getOneMenu(dishes[i].MaThucDon);
-          if (fetchedDish.data) {
-            total += fetchedDish.data.GiaMon * dishes[i].SoLuong;
-          }
-        }
-      }
-    }
+    // if (dishes !== null) {
+    //   if (Array.isArray(dishes)) {
+    //     for (let i = 0; i < dishes.length; i++) {
+    //       // console.log(dishes[i].MaThucDon);
+    //       console.log(dishes[i])
+    //       const fetchedDish = await getOneMenu(dishes[i].MaThucDon);
+    //       if (fetchedDish.data) {
+    //         total += fetchedDish.data.GiaMon * dishes[i].SoLuong;
+    //       // }
+    //     }
+    //   }
+    // }
     return total;
   };
   return (
@@ -186,17 +188,17 @@ const Orders = (props) => {
                     <th className="table__head" scope="col">
                       Thời gian đến
                     </th>
-                    <th className="table__head" scope="col">
+                    {/* <th className="table__head" scope="col">
                       Số tiền cần đặt cọc
                     </th>
                     <th className="table__head" scope="col">
                       Tổng tiền món ăn
-                    </th>
+                    </th> */}
                   </tr>
                 </thead>
                 <tbody className="table__body">
                   {orders.map((order) => {
-                    const total = calculateTotalPrice(order?._id);
+                    // const total = calculateTotalPrice(order?._id);
                     return (
                       <tr className="table__row" key={order._id}>
                         <td className="table__data item__id">
@@ -216,8 +218,6 @@ const Orders = (props) => {
                             " - " +
                             new Date(order.ThoiGianBatDau).toLocaleDateString()}
                         </td>
-                        <td className="table__data"></td>
-                        <td className="table__data">{total}</td>
                         <td className="table__data">
                           <Button
                             className="button button__remove"
@@ -236,7 +236,7 @@ const Orders = (props) => {
                             bgColor={colors.red_1}
                           >
                             <div>
-                              <span className="text">Xóa</span>
+                              <span className="text">Hủy</span>
                               <i className="icon__item fa-solid fa-trash-can"></i>
                             </div>
                           </Button>

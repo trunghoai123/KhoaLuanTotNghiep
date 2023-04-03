@@ -14,7 +14,7 @@ const orderDetailSchema = new Schema({
         _id: false,
         MaThucDon: {
           type: Schema.Types.ObjectId,
-          ref:'Phong'
+          ref:'ThucDon'
         },
         SoLuong:{
             type: Number,

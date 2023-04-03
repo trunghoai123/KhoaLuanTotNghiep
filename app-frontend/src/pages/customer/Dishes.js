@@ -216,17 +216,16 @@ const Dishes = (props) => {
   const { user, updateAuthUser } = useAuthContext();
   const { openSignIn, setOpenSignIn, openSignUp, setOpenSignUp } = useFormStateContext();
   const handleShowModal = () => {
-    if (user) {
-      setShowForm(true);
-    } else {
-      setOpenSignIn(true);
-    }
+    // if (user) {
+    setShowForm(true);
+    // } else {
+    //   setOpenSignIn(true);
+    // }
   };
   useEffect(() => {
     if (cartItems && cartItems.length > 0) {
       let sum = 0;
       cartItems.forEach((item) => {
-        // console.log(item);
         sum += item.GiaMon * item.SoLuong;
         setTotal(sum);
       });
@@ -249,9 +248,7 @@ const Dishes = (props) => {
   }, []);
   const handleAddToCart = (e, id) => {
     e.preventDefault();
-    dispatch(addToCartById(id)).then((data) => {
-      // console.log(data);
-    });
+    dispatch(addToCartById(id)).then((data) => {});
   };
   return (
     <DishesStyles>

@@ -266,7 +266,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
   const navigate = useNavigate();
   const [bookingType, setBookingType] = useState();
   const [loading, setLoading] = useState(false);
-  const [file, setFile] = useState();
+  // const [file, setFile] = useState();
   const {
     register,
     handleSubmit,
@@ -291,10 +291,10 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
   });
   const { user, updateAuthUser } = useAuthContext();
   useEffect(() => {
-    if (user.LoaiTaiKhoan === 0) {
-      setValue("fullname", "trung hoai");
-      setValue("phone", "0906461526");
-    }
+    // if (user.LoaiTaiKhoan === 0) {
+    // setValue("fullname", "trung hoai");
+    // setValue("phone", "0906461526");
+    // }
   }, [user]);
   const onSubmit = (data) => {
     if (isValid) {
@@ -367,28 +367,29 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
   const handleChangeType = (val) => {
     setBookingType(val);
   };
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-  const handleMouseOutFile = async (e) => {
-    // console.log(e.target.files[0]);
-    console.log(e);
-    // const base64 = await convertBase64(e.target.files[0]);
-    // axios
-    //   .post("http://localhost:5500/api/image/sendImageAndGetLink", { image: base64 })
-    //   .then((res) => {
-    //     console.log(res.data);
-    //   });
-  };
+
+  // const convertBase64 = (file) => {
+  //   return new Promise((resolve, reject) => {
+  //     const fileReader = new FileReader();
+  //     fileReader.readAsDataURL(file);
+  //     fileReader.onload = () => {
+  //       resolve(fileReader.result);
+  //     };
+  //     fileReader.onerror = (error) => {
+  //       reject(error);
+  //     };
+  //   });
+  // };
+  // const handleMouseOutFile = async (e) => {
+  //   console.log(e.target.files[0]);
+  //   const base64 = await convertBase64(e.target.files[0]);
+  //   axios
+  //     .post("http://localhost:5500/api/image/sendImageAndGetLink", { image: base64 })
+  //     .then((res) => {
+  //       console.log(res.data);
+  //     });
+  // };
+
   const handleSearchCustomer = () => {
     console.log("hello");
   };
@@ -403,67 +404,67 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
             </div>
           </div>
           <div className="modal__body">
-            {user.LoaiTaiKhoan === 1 && (
-              <div className="general__infor customer__infor">
-                <div className="group__title">Thông tin khách hàng</div>
-                <div className="row__container">
-                  <div className="value__container">
-                    <div className="label__container">
-                      <label className="label" htmlFor="size">
-                        Số điện thoại
-                      </label>
-                    </div>
-                    <div className="input__container phone__input__container">
-                      <Input
-                        className="input shared__place"
-                        id="phone"
-                        placeholder="0906461526"
-                        type="text"
-                        {...register("phone")}
-                        autoComplete="off"
-                        // width="auto"
-                      />
-                      <Button
-                        padding="6px"
-                        type="button"
-                        bgColor={colors.orange_2}
-                        bgHover={colors.orange_2_hover}
-                        className="btn__search--phone"
-                        onClick={handleSearchCustomer}
-                      >
-                        <i className="icon__search fa fa-search"></i>
-                      </Button>
-                    </div>
-                    {errors?.phone && (
-                      <div className="error__container">
-                        <div className="error__message">{errors?.phone?.message}</div>
-                      </div>
-                    )}
+            {/* {user?.LoaiTaiKhoan === 1 && ( */}
+            <div className="general__infor customer__infor">
+              <div className="group__title">Thông tin khách hàng</div>
+              <div className="row__container">
+                <div className="value__container">
+                  <div className="label__container">
+                    <label className="label" htmlFor="size">
+                      Số điện thoại
+                    </label>
                   </div>
-                  <div className="value__container">
-                    <div className="label__container">
-                      <label className="label" htmlFor="data">
-                        Họ và tên
-                      </label>
-                    </div>
-                    <div className="input__container">
-                      <Input
-                        type="fullname"
-                        className="input"
-                        autoComplete="off"
-                        id="fullname"
-                        {...register("fullname")}
-                      />
-                    </div>
-                    {errors?.fullname && (
-                      <div className="error__container">
-                        <div className="error__message">{errors?.fullname?.message}</div>
-                      </div>
-                    )}
+                  <div className="input__container phone__input__container">
+                    <Input
+                      className="input shared__place"
+                      id="phone"
+                      placeholder="0906461526"
+                      type="text"
+                      {...register("phone")}
+                      autoComplete="off"
+                      // width="auto"
+                    />
+                    <Button
+                      padding="6px"
+                      type="button"
+                      bgColor={colors.orange_2}
+                      bgHover={colors.orange_2_hover}
+                      className="btn__search--phone"
+                      onClick={handleSearchCustomer}
+                    >
+                      <i className="icon__search fa fa-search"></i>
+                    </Button>
                   </div>
+                  {errors?.phone && (
+                    <div className="error__container">
+                      <div className="error__message">{errors?.phone?.message}</div>
+                    </div>
+                  )}
+                </div>
+                <div className="value__container">
+                  <div className="label__container">
+                    <label className="label" htmlFor="data">
+                      Họ và tên
+                    </label>
+                  </div>
+                  <div className="input__container">
+                    <Input
+                      type="fullname"
+                      className="input"
+                      autoComplete="off"
+                      id="fullname"
+                      {...register("fullname")}
+                    />
+                  </div>
+                  {errors?.fullname && (
+                    <div className="error__container">
+                      <div className="error__message">{errors?.fullname?.message}</div>
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
+            </div>
+            {/* )} */}
             <hr></hr>
             {/* <div className="input__container">
               <Input
