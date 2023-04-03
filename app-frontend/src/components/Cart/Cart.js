@@ -24,7 +24,7 @@ const CartStyles = styled.div`
     top: 100%;
     right: 0;
     width: 260px;
-    height: 430px;
+    /* height: 430px; */
     padding: 6px;
     background-color: ${colors.gold_1};
     transition: all ease 200ms;
@@ -38,7 +38,8 @@ const CartStyles = styled.div`
     .cart__list {
       padding: 12px 0px;
       overflow-y: auto;
-      height: 80%;
+      /* height: 80%; */
+      max-height: 320px;
       ::-webkit-scrollbar {
         width: 3px;
       }
@@ -167,7 +168,7 @@ const CartStyles = styled.div`
   }
 `;
 
-const Cart = ({ handleShowModal = () => {}, cartList = [] }) => {
+const Cart = ({ handleShowModal = () => {}, cartList = [], total = 0 }) => {
   return (
     <CartStyles>
       <div className="cart__logo__container">
@@ -209,6 +210,13 @@ const Cart = ({ handleShowModal = () => {}, cartList = [] }) => {
                 </div>
               );
             })}
+        </div>
+        <div className="sum__container">
+          Tổng tiền:{" "}
+          {new Intl.NumberFormat("vi-VN", {
+            style: "currency",
+            currency: "VND",
+          }).format(total)}
         </div>
         <div className="btn__container">
           <Button

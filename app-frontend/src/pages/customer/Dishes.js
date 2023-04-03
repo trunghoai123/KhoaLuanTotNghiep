@@ -212,6 +212,7 @@ const Dishes = (props) => {
   const [dishes, setDishes] = useState();
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.cart);
+  const [total, setTotal] = useState(0);
   const { user, updateAuthUser } = useAuthContext();
   const { openSignIn, setOpenSignIn, openSignUp, setOpenSignUp } = useFormStateContext();
   const handleShowModal = () => {
@@ -221,6 +222,16 @@ const Dishes = (props) => {
       setOpenSignIn(true);
     }
   };
+  useEffect(() => {
+    if (cartItems && cartItems.length > 0) {
+      let sum = 0;
+      cartItems.forEach((item) => {
+        // console.log(item);
+        sum += item.GiaMon * item.SoLuong;
+        setTotal(sum);
+      });
+    }
+  }, [cartItems]);
   useEffect(() => {
     window.scrollTo(0, 0);
     const fetchDishes = async () => {
@@ -239,7 +250,7 @@ const Dishes = (props) => {
   const handleAddToCart = (e, id) => {
     e.preventDefault();
     dispatch(addToCartById(id)).then((data) => {
-      console.log(data);
+      // console.log(data);
     });
   };
   return (
@@ -251,7 +262,7 @@ const Dishes = (props) => {
         <Search placeholder="Tìm Kiếm"></Search>
       </div>
       <div className="main__container">
-        <Cart cartList={cartItems} handleShowModal={handleShowModal}></Cart>
+        <Cart total={total} cartList={cartItems} handleShowModal={handleShowModal}></Cart>
         <div className="left__container">
           <div className="filter__kind">
             {kinds.map((kind) => {

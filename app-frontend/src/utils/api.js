@@ -48,3 +48,15 @@ export const getAllRoom = async () => {
     return res.data;
   });
 };
+
+export const getCustomerByUserId = async (id) => {
+  return axiosClient.post(`customer/getCustomerByUserId`, { MaTaiKhoan: id }).then((res) => {
+    return res.data;
+  });
+};
+
+export const getOrderByUser = async (id) => {
+  return axiosClient.post(`order/getOrderByUser`, { MaKhachHang: id }).then((res) => {
+    return res.data;
+  });
+};

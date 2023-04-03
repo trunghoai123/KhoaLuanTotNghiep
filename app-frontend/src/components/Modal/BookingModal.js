@@ -295,7 +295,7 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
       setValue("fullname", "trung hoai");
       setValue("phone", "0906461526");
     }
-  });
+  }, [user]);
   const onSubmit = (data) => {
     if (isValid) {
       const { size, date, time, kind, note, image } = data;
@@ -306,7 +306,17 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
       //   )
       // );
       // let endAt = addedDate;
-      if (
+      // console.log(new Date(new Date(date + "T" + time)).getTime());
+      const now = new Date();
+      // console.log(now.getTime());
+      // console.log(new Date(now.setUTCHours(now.getUTCHours() + 7)).toUTCString());
+      if (startAt.getTime() <= new Date(now.setUTCHours(now.getUTCHours())).getTime()) {
+        enqueueSnackbar("phải đặt sau thời gian hiện tại", {
+          variant: "warning",
+          preventDuplicate: true,
+          autoHideDuration: 4000,
+        });
+      } else if (
         // endAt.getHours() >= 23 ||
         // endAt.getHours() <= 6 ||
         startAt.getHours() <= 6 ||
@@ -331,16 +341,15 @@ const BookingModal = ({ handleCloseForm = () => {}, cartItems = [] }) => {
           SoLuongNguoi: Number(size),
           ThoiGianBatDau: startAt,
           // ThoiGianKetThuc: endAt,
-          MaKhachHang: user?.id,
+          MaKhachHang: user._id,
           ListThucDon: clonedCartItems,
+          Email: user.Email,
           ListPhong: null,
           ListBan: null,
         };
         setLoading(true);
-        // addOrderAPI(order)
         dispatch(addOrder(order))
           .then((value) => {
-            console.log(value);
             setLoading(false);
             enqueueSnackbar("đã đặt thành công, đang chờ xác nhận", {
               variant: "success",

@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { colors } from "variables";
 import Search from "components/Search";
 import Button from "components/Button/Button";
 import ViewOrderDetailModal from "components/Modal/ViewOrderDetailModal";
+import { getCustomerByUserId, getOrderByUser } from "utils/api";
+import { useAuthContext } from "utils/context/AuthContext";
 const OrdersStyles = styled.div`
   padding-top: 54px;
   .main__orders {
@@ -92,9 +94,26 @@ const OrdersStyles = styled.div`
 
 const Orders = (props) => {
   const [showForm, setShowForm] = useState(false);
-
+  const [orders, setOrders] = useState([]);
   const handleCloseForm = () => setShowForm(false);
   const handleViewOrderDetail = (id) => {};
+  const { user } = useAuthContext();
+  useEffect(() => {
+    const getCustomer = async () => {
+      if (user) {
+        const data = await getCustomerByUserId(user._id);
+        console.log(data);
+        if (data.data) {
+          const customer = data.data;
+          const orderList = await getOrderByUser(customer.MaTaiKhoan);
+          if (orderList.data) {
+            setOrders(orderList.data);
+          }
+        }
+      }
+    };
+    getCustomer();
+  }, [user]);
   return (
     <OrdersStyles>
       {showForm && <ViewOrderDetailModal handleCloseForm={handleCloseForm}></ViewOrderDetailModal>}
@@ -143,14 +162,28 @@ const Orders = (props) => {
                   </tr>
                 </thead>
                 <tbody className="table__body">
-                  {new Array(10).fill(0).map((item, index) => {
+                  {orders.map((order) => {
                     return (
-                      <tr className="table__row" key={index}>
-                        <td className="table__data item__id">_id</td>
-                        <td className="table__data">12:13 - 14/03/2023</td>
-                        <td className="table__data">08:13 - 15/03/2023</td>
-                        <td className="table__data">568.000 đ (40%)</td>
-                        <td className="table__data">1.424.000 đ</td>
+                      <tr className="table__row" key={order._id}>
+                        <td className="table__data item__id">
+                          {order._id.substring(0, 6) + "..."}
+                        </td>
+                        <td className="table__data">
+                          {new Date(order.createdAt).getHours() +
+                            ":" +
+                            new Date(order.createdAt).getMinutes() +
+                            " - " +
+                            new Date(order.createdAt).toLocaleDateString()}
+                        </td>
+                        <td className="table__data">
+                          {new Date(order.ThoiGianBatDau).getHours() +
+                            ":" +
+                            new Date(order.ThoiGianBatDau).getMinutes() +
+                            " - " +
+                            new Date(order.ThoiGianBatDau).toLocaleDateString()}
+                        </td>
+                        <td className="table__data">Chưa biết</td>
+                        <td className="table__data">chưa biết</td>
                         <td className="table__data">
                           <Button
                             className="button button__remove"
