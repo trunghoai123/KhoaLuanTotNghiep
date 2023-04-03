@@ -124,7 +124,16 @@ class OrderService {
         populate: {
           path: 'MaKhachHang',
         }
-      }).exec();
+      })
+      .populate('ListThucDon.MaThucDon')
+      .populate({
+        path: 'ListPhong',
+        populate: {
+          path: 'MaLoai',
+        }
+      })
+      .populate('ListBan')
+      .exec();
       return {
         code: 200,
         metadata: {
